@@ -1,0 +1,70 @@
+﻿@model List<Airline.Web.Data.Entities.DepartmentDetail>
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="site-section" id="next">
+    <div class="container">
+        <h2>Department Details</h2>
+
+        @if (Model.Count == 0)
+        {
+            <br />
+            <h5>Department don't have employees</h5>
+            <br />
+        }
+
+        else
+        {
+            <br />
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="border:none">
+                            Employee Name
+                        </th>
+
+                        <th style="border:none">
+                            Start Date
+                        </th>
+
+                        <th style="border:none">
+                            End Date
+                        </th>
+
+                    </tr>
+
+                </thead>
+                <tbody>
+
+
+                    @foreach (var item in Model)
+                    {
+
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.User.FullName)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StartDate)
+                            </td>
+
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CloseDate)
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+
+
+        }
+
+        <a asp-action="Index" class="btn btn-success">Back to List</a>
+    </div>
+</div>

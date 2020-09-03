@@ -1,0 +1,59 @@
+﻿@model Airline.Web.Models.AirplaineViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+    <div class="site-section" id="next">
+        <div class="container">
+            <h2>Create</h2>
+
+            <h4>Airlaine</h4>
+            <hr />
+            <div class="row">
+                <div class="col-md-4">
+                    <form asp-action="Create" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="Brand" class="control-label"></label>
+                            <input asp-for="Brand" class="form-control" />
+                            <span asp-validation-for="Brand" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Model" class="control-label"></label>
+                            <input asp-for="Model" class="form-control" />
+                            <span asp-validation-for="Model" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="ImageFile" class="control-label"></label>
+                            <input asp-for="ImageFile" class="form-control" type="file" /> <!--Deixa de ser uma caixa de texto e passa a ser uma caixa de upload-->
+                            <span asp-validation-for="ImageFile" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="BusinessSeats" class="control-label"></label>
+                            <input asp-for="BusinessSeats" class="form-control" />
+                            <span asp-validation-for="BusinessSeats" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="EconomySeats" class="control-label"></label>
+                            <input asp-for="EconomySeats" class="form-control" />
+                            <span asp-validation-for="EconomySeats" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Create" class="btn btn-primary" />
+                            <a class="btn btn-success" asp-action="Index">Back to List</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+            @section Scripts {
+                @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+            }
+
+

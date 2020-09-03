@@ -1,0 +1,112 @@
+﻿@model List<CountryViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="site-section" id="next">
+    <div class="container">
+        <h2>Countries List</h2>
+        <p>
+            <a asp-action="Create" class="btn btn-primary">Create New</a>
+        </p>
+
+        <br />
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="border:none">
+                        Country Name
+                    </th>
+
+                    <th style="border:none">
+                        Cities
+                    </th>
+
+                </tr>
+
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            <ul>
+                                @for (int i = 0; i < item.Cities.Count; i++)
+                                {
+                                    <li>@Html.DisplayFor(modelItem => item.Cities[i].Name)</li>
+                                }
+                            </ul>
+                        </td>
+
+                        <td></td>
+
+                        <td id="@item.CountryId">
+                            <a asp-action="Edit" asp-route-id="@item.CountryId" class="btn btn-warning">Edit</a>
+                            <a asp-action="Details" asp-route-id="@item.CountryId" class="btn btn-info">Details</a>
+                            <a asp-action="Delete" asp-route-id="@item.CountryId" class="btn btn-danger" id="btnDelete">Delete</a>
+                        </td>
+
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+<div id="deleteDialog" class="modal fade" style="top:6vh">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Delete</h4>
+                <button type="button" class="close" data-dismiss="modal">x</button>
+
+            </div>
+            <div class="modal-body">
+                <p>Do you want to delete the country?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="btnYesDelete">Delete</button>
+                <button type="button" class="btn btn-success" id="btnNoDelete">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            var id = 0;
+
+            $('a[id*=btnDelete]').click(function () {
+                debugger;
+                id = $(this).parent()[0].id;
+                $("#deleteDialog").modal('show');
+                return false;
+            });
+
+            $("#btnNoDelete").click(function () {
+                $("#deleteDialog").modal('hide');
+                return false;
+            });
+
+            $("#btnYesDelete").click(function () {
+                window.location.href = '/Countries/Delete/' + id;
+            });
+
+        });
+    </script>
+}
+
+   

@@ -1,0 +1,95 @@
+﻿@model ChangeDptEmployeeViewModel
+
+@{
+    ViewData["Title"] = "ChangeDepartment";
+}
+
+@section Style{
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+
+}
+
+<div class="site-section" id="next" style="width:100%">
+    <div class="container" style="width:100%">
+        <h2>Employee Change Department</h2>
+
+        <br />
+
+        <h3><strong>@Model.FullName</strong></h3>
+
+        <br />
+
+
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <table id="example" class="display" style="width:100%">
+                <thead>
+                    <tr>
+                        <th> </th>
+                        <th>Department</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            Current Department
+                        </td>
+                        <td>@Model.OldDepartment</td>
+                        <td>@Model.BeginOldDepartment</td>
+                        <td>
+                            <ejs-datepicker id="datepicker" ejs-for="EndOldDepartment" placeholder="Choose a Date"></ejs-datepicker>                           
+                            <span asp-validation-for="EndOldDepartment"></span>
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>
+                            New Department
+                        </td>
+                        <td>
+                            <select asp-for="NewDepartmentId" asp-items="Model.Departments"></select>
+                            <span asp-validation-for="NewDepartmentId" class="text-danger"></span>
+                        </td>
+                        <td>
+                            <ejs-datepicker id="datepicker2" ejs-for="BeginNewDepartment" placeholder="Choose a Date"></ejs-datepicker>
+                            <span asp-validation-for="BeginNewDepartment"></span>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div asp-validation-summary="ModelOnly"></div>
+            <div class="form-group">
+                <input type="hidden" asp-for="UserId" />
+                <input type="hidden" asp-for="OldDepartmentDetailId" />
+                <input type="hidden" asp-for="NewDepartmentId" />
+                <input type="submit" value="ChangeDepartment" class="btn btn-info" />
+                <a class="btn btn-success" asp-action="Index">Back to List</a>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+@section Scripts{
+    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+
+    </script>
+
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+}
+

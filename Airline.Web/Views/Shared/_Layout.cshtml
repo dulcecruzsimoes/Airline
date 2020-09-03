@@ -1,0 +1,237 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Airline.Web</title>
+
+    @RenderSection("Style", required: false)
+
+<environment include="Development">
+    <!-- ============ Folhas de estilos por default===============
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
+     <link rel="stylesheet" href="~/css/site.css" />-->
+    <!-- folhas externas do template-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <link rel="stylesheet" href="~/template/fonts/icomoon/style.css">
+    <link rel="stylesheet" href="~/template//css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/template//css/jquery-ui.css">
+    <link rel="stylesheet" href="~/template//css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/template//css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="~/template//css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="~/template//css/jquery.fancybox.min.css">
+    <link rel="stylesheet" href="~/template//css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="~/template//fonts/flaticon/font/flaticon.css">
+    <link rel="stylesheet" href="~/template//css/style.css">
+
+    <!-- Syncfusion Essential JS 2 Styles -->
+    <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/material.css" />
+
+</environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+</head>
+<body>
+
+
+    <!-- Apenas para aparecer o icon de loading da página-->
+    <div id="overlayer">
+    </div>
+    <div class="loader">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+
+
+    <div class="site-wrap">
+        <div class="site-mobile-menu site-navbar-target">
+            <div class="site-mobile-menu-header">
+                <div class="site-mobile-menu-close mt-3">
+                    <span class="icon-close2 js-menu-toggle"></span>
+                </div>
+            </div>
+            <div class="site-mobile-menu-body"></div>
+        </div>
+
+
+        <!--header-->
+        <header class="site-navbar" style="border-bottom: thin groove rgba(255, 255, 255, 0.7);position: fixed;background-color: #fff">
+
+            <div class="container" style="min-width:100%;">
+                <div class="row align-items-center">
+
+                    <div class="col-6 col-xl-2">
+                        <h1 class="mb-0 site-logo"><span class="text-primary">FlyAway.</span></h1>
+                    </div>
+
+                    <div class="col-12 col-md-10 d-none d-xl-block" >
+                        <nav class="site-navigation position-relative text-right" role="navigation">
+
+                            <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
+                                <li ><a asp-area="" asp-controller="Home" asp-action="Index" class="nav-link">Home</a></li>
+
+                                <li ><a asp-area="" asp-controller="Home" asp-action="About" class="nav-link">About</a></li>
+
+                                <li ><a asp-area="" asp-controller="Home" asp-action="Contact" class="nav-link">Contact</a></li>
+
+                                @if (this.User.Identity.IsAuthenticated)
+                                {
+                                    
+                                    <li><a asp-area="" asp-controller="" asp-action="" class="nav-link">My flights</a></li>
+                                
+                                
+                                
+                                }
+
+                                    @if (this.User.Identity.IsAuthenticated && (this.User.IsInRole("Employee") || this.User.IsInRole("Admin")))
+                                    {
+                                        <li class="has-children">
+                                            <a href="#about-section" class="nav-link">Backoffice</a>
+                                            <ul class="dropdown">
+                                                <li><a asp-area="" asp-controller="Airplaines" asp-action="Index" class="nav-link">Airplaines</a></li>
+                                                <li><a asp-area="" asp-controller="Destinations" asp-action="Index" class="nav-link">Destinations</a></li>
+                                                <li><a asp-area="" asp-controller="" asp-action="" class="nav-link">Flights</a></li>
+                                                <li><a asp-area="" asp-controller="" asp-action="" class="nav-link">Clients</a></li>
+                                                <li><a asp-area="" asp-controller="Countries" asp-action="Index" class="nav-link">Countries</a></li>
+                                            </ul>
+                                        </li>
+                                    }
+
+                                    @if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Admin"))
+                                    {
+                                        <li class="has-children">
+                                            <a href="#about-section" class="nav-link">Admin</a>
+                                            <ul class="dropdown">
+                                                <li><a asp-area="" asp-controller="Roles" asp-action="Index" class="nav-link">Roles</a></li>
+                                                <li><a asp-area="" asp-controller="Departments" asp-action="Index" class="nav-link">Departments</a></li>
+                                                <li><a asp-area="" asp-controller="Employees" asp-action="Index" class="nav-link">Employees</a></li>
+                                            </ul>
+                                        </li>
+                                    }
+
+
+                                    @if (this.User.Identity.IsAuthenticated)
+                                    {
+                                        <li><a asp-area="" asp-controller="Account" asp-action="ChangeUser" class="nav-link">@this.User.Identity.Name</a></li>
+                                        <li><a asp-area="" asp-controller="Account" asp-action="Logout" class="nav-link">Logout</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li><a asp-area="" asp-controller="Account" asp-action="Login">Login</a></li>
+                                    }
+
+                                </ul>
+                        </nav>
+                    </div>
+
+
+                    <div class="col-6 d-inline-block d-xl-none ml-md-0 py-3" style="position: relative; top: 3px;"><a href="#" class="site-menu-toggle js-menu-toggle float-right"><span class="icon-menu h3"></span></a></div>
+
+                </div>
+            </div>
+
+
+
+        </header>
+
+
+        @RenderSection("Head", required: false)
+
+
+
+        <partial name="_CookieConsentPartial" />
+
+
+        @RenderBody()
+
+
+
+        <footer class="row pt-5 mt-5 text-center">
+
+            <div class="col-md-12">
+                <div class="border-top pt-5">
+                    <p class="copyright">
+                        <small>
+                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                            Copyright &copy;
+                            <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart text-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        </small>
+                    </p>
+
+                </div>  
+            </div>
+        </footer>
+
+    </div> <!-- .site-wrap -->
+
+
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+
+
+
+       
+
+        <!-- Syncfusion Essential JS 2 Scripts -->
+        <script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js"></script>
+
+
+
+        <!-- Scripts do Templat-->
+        <script src="~/template/js/aos.js"></script>
+        <script src="~/template/js/bootstrap.min.js"></script>
+        <script src="~/template/js/bootstrap-datepicker.min.js"></script>
+        <script src="~/template/js/isotope.pkgd.min.min.js"></script>
+        <script src="~/template/js/jquery.countdown.min.js"></script>
+        <script src="~/template/js/jquery.easing.1.3.js"></script>
+        <script src="~/template/js/jquery.fancybox.min.js"></script>
+        <script src="~/template/js/jquery.magnific-popup.min.js"></script>
+        <script src="~/template/js/jquery.stellar.min.js"></script>
+        <script src="~/template/js/jquery.sticky.js"></script>
+        <script src="~/template/js/jquery-3.3.1.min.js"></script>
+        <script src="~/template/js/jquery-migrate-3.0.1.min.js"></script>
+        <script src="~/template/js/jquery-ui.js"></script>
+        <script src="~/template/js/main.js"></script>
+        <script src="~/template/js/mediaelement-and-player.min.js"></script>
+        <script src="~/template/js/owl.carousel.min.js"></script>
+        <script src="~/template/js/popper.min.js"></script>
+        <script src="~/template/js/slick.min.js"></script>
+        <script src="~/template/js/typed.js"></script>
+
+
+
+    </environment>
+        <environment exclude="Development">
+            <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
+                    asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                    asp-fallback-test="window.jQuery"
+                    crossorigin="anonymous"
+                    integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
+            </script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+                    asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                    asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                    crossorigin="anonymous"
+                    integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd">
+            </script>
+            <script src="~/js/site.min.js" asp-append-version="true"></script>
+        </environment>
+
+
+        @RenderSection("Scripts", required: false)
+
+        <!-- Syncfusion Essential JS 2 ScriptManager -->
+        <ejs-scripts></ejs-scripts>
+
+
+</body>
+</html>

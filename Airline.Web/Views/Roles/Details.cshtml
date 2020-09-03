@@ -1,0 +1,30 @@
+﻿@model Microsoft.AspNetCore.Identity.IdentityRole
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="site-section" id="next">
+    <div class="container">
+        <h2>Role Details</h2>
+        <br />
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-action="Details">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label"></label>
+                        <label class="form-control"> @Html.DisplayFor(model => model.Name) </label>                        
+                    </div>
+
+                    <div class="form-group">
+                        <a class="btn btn-info" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+                        <a class="btn btn-success" asp-action="Index">Back to List</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
