@@ -170,6 +170,8 @@ namespace Airline.Web.Data
 
                     Department department = departmentQuery.FirstOrDefault();
 
+                   
+
                     _context.DepartmentDetails.Add(new DepartmentDetail
                     {
                         User = user2,
@@ -222,6 +224,8 @@ namespace Airline.Web.Data
                     var departmentQuery = _context.Departments.Where(o => o.Name == "Sales");
 
                     Department department = departmentQuery.FirstOrDefault();
+
+              
 
                     _context.DepartmentDetails.Add(new DepartmentDetail
                     {

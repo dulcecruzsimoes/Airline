@@ -110,7 +110,13 @@
                                             <ul class="dropdown">
                                                 <li><a asp-area="" asp-controller="Roles" asp-action="Index" class="nav-link">Roles</a></li>
                                                 <li><a asp-area="" asp-controller="Departments" asp-action="Index" class="nav-link">Departments</a></li>
-                                                <li><a asp-area="" asp-controller="Employees" asp-action="Index" class="nav-link">Employees</a></li>
+
+                                                <li class="has-children">
+                                                    <a href="#">Employees</a>
+                                                    <ul class="dropdown">
+                                                        <li><a asp-area="" asp-controller="Employees" asp-action="IndexActive" class="nav-link">Active Employees</a></li>
+                                                        <li><a asp-area="" asp-controller="Employees" asp-action="IndexInactive" class="nav-link">Inactive Employees</a></li>                                                       
+                                                    </ul>                                               
                                             </ul>
                                         </li>
                                     }
@@ -177,9 +183,10 @@
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
 
+        <!--Livraria para amnipulação das datas: client-side-->
+        <script src="~/lib/moment.js/moment.min.js" asp-append-version="true"></script>
 
 
-       
 
         <!-- Syncfusion Essential JS 2 Scripts -->
         <script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js"></script>

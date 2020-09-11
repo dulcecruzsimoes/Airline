@@ -13,9 +13,12 @@ using Airline.Web.Models;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
 using System.IO;
 using System.Reflection;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Airline.Web.Controllers
 {
+    [Authorize(Roles = "Admin,Employee")] // Autorizado apenas para o Administrador e Empregado
+
     public class AirplainesController : Controller
     {
         private readonly IAirplaineRepository _repository;
@@ -48,8 +51,8 @@ namespace Airline.Web.Controllers
         {
             if (id == null)
             {
-                
-                return new NotFoundViewResult("MyNotFound");
+
+                return NotFound();
             }
 
             var airplaine = await _repository.GetByIdAsync(id.Value);
@@ -57,9 +60,8 @@ namespace Airline.Web.Controllers
             if (airplaine == null)
             {
              
-                return new NotFoundViewResult("MyNotFound");
+                return NotFound();
             }
-
             
             
             return View(airplaine);
@@ -97,24 +99,14 @@ namespace Airline.Web.Controllers
                 airplaine.User = await _userHelper.GetUserByEmailAsync(User.Identity.Name);
 
                 await _repository.CreateAsync(airplaine);
+
                 return RedirectToAction(nameof(Index));
             }
+
             return View(airplaineViewModel);
         }
 
-       /* private Airplaine ToAirplaine(AirplaineViewModel model, string path)
-        {
-            return new Airplaine
-            {
-                Id = model.Id,
-                Brand = model.Brand,
-                Model = model.Model,
-                ImageUrl = path,
-                EconomySeats = model.EconomySeats,
-                BusinessSeats = model.BusinessSeats,
-                User = model.User
-            };
-        }*/
+
 
         // GET: Airplaines/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -138,20 +130,6 @@ namespace Airline.Web.Controllers
             return View(view);
         }
 
-        /*private AirplaineViewModel ToAirplaineViewModel(Airplaine airplaine)
-        {
-            return new AirplaineViewModel
-            {
-                Id = airplaine.Id,
-                Brand = airplaine.Brand,
-                Model = airplaine.Model,
-                BusinessSeats = airplaine.BusinessSeats,
-                EconomySeats = airplaine.EconomySeats,
-                User = airplaine.User,
-                ImageUrl = airplaine.ImageUrl
-            };
-        }*/
-
 
 
 
@@ -162,8 +140,6 @@ namespace Airline.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(AirplaineViewModel airplaineViewModel)
         {
-         
-
             if (ModelState.IsValid)
             {
                 try
@@ -229,11 +205,35 @@ namespace Airline.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (id == 0)
+            {
+                return NotFound();
+
+            }
+
             var airplaine = await _repository.GetByIdAsync(id);
 
-            await _repository.DeleteAsync(airplaine); // Método já grava as alterações realizadas
+            if (airplaine == null)
+            {
+                return NotFound();
 
-            return RedirectToAction(nameof(Index));
+            }
+
+            try
+            {
+                await _repository.DeleteAsync(airplaine); // Método já grava as alterações realizadas
+
+                return RedirectToAction(nameof(Index));
+
+            }
+            catch (Exception) // Erro por algum motivo
+            {
+                ViewBag.Message = "Avião utilizado em outros registos, não é possível apagar!";
+
+                return View();
+                
+            }
+           
         }
 
 

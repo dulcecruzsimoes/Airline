@@ -20,13 +20,13 @@ namespace Airline.Web.Data.Entities
 
         [Required]
         [Display(Name = "Start Date")]
-        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = false)]
+        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
         public DateTime StartDate { get; set; }
 
 
 
         [Display(Name = "Close Date")]
-        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = false)]
+        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
         public DateTime? CloseDate { get; set; }
 
 

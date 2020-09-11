@@ -1,0 +1,67 @@
+﻿@model IEnumerable<Airline.Web.Models.EmployeeViewModel>
+
+@{
+    ViewData["Title"] = "Inactive Employees";
+}
+
+@section Style{
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+
+}
+
+<div class="site-section" id="next" style="width:100%">
+    <div class="container" style="width:100%">
+        <h2>Inactive Employees List</h2>
+
+
+        <br />
+
+        <table id="example" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>EMail</th>
+                    <th>Phone Number</th>
+                    <th>Department</th>
+                    <th> </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.FullName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                        <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Department)</td>
+                        <td>
+                            @*<a asp-action="Edit" asp-route-id="@item.UserId" class="btn btn-warning">Edit</a>*@
+                            <a asp-action="DetailsInactive" asp-route-id="@item.UserId" class="btn btn-info">Details</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>Name</th>
+                    <th>EMail</th>
+                    <th>Phone Number</th>
+                    <th>Department</th>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+
+@section Scripts{
+    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+
+    </script>
+}

@@ -98,7 +98,7 @@ namespace Airline.Web.Controllers
 
     
 
-        // GET: Role/Edit/5        
+       /* // GET: Role/Edit/5        
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -158,7 +158,7 @@ namespace Airline.Web.Controllers
 
             return View(role);          
         
-        }
+        }*/
 
 
 
@@ -204,7 +204,21 @@ namespace Airline.Web.Controllers
                 return NotFound();
             }
 
-            await _userHelper.DeleteRoleAsync(role);            
+            // Verificar se não existem users associados ao role
+            bool validation =  await _userHelper.RoleEmptyAsync(role.Name);
+
+            if (validation == true)
+            {
+                await _userHelper.DeleteRoleAsync(role);
+            }
+
+            else
+            {
+                ViewBag.Message = "The role have users associated. It can't be deleted!";
+                return View();
+
+            }
+                      
 
             return RedirectToAction(nameof(Index));
         }

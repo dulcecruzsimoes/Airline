@@ -4,65 +4,78 @@
     ViewData["Title"] = "Index";
 }
 
-    <div class="site-section" id="next">
-        <div class="container">
-            <h2>Index</h2>
 
-            <p>
-                <a asp-action="Create">Create New</a>
-            </p>
-            <table class="table">
-                <thead>
+@section Style{
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+
+}
+
+
+
+<div class="site-section" id="next" style="width:100%">
+    <div class="container" style="width:100%">
+        <h2>Airplaine List</h2>
+        <br/>
+        <p>
+            <a asp-action="Create" class="btn btn-primary">Create New</a>
+        </p>
+
+        <br />
+
+        <table id="example" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.Brand)</th>
+                    <th>@Html.DisplayNameFor(model => model.Model)</th>
+                    <th>@Html.DisplayNameFor(model => model.ImageUrl)</th>
+                    <th>@Html.DisplayNameFor(model => model.EconomySeats)</th>
+                    <th>@Html.DisplayNameFor(model => model.BusinessSeats)</th>
+                    <th> </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
                     <tr>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Brand)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Model)
-                        </th>
-
-                        <th>
-                            @Html.DisplayNameFor(model => model.ImageUrl)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.EconomySeats)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.BusinessSeats)
-                        </th>
-                        <th></th>
+                        <td>@Html.DisplayFor(modelItem => item.Brand)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Model)</td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.ImageUrl))
+                            {
+                                <img src="@Url.Content(item.ImageUrl)" alt="Image" style="width:100px;height:150px;max-width:100%;height:auto;" />
+                            }
+                        </td>
+                        <td>@Html.DisplayFor(modelItem => item.EconomySeats)</td>
+                        <td>@Html.DisplayFor(modelItem => item.BusinessSeats)</td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Brand)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Model)
-                            </td>
-                            <td>
-                                @if (!string.IsNullOrEmpty(item.ImageUrl))
-                                {
-                                    <img src="@Url.Content(item.ImageUrl)" alt="Image" style="width:100px;height:150px;max-width:100%;height:auto;" />
-                                }
-                            <td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.EconomySeats)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.BusinessSeats)
-                            </td>
-                            <td>
-                                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>Brand</th>
+                    <th>Model</th>
+                    <th>Image</th>
+                    <th>Economy</th>
+                    <th>Business</th>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
     </div>
 </div>
+
+@section Scripts{
+    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+
+    </script>
+}

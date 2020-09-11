@@ -10,52 +10,52 @@
 
         <br />
         <div class="row">
-            <div class="col-md-4 offset-md-4">
+            <div class="col-md-4 offset-md-4" style="min-width: 100%; margin-left:0px ">
                     <form>
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <div class="form-group">
+                        <div asp-validation-summary="ModelOnly" class="text-danger" ></div>
+                        <div class="form-group" style="width: 48%; float: left; margin-right:4%">
                             <label class="control-label">First Name</label>
                             <label class="form-control"> @Html.DisplayFor(model => model.FirstName) </label>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group"style="float:left; width: 48%;">
                             <label class="control-label">Last Name</label>
                             <label class="form-control"> @Html.DisplayFor(model => model.LastName) </label>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group" style="width: 48%; float: left; margin-right:4%">
                             <label class="control-label">EMail</label>
                             <label class="form-control"> @Html.DisplayFor(model => model.Email) </label>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group" style="float:left; width: 48%;">
                             <label class="control-label">Tax Number</label>
                             <label class="form-control"> @Html.DisplayFor(model => model.TaxNumber) </label>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group" style="width: 48%; float: left; margin-right:4%">
                             <label class="control-label">Social Security Number</label>
                             <label class="form-control"> @Html.DisplayFor(model => model.SocialSecurityNumber) </label>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group" style="float:left; width: 48%;">
                             <label class="control-label">Address</label>
                             <label class="form-control"> @Html.DisplayFor(model => model.Address) </label>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group" style="width: 48%; float: left; margin-right:4%">
                             <label class="control-label">City</label>
                             <label class="form-control"> @Html.DisplayFor(model => model.City) </label>
                         </div>
 
 
-                        <div class="form-group">
+                        <div class="form-group" style="float:left; width: 48%;">
                             <label class="control-label">Department</label>
                             <label class="form-control"> @Html.DisplayFor(model => model.Department) </label>
                         </div>
 
-                        <div class="form-group">
-                            <a class="btn btn-success" asp-action="Index">Back to List</a>
+                        <div class="form-group" style=" float: right;">
+                            <a class="btn btn-success" asp-action="IndexActive">Back to List</a>
                         </div>
                     </form>
             </div>

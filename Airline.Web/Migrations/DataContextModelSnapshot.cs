@@ -60,8 +60,6 @@ namespace Airline.Web.Migrations
                         .IsRequired()
                         .HasMaxLength(50);
 
-                    b.Property<string>("PaisId");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CountryId");
@@ -114,7 +112,8 @@ namespace Airline.Web.Migrations
 
                     b.Property<int>("DepartmentId");
 
-                    b.Property<DateTime>("StartDate");
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("date");
 
                     b.Property<string>("UserId")
                         .IsRequired();
@@ -168,6 +167,7 @@ namespace Airline.Web.Migrations
                     b.Property<int>("AccessFailedCount");
 
                     b.Property<string>("Address")
+                        .IsRequired()
                         .HasMaxLength(100);
 
                     b.Property<int>("CityId");
@@ -180,9 +180,11 @@ namespace Airline.Web.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
-                    b.Property<string>("FirstName");
+                    b.Property<string>("FirstName")
+                        .IsRequired();
 
-                    b.Property<string>("LastName");
+                    b.Property<string>("LastName")
+                        .IsRequired();
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -202,9 +204,11 @@ namespace Airline.Web.Migrations
 
                     b.Property<string>("SecurityStamp");
 
-                    b.Property<string>("SocialSecurityNumber");
+                    b.Property<string>("SocialSecurityNumber")
+                        .IsRequired();
 
-                    b.Property<string>("TaxNumber");
+                    b.Property<string>("TaxNumber")
+                        .IsRequired();
 
                     b.Property<bool>("TwoFactorEnabled");
 
@@ -224,12 +228,10 @@ namespace Airline.Web.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.HasIndex("SocialSecurityNumber")
-                        .IsUnique()
-                        .HasFilter("[SocialSecurityNumber] IS NOT NULL");
+                        .IsUnique();
 
                     b.HasIndex("TaxNumber")
-                        .IsUnique()
-                        .HasFilter("[TaxNumber] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("AspNetUsers");
                 });

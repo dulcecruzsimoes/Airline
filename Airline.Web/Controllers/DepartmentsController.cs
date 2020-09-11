@@ -109,8 +109,8 @@ namespace Airline.Web.Controllers
                 return NotFound();
             }
 
-            // Verificar se o departamento existe
-            var department = await _departmentRepository.GetByIdAsync(id.Value);
+            // Verificar se o departamento existe E com os empregados
+            var department = await _departmentRepository.GetDepartmentWithEmployeesAsync(id.Value);
 
             if (department == null)
             {
@@ -118,7 +118,7 @@ namespace Airline.Web.Controllers
             }        
             
             // Se o departamento tiver empregados não pode ser apagado
-            if (department.Items != null)
+            if (department.Items.ToList().Count != 0)
             {
                 ViewBag.Message = "The department have employees. It can't be deleted";
 
@@ -126,6 +126,7 @@ namespace Airline.Web.Controllers
             }
 
             await _departmentRepository.DeleteAsync(department);
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -140,7 +141,10 @@ namespace Airline.Web.Controllers
             // Obter todos os users do departamento
             var departmentWithUsers = await _departmentRepository.GetAllEmployeesFromDepartment(id.Value);
 
-            
+            if (departmentWithUsers == null)
+            {
+                return NotFound();
+            }
             List<DepartmentDetail> DepartmentDetailList = new List<DepartmentDetail>();
 
 

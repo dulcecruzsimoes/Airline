@@ -47,6 +47,9 @@ namespace Airline.Web.Models
         public IEnumerable<SelectListItem> Departments { get; set; }
 
 
+        public List<DepartmentDetail> DepartmentDetailsList { get; set; }
+
+
         [Required]
         [Display(Name = "Start Date")]
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = false)]
@@ -80,5 +83,6 @@ namespace Airline.Web.Models
         [Display(Name = "Full Name")]
         public string FullName { get { return $"{FirstName} {LastName}"; } }
 
+        public bool isActive { get; set; }
     }
 }

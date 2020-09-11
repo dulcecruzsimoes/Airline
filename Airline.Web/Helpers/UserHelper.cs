@@ -56,18 +56,36 @@ namespace Airline.Web.Helpers
         public async Task<IdentityRole> GetRoleByNameAsync (string name)
         {
             return await _roleManager.FindByNameAsync(name);
-        }       
+        }    
+        
+        // Método para validar se o role está ou não vazio de users
+        public async Task<bool> RoleEmptyAsync (string roleName) 
+        {
+
+            var usersList = await _userManager.GetUsersInRoleAsync(roleName);
+
+            if (usersList== null)
+            {
+                return true;
+            }
+
+            return false;
+
+        }
 
         //Adicionar User
         public async Task<IdentityResult> AddUserAsync(User user, string password)
         {
             return await _userManager.CreateAsync(user, password);
+       
         }
 
 
         // Atribuir ao user um role
         public async Task AddUserToRoleAsync(User user, string roleName)
         {
+            var role = await _roleManager.FindByNameAsync(roleName);
+
             await _userManager.AddToRoleAsync(user, roleName);
         }
 

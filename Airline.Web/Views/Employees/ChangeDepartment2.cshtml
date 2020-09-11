@@ -1,0 +1,129 @@
+﻿@model ChangeDptEmployeeViewModel
+
+@{
+    ViewData["Title"] = "ChangeDepartment";
+}
+
+@section Style{
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+
+
+}
+
+<div class="site-section" id="next" style="width:100%">
+    <div class="container" style="width:100%">
+        <h2>Employee Change Department</h2>
+
+        <br />
+
+        <h3><strong>@Model.FullName</strong></h3>
+
+        <br />
+
+
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+            <div class="form-group">
+                <label asp-for="EndOldDepartment"> </label>
+                <div class="col-md-9">
+                    <input type="date" class="form-control" id="dateFrom">
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="BeginNewDepartment"> </label>
+                <div class="col-md-9">
+                    <input  type="date" class="form-control" id="dateTo">
+                </div>
+            </div>
+            <br />
+            <br />
+            <div asp-validation-summary="ModelOnly"></div>
+            <div class="form-group">
+                <input type="hidden" asp-for="UserId" id="UserId" />
+                <input type="hidden" asp-for="OldDepartmentDetailId" />
+                <input type="hidden" asp-for="NewDepartmentId" />
+                <input type="submit" id="validate" name="validate" value="validate" class="btn btn-info" />
+                <a class="btn btn-success" asp-action="IndexActive">Back to List</a>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+
+@section Scripts{
+
+
+
+
+    <script type="text/javascript">
+
+
+        $(document).ready(function () {
+
+
+            $("#dateTo").change(function () {
+
+               
+                moment.locale();
+
+                if (moment($("#dateTo").val()).isAfter($("#dateFrom").val())) {
+
+                   alert ("Entrei no if");
+                }
+
+                console.log("Fora do if");
+                //var inputDate = $("#dateTo").val();
+
+
+                //var d1 = Date.parse(inputDate);
+                //var d2 = Date.parse("2020-09-07"); //cria um objecto do tipo date
+
+
+                //console.log(typeof inputDate);
+                
+
+
+
+            });
+
+
+            /*$("#dateTo").select(function () {
+                alert("Handler for .select() called.");
+            });*/
+
+            /* alert($('#UserId').val());*/
+
+
+        });
+    </script>
+
+
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+}
+
+
+
+
+<!--<script>
+
+
+        $(".date")
+            .datepicker({
+                onSelect: function (dateText) {
+                    console.log("Selected date: " + dateText + "; input's current value: " + this.value);
+                }
+            })
+            .on("change", function () {
+                console.log("Got change event from field");
+            });
+    </script>-->

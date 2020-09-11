@@ -1,0 +1,230 @@
+﻿@model ChangeDptEmployeeViewModel
+
+@{
+    ViewData["Title"] = "ChangeDepartment";
+}
+
+@section Style{
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+
+    <style>
+
+        #target .control-wrapper {
+            margin: 0px;
+        }   
+
+    </style> 
+
+}
+
+@if (!string.IsNullOrEmpty(ViewBag.Message))
+{
+    <div class="site-section" id="next" style="width:100%">
+        <div class="container" style="width:100%">
+            <h2>Employee Change Department</h2>
+
+            <br />
+
+            <h3><strong>@ViewBag.Message</strong></h3>
+
+            <br />
+        </div>
+    </div>
+}
+
+else
+{
+    <div class="site-section" id="next" style="width:100%">
+        <div class="container" style="width:100%">
+            <h2>Employee Change Department</h2>
+
+            <br />
+
+            <h3><strong>@Model.FullName</strong></h3>
+
+            <br />
+
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <table id="example" class="display" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th> </th>
+                            <th>Department</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                Current Department
+                            </td>
+                            <td>@Model.OldDepartment</td>
+                            <td>
+                                <input type="datetime" id="inicialDate" value=@Model.BeginOldDepartment disabled />
+                            <td>
+                                <input type="date" id="dateFrom" asp-for="EndOldDepartment" />
+                                <span asp-validation-for="EndOldDepartment" class="text-danger"></span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                New Department
+                            </td>
+                            <td>
+                                <select asp-for="NewDepartmentId" asp-items="Model.Departments" id="NewDepartmentId"></select>
+                            </td>
+                            <td>
+                                <input id="dateTo" type="date" asp-for="BeginNewDepartment" disabled />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br />
+                <br />
+                <div asp-validation-summary="ModelOnly"></div>
+                <div class="form-group">
+                    <input type="hidden" asp-for="UserId" />
+                    <input type="hidden" asp-for="OldDepartmentDetailId" />
+                    <input type="hidden" asp-for="NewDepartmentId" />
+                    <button id="submit" >Confirm</button>
+                    <input id="ghost" type="submit" value="Confirm to post" asp-action="ChangeDepartmentPost" class="btn btn-info" />
+
+                    <a class="btn btn-success" asp-action="IndexActive">Back to List</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+}
+
+
+@*/ Para mudar o valor de uma propriedade do modelo, vou alterar primeiro as propriedades do elemento html *@
+
+@section Scripts{
+    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js">
+
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
+
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $("#NewDepartmentId").change(function () { //Combobox change
+
+                var department = $("#NewDepartmentId").val();
+
+               // console.log(department);
+
+                if (department > 0) { // Se tiver sido escolhido um departamento
+
+                    // console.log("Entrei no if da combox");
+                    document.getElementById('dateTo').disabled = false; // Habilitar o calendário para a escolha de uma data de inicio no novo departamento
+
+                }
+            });
+
+
+            $("#dateFrom").change(function () { // Ver se a data de fim é posterior à data de inicio de contrato
+
+                moment.locale();
+
+                var d = document.getElementById('inicialDate').value;
+
+                var date = moment(d, "DD-MM-YYYY");
+
+                if (!moment($("#dateFrom").val()).isAfter(date)) {
+
+                    //alert("Entrei no if da data");
+
+                    alert("Invalid Date!! Please, choose a date after the begin of the contract!");
+                    document.getElementById('dateFrom').value = null;
+                }
+            });
+
+
+
+            $("#dateTo").change(function () { // Ver se a data de inicio no novo departamento é depois da data de fim no departamento antigo
+
+                moment.locale();
+
+                //console.log("Entrei no if do datetimepicker");
+
+                if (!moment($("#dateTo").val()).isAfter($("#dateFrom").val())) {
+
+                    alert("Invalid Date!! Please, choose a date after the end of the previous department");
+                    document.getElementById('dateTo').value = null;
+                }
+            });
+
+
+
+            $("#submit").click(function () { // Submeter a informação - Fazer as validações necessárias
+
+    
+
+                alert('entrei no botão do submit');
+                if ($("#NewDepartmentId").val() > 0) { // Se tiver sido escolhido um departamento
+
+
+                    alert("Entrei no if do departamento!");
+
+                    moment.locale();
+
+                    console.log('vou definir a data');
+
+                    var d = document.getElementById('dateTo').value;
+
+                    var date = moment(d, "DD-MM-YYYY");
+
+                    console.log(date);
+
+                    if (date == null) {
+
+                            alert("Intorduza uma data de inicio para o novo departamento!");
+
+                    }
+
+                    else {
+
+                        alert('Departamento escolhido e data de inicio escolhida. Tudo certo para o post');
+                        console.log('antes do click');
+
+                        $("#ghost").click();
+                       
+
+                    }
+
+                }
+
+               
+            });
+
+        });
+    </script>
+
+
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+}
+
+
+
+
+
+
+
+

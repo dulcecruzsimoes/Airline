@@ -1,95 +1,56 @@
-﻿@model ChangeDptEmployeeViewModel
+﻿@model Airline.Web.Models.ChangeDptEmployeeViewModel
 
-@{
-    ViewData["Title"] = "ChangeDepartment";
-}
+@{ ViewData["Title"] = "ChangeDepartment"; }
 
-@section Style{
-
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
-
-}
-
-<div class="site-section" id="next" style="width:100%">
-    <div class="container" style="width:100%">
-        <h2>Employee Change Department</h2>
+<div class="site-section" id="next">
+    <div class="container">
+        <h2>Change Department</h2>
 
         <br />
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-action="ChangeDepartment">
+                    <div class="form-horizontal">
+                        <h4>Movie</h4>
+                        <hr />
+                        <div asp-validation-summary="All" class="text-danger"></div>
 
-        <h3><strong>@Model.FullName</strong></h3>
+                     
+                        <div class="form-group">
+                            <label asp-for="EndOldDepartment" class="col-md-2 control-label"></label>
+                            <div class="col-md-10">
+                                <input asp-for="EndOldDepartment" class="form-control" />
+                                <span asp-validation-for="EndOldDepartment" class="text-danger"></span>
+                            </div>
+                        </div>
 
-        <br />
+                        <!-- <snippet_ReleaseDate> -->
+                        <div class="form-group">
+                            <label asp-for="BeginNewDepartment" class="col-md-2 control-label"></label>
+                            <div class="col-md-10">
+                                <input asp-for="BeginNewDepartment" class="form-control" />
+                                <span asp-validation-for="BeginNewDepartment" class="text-danger"></span>
+                            </div>
+                        </div>
 
+          
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="hidden" asp-for="UserId" />
+                                <input type="submit" value="Confirm" class="btn btn-default" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
 
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <table id="example" class="display" style="width:100%">
-                <thead>
-                    <tr>
-                        <th> </th>
-                        <th>Department</th>
-                        <th>Start Date</th>
-                        <th>End Date</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            Current Department
-                        </td>
-                        <td>@Model.OldDepartment</td>
-                        <td>@Model.BeginOldDepartment</td>
-                        <td>
-                            <ejs-datepicker id="datepicker" ejs-for="EndOldDepartment" placeholder="Choose a Date"></ejs-datepicker>                           
-                            <span asp-validation-for="EndOldDepartment"></span>
-                        </td>
-                    </tr>
-
-
-                    <tr>
-                        <td>
-                            New Department
-                        </td>
-                        <td>
-                            <select asp-for="NewDepartmentId" asp-items="Model.Departments"></select>
-                            <span asp-validation-for="NewDepartmentId" class="text-danger"></span>
-                        </td>
-                        <td>
-                            <ejs-datepicker id="datepicker2" ejs-for="BeginNewDepartment" placeholder="Choose a Date"></ejs-datepicker>
-                            <span asp-validation-for="BeginNewDepartment"></span>
-
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div asp-validation-summary="ModelOnly"></div>
-            <div class="form-group">
-                <input type="hidden" asp-for="UserId" />
-                <input type="hidden" asp-for="OldDepartmentDetailId" />
-                <input type="hidden" asp-for="NewDepartmentId" />
-                <input type="submit" value="ChangeDepartment" class="btn btn-info" />
-                <a class="btn btn-success" asp-action="Index">Back to List</a>
+                <div>
+                    <a asp-action="Index">Back to List</a>
+                </div>
             </div>
-
-        </form>
+        </div>
     </div>
 </div>
 
-
-@section Scripts{
-    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#example').DataTable();
-        });
-
-    </script>
-
-
+@section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-
-
 }
-

@@ -61,6 +61,10 @@ namespace Airline.Web.Data
                 .HasIndex(b => b.TaxNumber)
                 .IsUnique();
 
+            // Colocar a Data do Department Detail com o formato pretendido (YYYY-MM-DD)
+            modelBuilder.Entity<DepartmentDetail>()
+              .Property(prop => prop.StartDate)
+              .HasColumnType("date");
 
             // Não deixar apagar quando já existem registos (Cascading Delete Rule)
             var cascadeFKs = modelBuilder.Model

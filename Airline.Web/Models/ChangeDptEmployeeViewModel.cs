@@ -1,4 +1,4 @@
-﻿using Airline.Web.Data.Validations;
+﻿using Airline.Web.Attributes;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
@@ -10,46 +10,48 @@ namespace Airline.Web.Models
 {
     public class ChangeDptEmployeeViewModel
     {
-
+        [Required]
         public string UserId { get; set; }
 
+
+        [Display(Name ="First Name")]
         public string FirstName { get; set; }
 
 
+        [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
 
-
+        [Display(Name = "Current Department")]
         public string OldDepartment { get; set; }
 
-        [Required]
+
         public int OldDepartmentDetailId { get; set; }
 
 
-        [Compare(nameof(OldDepartment), ErrorMessage = "The new department must be different from the previous")]
+   
         public string NewDepartment { get; set; }
 
 
-        [Display(Name = "Department")]
-        [Range(1, int.MaxValue, ErrorMessage = "You must select a department")]
+    
         public int NewDepartmentId { get; set; }
 
 
         public IEnumerable<SelectListItem> Departments { get; set; }
 
+        [DataType(DataType.Date)]
+        [Required(ErrorMessage = "The field {0} is required")]
+        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
+        public object BeginOldDepartment { get; set; } = DateTime.Parse("3000-01-01");
 
-      
-        public DateTime? BeginOldDepartment { get; set; }
+        [Attributes.DateLessThan("BeginOldDepartment")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
+        [Required(ErrorMessage ="The field {0} is required")]
+        public DateTime EndOldDepartment { get; set; }
 
-
-
-        public DateTime? EndOldDepartment { get; set; }
-
-
-
-        [DateBiggerThan("EndOldDepartment", ErrorMessage = "Inavlid Date")]
-        [Display(Name = "Begin Date")]
-        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = false)]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
         public DateTime? BeginNewDepartment { get; set; }
 
 
@@ -63,5 +65,7 @@ namespace Airline.Web.Models
 
         }
 
+        
+      
     }
 }

@@ -31,6 +31,8 @@ namespace Airline.Web.Helpers
         // Verificar a Existência do Role
         Task<bool> CheckRoleAsyn(string roleName);
 
+        // Verificar se o role tem users associados
+        Task<bool> RoleEmptyAsync(string roleName);
 
         //Fazer o Update da password
         Task<IdentityResult> ChangePasswordAsync(User user, string oldPassword, string newPassword);
