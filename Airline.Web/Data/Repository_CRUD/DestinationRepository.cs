@@ -16,9 +16,32 @@ namespace Airline.Web.Data
             _context = context;
         }
 
-        public IQueryable GetAllWithUsers()
+        public List<Destination> GetAllWithUsers()
         {
-            return _context.Destinations.Include(d => d.User);
+            return _context.Destinations.Include(d => d.User).ToList();
+        }
+
+        public List<Destination> GetAllWithUsersAndCountryAndCity()
+        {
+            return _context.Destinations
+                .Include(d => d.User)
+                .Include(d => d.Country)
+                .Include(d => d.City)
+                .ToList();
+        }
+
+        public async Task<Destination> GetDestinationWithUserCityAndCoutryAsync(int id) 
+        {
+
+            var destination = await _context.Destinations
+                                .Include(d => d.User)
+                                .Include(d => d.Country)
+                                .Include(d => d.City)
+                                .Where(x => x.Id == id)
+                                .FirstOrDefaultAsync();
+
+            return destination;
+        
         }
     }
 }

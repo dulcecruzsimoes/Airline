@@ -9,6 +9,10 @@ namespace Airline.Web.Data
     public interface IDestinationRepository : IGenericRepository<Destination>
     {
 
-        IQueryable GetAllWithUsers();
+        List<Destination> GetAllWithUsers();
+
+        List<Destination> GetAllWithUsersAndCountryAndCity();
+
+        Task<Destination> GetDestinationWithUserCityAndCoutryAsync(int id);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Airline.Web.Data.Entities;
+using Airline.Web.Data.Repository_CRUD;
 using Airline.Web.Helpers;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -12,13 +13,12 @@ namespace Airline.Web.Data
     {
         private readonly DataContext _context;
         private readonly IUserHelper _userHelper;
-        
 
         public SeedDb(DataContext context, IUserHelper userHelper)
         {
             _context = context;
             _userHelper = userHelper;
-            
+        
         }
 
         
@@ -64,7 +64,16 @@ namespace Airline.Web.Data
                 await _context.SaveChangesAsync();
             }
 
+            // Adicionar os estados
+            if (!_context.States.Any())
+            {
 
+                _context.States.Add(new State { StateName = "Active"});
+                _context.States.Add(new State { StateName = "Canceled" });
+                _context.States.Add(new State { StateName = "Concluded" });
+
+                await _context.SaveChangesAsync();
+            }
 
 
             // Verificar se o user já está criado ( vai procurar o user através do email. O email será utilizado para a autenticação
@@ -276,31 +285,38 @@ namespace Airline.Web.Data
 
         private void AddDestination(User user)
         {
+            City city = _context.Cities.Where(x => x.Name == "Lisboa").FirstOrDefault();
+            Country country = _context.Countries.Where(x => x.Name == "Portugal").FirstOrDefault();
+
             _context.Destinations.Add(new Destination
             {
-                Country = "Portugal",
-                City = "Lisbon",
+                Country = country,
+                City = city,
                 Airport = "Humberto Delgado",
                 IATA = "LIS",
                 User = user,
-            });
+            }) ;
 
+
+            City cityPorto = _context.Cities.Where(x => x.Name == "Porto").FirstOrDefault();
             _context.Destinations.Add(new Destination
             {
-                Country = "Spain",
-                City = "Madrid",
-                Airport = "Adolfo Suarez-Barajas",
-                IATA = "MAD",
+                Country = country,
+                City = cityPorto,
+                Airport = "Francisco Sá Carneiro",
+                IATA = "OPO",
                 User = user,
             });
 
 
+            City cityFaro = _context.Cities.Where(x => x.Name == "Faro").FirstOrDefault();
+
             _context.Destinations.Add(new Destination
             {
-                Country = "France",
-                City = "Paris",
-                Airport = "Orly",
-                IATA = "ORY",
+                Country = country,
+                City = cityFaro,
+                Airport = "Aeroporto Internacional de Faro",
+                IATA = "FAO",
                 User = user,
             });
         }

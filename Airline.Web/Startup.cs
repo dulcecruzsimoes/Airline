@@ -102,6 +102,12 @@ namespace Airline.Web
             services.AddScoped<IConverterHelper, ConverterHelper>();
 
             services.AddScoped<IMailHelper, MailHelper>();
+
+            services.AddScoped<IFlightRepository, FlightRepository>();
+
+            services.AddScoped<ITicketRepository, TicketRepository>();
+
+
             
 
             services.Configure<CookiePolicyOptions>(options =>

@@ -1,73 +1,76 @@
-﻿@model IEnumerable<Airline.Web.Data.Entities.Destination>
+﻿@model IEnumerable<Airline.Web.Models.DestinationViewModel>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-@section Head {
+
+
+@section Style{
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
 
 }
 
 
 
-<div class="site-section" id="next">
-    <div class="container">
+<div class="site-section" id="next" style="width:100%">
+    <div class="container" style="width:100%">
         <h2>Destinations List</h2>
-
+        <br />
         <p>
             <a asp-action="Create" class="btn btn-primary">Create New</a>
         </p>
-        <table class="table">
+
+        <br />
+
+        <table id="example" class="display" style="width:100%">
             <thead>
                 <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Country)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.City)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Airport)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.IATA)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.ImageUrl)
-                    </th>
-                    <th></th>
+                    <th>@Html.DisplayNameFor(model => model.Country)</th>
+                    <th>@Html.DisplayNameFor(model => model.City)</th>
+                    <th>@Html.DisplayNameFor(model => model.Airport)</th>
+                    <th>@Html.DisplayNameFor(model => model.IATA)</th>
+                    <th> </th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
                 {
                     <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Country)</td>
+                        <td>@Html.DisplayFor(modelItem => item.City)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Airport)</td>
+                        <td>@Html.DisplayFor(modelItem => item.IATA)</td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Country)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.City)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Airport)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.IATA)
-                        </td>
-                        <td>
-                            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                            <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a>
-                            <a class="btn btn-danger"  asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
                         </td>
                     </tr>
                 }
             </tbody>
+            <tfoot>
+                <tr>
+                    <th>Country</th>
+                    <th>City</th>
+                    <th>Airport</th>
+                    <th>IATA</th>
+                    <td></td>
+                </tr>
+            </tfoot>
         </table>
     </div>
 </div>
 
+@section Scripts{
+    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    </script>
 }
+
+

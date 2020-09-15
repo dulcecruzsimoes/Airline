@@ -28,7 +28,7 @@ namespace Airline.Web.Data
         {
             var destination = new List<Destination>();
 
-            destination.Add(new Destination
+           /* destination.Add(new Destination
             {
                 Id = 1,
                 IATA = "FAO",
@@ -47,7 +47,7 @@ namespace Airline.Web.Data
                 City = "Barcelona",
                 Country = "Spain"
 
-            });
+            });*/
 
             return destination;
 

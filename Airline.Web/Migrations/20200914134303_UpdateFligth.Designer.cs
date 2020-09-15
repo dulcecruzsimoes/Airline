@@ -4,14 +4,16 @@ using Airline.Web.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Airline.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20200914134303_UpdateFligth")]
+    partial class UpdateFligth
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -166,7 +168,7 @@ namespace Airline.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AirplaineId");
+                    b.Property<int?>("AirplaineId");
 
                     b.Property<DateTime>("Arrival");
 
@@ -176,19 +178,15 @@ namespace Airline.Web.Migrations
 
                     b.Property<int>("Economic");
 
-                    b.Property<int>("FromId");
+                    b.Property<int?>("FromId");
 
-                    b.Property<int>("StateId");
-
-                    b.Property<int>("ToId");
+                    b.Property<int?>("ToId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AirplaineId");
 
                     b.HasIndex("FromId");
-
-                    b.HasIndex("StateId");
 
                     b.HasIndex("ToId");
 
@@ -201,14 +199,9 @@ namespace Airline.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Class");
+                    b.Property<int?>("FlightId");
 
-                    b.Property<int>("FlightId");
-
-                    b.Property<int>("Seat");
-
-                    b.Property<string>("UserId")
-                        .IsRequired();
+                    b.Property<string>("UserId");
 
                     b.HasKey("Id");
 
@@ -294,23 +287,6 @@ namespace Airline.Web.Migrations
                         .IsUnique();
 
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("Airline.Web.Data.State", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("StateName")
-                        .IsRequired();
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("StateName")
-                        .IsUnique();
-
-                    b.ToTable("States");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -471,36 +447,26 @@ namespace Airline.Web.Migrations
                 {
                     b.HasOne("Airline.Web.Data.Entities.Airplaine", "Airplaine")
                         .WithMany()
-                        .HasForeignKey("AirplaineId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("AirplaineId");
 
                     b.HasOne("Airline.Web.Data.Entities.Destination", "From")
                         .WithMany()
-                        .HasForeignKey("FromId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("Airline.Web.Data.State", "State")
-                        .WithMany()
-                        .HasForeignKey("StateId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("FromId");
 
                     b.HasOne("Airline.Web.Data.Entities.Destination", "To")
                         .WithMany()
-                        .HasForeignKey("ToId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("ToId");
                 });
 
             modelBuilder.Entity("Airline.Web.Data.Entities.Ticket", b =>
                 {
                     b.HasOne("Airline.Web.Data.Entities.Flight", "Flight")
                         .WithMany("Tickets")
-                        .HasForeignKey("FlightId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("FlightId");
 
                     b.HasOne("Airline.Web.Data.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Airline.Web.Data.Entities.User", b =>

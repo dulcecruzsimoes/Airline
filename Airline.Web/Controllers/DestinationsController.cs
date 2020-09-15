@@ -9,6 +9,8 @@ using Airline.Web.Data;
 using Airline.Web.Data.Entities;
 using Airline.Web.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using Airline.Web.Data.Repository_CRUD;
+using Airline.Web.Models;
 
 namespace Airline.Web.Controllers
 {
@@ -17,11 +19,13 @@ namespace Airline.Web.Controllers
     {
         private readonly IDestinationRepository _repository;
         private readonly IUserHelper _userHelper;
+        private readonly ICountryRepository _countryRepository;
 
-        public DestinationsController(IDestinationRepository repository, IUserHelper userHelper)
+        public DestinationsController(IDestinationRepository repository, IUserHelper userHelper, ICountryRepository countryRepository)
         {
             _repository = repository;
             _userHelper = userHelper;
+            _countryRepository = countryRepository;
         }
 
 
@@ -29,8 +33,34 @@ namespace Airline.Web.Controllers
         // GET: Destinations
         public IActionResult Index()
         {
-            return View( _repository.GetAll().OrderBy(d=>d.Airport));
+
+            var destinations = _repository.GetAllWithUsersAndCountryAndCity(); 
+            
+
+            List<DestinationViewModel> lista = new List<DestinationViewModel>();
+
+            foreach (Destination item in destinations)
+            {
+
+                lista.Add(new DestinationViewModel
+                {
+                    Id = item.Id,
+                    Airport = item.Airport,
+                    IATA = item.IATA,
+                    UserId = item.User.Id,
+                    City = item.City.Name,
+                    Country = item.Country.Name,
+                    Countries = _countryRepository.GetComboCountries(),
+                    Cities = _countryRepository.GetComboCities(item.Country.Id),
+                });
+
+            }
+
+            return View(lista);
+
         }
+
+
 
 
         [Authorize(Roles = "Admin")]
@@ -42,7 +72,7 @@ namespace Airline.Web.Controllers
                 return NotFound();
             }
 
-            var destination = await _repository.GetByIdAsync(id.Value); // .Value é obrigatório pois o id pode ser nulo
+            var destination = await _repository.GetDestinationWithUserCityAndCoutryAsync(id.Value); // .Value é obrigatório pois o id pode ser nulo
 
             if (destination == null)
             {
@@ -58,7 +88,14 @@ namespace Airline.Web.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
-            return View();
+            var model = new DestinationViewModel
+            {
+              
+                Countries = _countryRepository.GetComboCountries(),
+                Cities = _countryRepository.GetComboCities(0)
+            };
+
+            return View(model);
         }
 
 
@@ -68,18 +105,48 @@ namespace Airline.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create( Destination destination)
+        public async Task<IActionResult> Create(DestinationViewModel model)
         {
             if (ModelState.IsValid)
             {
-                // TODO: change for logged user
-                destination.User = await _userHelper.GetUserByEmailAsync(User.Identity.Name);
-                await _repository.CreateAsync(destination); // Ao usar o create grava logo
-                
-                return RedirectToAction(nameof(Index)); //Redirecionamento para a página
-                // nameof(Index) é o mesmo que colocar ("Index")
+                City city = await _countryRepository.GetCityAsync(model.CityId);
+
+                Country country =  _countryRepository.GetCountryAsync(city);
+
+                User user = await _userHelper.GetUserByEmailAsync(User.Identity.Name);
+
+                Destination destination = new Destination()
+                {
+                    Airport = model.Airport,
+                    IATA = model.IATA,
+                    City = city,
+                    Country = country,
+                    User = user,
+                };
+
+                try
+                {
+                    await _repository.CreateAsync(destination); // Ao usar o create grava logo
+
+                    return RedirectToAction(nameof(Index)); //Redirecionamento para a página
+                                                            // nameof(Index) é o mesmo que colocar ("Index")
+                }
+                catch (Exception ex)
+                {
+                    if (ex.InnerException.Message.Contains("duplicate"))
+                    {
+                        ModelState.AddModelError(string.Empty, "Already exists a destination with that IATA");
+                        return View(model);
+                    }
+
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                        return View(model);
+                    }
+                }               
             }
-            return View(destination);
+            return View(model);
         }
 
 
@@ -93,23 +160,51 @@ namespace Airline.Web.Controllers
                 return NotFound();
             }
 
-            var destination = await _repository.GetByIdAsync(id.Value);
+      
+            var destination = await _repository.GetDestinationWithUserCityAndCoutryAsync(id.Value);
 
             if (destination == null)
             {
                 return NotFound();
             }
-            return View(destination);
+
+            DestinationViewModel model = new DestinationViewModel()
+            {
+                Id = destination.Id,
+                Airport = destination.Airport,
+                IATA = destination.IATA,
+                UserId = destination.User.Id,
+                City = destination.City.Name,
+                Country = destination.Country.Name,
+                Countries = _countryRepository.GetComboCountries(),
+                Cities = _countryRepository.GetComboCities(0)
+            };
+
+            
+            return View(model);
         }
 
 
+
+        public async Task<JsonResult> GetCitiesAsync(int? countryId)
+        {
+            if (countryId == 0)
+            {
+                Country country1 = new Country() { Id = 0, };
+                return this.Json(country1);
+            }
+
+            var country = await _countryRepository.GetCountryWithCitiesAsync(countryId.Value);
+            return this.Json(country.Cities.OrderBy(c => c.Name));
+
+        }
 
         // POST: Destinations/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Destination destination)
+        public async Task<IActionResult> Edit(DestinationViewModel model)
         {
         
 
@@ -117,27 +212,61 @@ namespace Airline.Web.Controllers
             {
                 try
                 {
-                    // TODO: change for logged user
-                    destination.User = await _userHelper.GetUserByEmailAsync(User.Identity.Name);
-                    await _repository.UpDateAsync(destination); // O método Update já grava as alterações
+                    var city = await _countryRepository.GetCityAsync(model.CityId);
 
+                    var country = await _countryRepository.GetByIdAsync(model.CountryId);
+
+                    var user = await _userHelper.GetUserByIdAsync(model.UserId);
+
+                    Destination destination = new Destination()
+                    {
+                        Id = model.Id,
+                        IATA = model.IATA,
+                        Airport = model.Airport,
+                        City = city,
+                        Country = country,
+                        User = user
+                    };
+
+                    try
+                    {
+                        await _repository.UpDateAsync(destination); // O método Update já grava as alterações
+                        return RedirectToAction(nameof(Index));
+                    }
+                    catch (Exception ex)
+                    {
+                        if (ex.InnerException.Message.Contains("duplicate"))
+                        {
+                            ModelState.AddModelError(string.Empty, "Already exists a destination with that IATA");
+                            return View(model);
+                        }
+
+                        else
+                        {
+                            ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                            return View(model);
+                        }
+                    }
+                      
+                    
+                    
                     
                 }
 
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (! await _repository.ExistsAsync(destination.Id))
+                    if (! await _repository.ExistsAsync(model.Id))
                     {
                         return NotFound();
                     }
                     else
                     {
-                        throw;
+                        return View(model);
                     }
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(destination);
+            return View(model);
         }
 
 
@@ -151,7 +280,7 @@ namespace Airline.Web.Controllers
                 return NotFound();
             }
 
-            var destination = await _repository.GetByIdAsync(id.Value);            
+            var destination = await _repository.GetDestinationWithUserCityAndCoutryAsync(id.Value);            
 
             if (destination == null)
             {
@@ -164,15 +293,36 @@ namespace Airline.Web.Controllers
 
 
         // POST: Destinations/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            if (id == 0)
+            {
+                return NotFound();
+            }
+
             var destination = await _repository.GetByIdAsync(id);
 
-            await _repository.DeleteAsync(destination); // Método delete grava logo as alterações            
+            if (destination == null)
+            {
+                return NotFound();
+            }
 
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                await _repository.DeleteAsync(destination); // Método já grava as alterações realizadas
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            catch (Exception) // Erro por algum motivo
+            {
+                ViewBag.Message = "Destino utilizado em outros registos, não é possível apagar!";
+
+                return View();
+
+            }
         }
 
        

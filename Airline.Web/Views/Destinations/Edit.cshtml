@@ -1,32 +1,42 @@
-﻿@model Airline.Web.Data.Entities.Destination
+﻿@model Airline.Web.Models.DestinationViewModel
 
 @{
     ViewData["Title"] = "Edit";
 }
 
+
+@if (@ViewBag.Message != null)
+{
     <div class="site-section" id="next">
         <div class="container">
-            <h2>Edit</h2>
 
-            <h4>Destination</h4>
-            <hr />
+            <h2>@ViewBag.Message</h2>
+
+            <br />
+
+            <div class="form-group">
+                <a class="btn btn-success" asp-action="Index">Back to List</a>
+            </div>
+        </div>
+    </div>
+
+
+}
+
+else
+{
+    <div class="site-section" id="next">
+        <div class="container">
+
+            <h2>Edit Destination</h2>
+            <br />
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-4 offset-md-4">
                     <form asp-action="Edit">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <input type="hidden" asp-for="Id" />
+
                         <div class="form-group">
-                            <label asp-for="Country" class="control-label"></label>
-                            <input asp-for="Country" class="form-control" />
-                            <span asp-validation-for="Country" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="City" class="control-label"></label>
-                            <input asp-for="City" class="form-control" />
-                            <span asp-validation-for="City" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="Airport" class="control-label"></label>
+                            <label class="control-label">Airport Name</label>
                             <input asp-for="Airport" class="form-control" />
                             <span asp-validation-for="Airport" class="text-danger"></span>
                         </div>
@@ -35,17 +45,64 @@
                             <input asp-for="IATA" class="form-control" />
                             <span asp-validation-for="IATA" class="text-danger"></span>
                         </div>
+
                         <div class="form-group">
-                            <input type="submit" value="Save" class="btn btn-default" />
+                            <label asp-for="CountryId" class="control-label"></label>
+                            <select asp-for="CountryId" asp-items="Model.Countries" class="form-control"></select>
+                            <span asp-validation-for="CountryId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="CityId" class="control-label"></label>
+                            <select asp-for="CityId" asp-items="Model.Cities" class="form-control"></select>
+                            <span asp-validation-for="CityId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">                         
+                            <input type="submit" value="Save" class="btn btn-success" />
+                            <a class="btn btn-warning" asp-action="Index">Back to List</a>
                         </div>
                     </form>
                 </div>
             </div>
 
-            <div>
-                <a asp-action="Index">Back to List</a>
-            </div>
+        
         </div>
     </div>
+}
 
- 
+
+@section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+<script type="text/javascript">
+       $(document).ready(function () {
+            $("#CountryId").change(function () {
+                if ($("#CountryId").val() != 0) {
+                    $("#CityId").empty();
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("GetCitiesAsync")',
+                        dataType: 'json',
+                        data: { countryId: $("#CountryId").val() },
+                        success: function (cities) {
+                            debugger;
+                            $("#CityId").append('<option value="0">(Select a city...)</option>');
+                            $.each(cities, function (i, city) {
+                                $("#CityId").append('<option value="'
+                                    + city.id + '">'
+                                    + city.name + '</option>');
+                            });
+                        },
+                        error: function (ex) {
+                            alert('Failed to retrieve cities.' + ex);
+                        }
+                    });
+                    return false;
+                }
+            })
+        });
+</script>
+
+
+}

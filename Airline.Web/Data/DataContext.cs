@@ -31,6 +31,14 @@ namespace Airline.Web.Data
         //Representação da tabela dos detalhes dos departamentos (relação de muitos para muitos a dar origem a uma nova tabela)
         public DbSet<DepartmentDetail> DepartmentDetails { get; set; }
 
+        public DbSet<Flight> Flights { get; set; }
+
+        public DbSet<Ticket> Tickets { get; set; }
+
+        public DbSet<State> States { get; set; }
+
+      
+
         // Construtor
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
@@ -59,6 +67,17 @@ namespace Airline.Web.Data
             // Número de Identificação fiscal único
             modelBuilder.Entity<User>()
                 .HasIndex(b => b.TaxNumber)
+                .IsUnique();
+
+
+            // IATA
+            modelBuilder.Entity<Destination>()
+                .HasIndex(b => b.IATA)
+                .IsUnique();
+
+            // State Unique
+            modelBuilder.Entity<State>()
+                .HasIndex(b => b.StateName)
                 .IsUnique();
 
             // Colocar a Data do Department Detail com o formato pretendido (YYYY-MM-DD)
