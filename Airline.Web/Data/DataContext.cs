@@ -16,7 +16,7 @@ namespace Airline.Web.Data
         public DbSet<Destination> Destinations { get; set; }
 
         // Representação da tabela dos Aviões
-        public DbSet<Airplaine> Airplaines { get; set; }
+        public DbSet<Airplane> Airplanes { get; set; }
 
         // Representação da tabela dos Países
         public DbSet<Country> Countries { get; set; }
@@ -35,7 +35,7 @@ namespace Airline.Web.Data
 
         public DbSet<Ticket> Tickets { get; set; }
 
-        public DbSet<State> States { get; set; }
+        public DbSet<Status> Status { get; set; }
 
       
 
@@ -76,8 +76,8 @@ namespace Airline.Web.Data
                 .IsUnique();
 
             // State Unique
-            modelBuilder.Entity<State>()
-                .HasIndex(b => b.StateName)
+            modelBuilder.Entity<Status>()
+                .HasIndex(b => b.StatusName)
                 .IsUnique();
 
             // Colocar a Data do Department Detail com o formato pretendido (YYYY-MM-DD)

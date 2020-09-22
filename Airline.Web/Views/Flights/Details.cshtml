@@ -1,0 +1,63 @@
+﻿@model Airline.Web.Data.Entities.Flight
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="site-section" id="next">
+    <div class="container">
+        <h2>Flight Details</h2>
+
+        <br />
+        <div class="row">
+            <div class="col-md-4 offset-md-4" style="min-width: 100%; margin-left:0px ">
+            
+                    <div class="form-group" style="width: 48%; float: left; margin-right:4%">
+                        <label class="control-label">From</label>
+                        <label class="form-control"> @Html.DisplayFor(model => model.From.City.Name) </label>
+                    </div>
+
+                    <div class="form-group" style="float:left; width: 48%;">
+                        <label class="control-label">To</label>
+                        <label class="form-control"> @Html.DisplayFor(model => model.To.City.Name) </label>
+                    </div>
+
+                    <div class="form-group" style="width: 48%; float: left; margin-right:4%">
+                        <label class="control-label">Departure</label>
+                        <label class="form-control"> @Html.DisplayFor(model => model.Departure) </label>
+                    </div>
+
+                    <div class="form-group" style="float:left; width: 48%;">
+                        <label class="control-label">Arrival</label>
+                        <label class="form-control"> @Html.DisplayFor(model => model.Arrival) </label>
+                    </div>
+
+                    <div class="form-group" style="width: 48%; float: left; margin-right:4%">
+                        <label class="control-label">State</label>
+                        <label class="form-control"> @Html.DisplayFor(model => model.Status.StatusName) </label>
+                    </div>
+
+                    <div class="form-group" style="float:left; width: 48%;">
+                        <label class="control-label">Airplane Brand</label>
+                        <label class="form-control"> @Html.DisplayFor(model => model.Airplane.Brand) </label>
+                    </div>
+
+                    <div class="form-group" style="width: 48%; float: left; margin-right:4%">
+                        <label class="control-label">Business Seats</label>
+                        <label class="form-control"> @Html.DisplayFor(model => model.Business) </label>
+                    </div>
+
+
+                    <div class="form-group" style="float:left; width: 48%;">
+                        <label class="control-label">Economic Seats</label>
+                        <label class="form-control"> @Html.DisplayFor(model => model.Economic) </label>
+                    </div>
+
+                    <div class="form-group" style=" float: right;">
+                        <a class="btn btn-success" asp-action="Index">Back to List</a>                        
+                    </div>
+        
+            </div>
+        </div>
+    </div>
+</div>

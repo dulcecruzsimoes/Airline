@@ -19,15 +19,15 @@ namespace Airline.Web.Controllers
 {
     [Authorize(Roles = "Admin,Employee")] // Autorizado apenas para o Administrador e Empregado
 
-    public class AirplainesController : Controller
+    public class AirplanesController : Controller
     {
-        private readonly IAirplaineRepository _repository;
+        private readonly IAirplaneRepository _repository;
 
         private readonly IUserHelper _userHelper;
         private readonly IImageHelper _imageHelper;
         private readonly IConverterHelper _converterHelper;
 
-        public AirplainesController(IAirplaineRepository repository, IUserHelper userHelper, IImageHelper imageHelper, IConverterHelper converterHelper)
+        public AirplanesController(IAirplaneRepository repository, IUserHelper userHelper, IImageHelper imageHelper, IConverterHelper converterHelper)
         {
             _repository = repository;
 
@@ -38,7 +38,7 @@ namespace Airline.Web.Controllers
 
 
 
-        // GET: Airplaines
+        // GET: Airplanes
         public IActionResult Index()
         {
             return View( _repository.GetAll());
@@ -46,7 +46,7 @@ namespace Airline.Web.Controllers
 
 
 
-        // GET: Airplaines/Details/5
+        // GET: Airplanes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -55,21 +55,21 @@ namespace Airline.Web.Controllers
                 return NotFound();
             }
 
-            var airplaine = await _repository.GetByIdAsync(id.Value);
+            var airplane = await _repository.GetByIdAsync(id.Value);
 
-            if (airplaine == null)
+            if (airplane == null)
             {
              
                 return NotFound();
             }
             
             
-            return View(airplaine);
+            return View(airplane);
         }
 
 
 
-        // GET: Airplaines/Create
+        // GET: Airplanes/Create
         public IActionResult Create()
         {
             return View();
@@ -82,33 +82,33 @@ namespace Airline.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(AirplaineViewModel airplaineViewModel)
+        public async Task<IActionResult> Create(AirplaneViewModel airplaneViewModel)
         {
             if (ModelState.IsValid)
             {
                 var path = string.Empty;
 
-                if (airplaineViewModel.ImageFile != null)
+                if (airplaneViewModel.ImageFile != null)
                 {
-                   path = await _imageHelper.UpLoadImageAsync(airplaineViewModel.ImageFile, "Airplaines");              
+                   path = await _imageHelper.UpLoadImageAsync(airplaneViewModel.ImageFile, "Airplanes");              
                         
                 }
 
-                var airplaine = _converterHelper.ToAirplaine(airplaineViewModel, path, true);
+                var airplane = _converterHelper.ToAirplane(airplaneViewModel, path, true);
 
-                airplaine.User = await _userHelper.GetUserByEmailAsync(User.Identity.Name);
+                airplane.User = await _userHelper.GetUserByEmailAsync(User.Identity.Name);
 
-                await _repository.CreateAsync(airplaine);
+                await _repository.CreateAsync(airplane);
 
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(airplaineViewModel);
+            return View(airplaneViewModel);
         }
 
 
 
-        // GET: Airplaines/Edit/5
+        // GET: Airplanes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -117,15 +117,15 @@ namespace Airline.Web.Controllers
                 return new NotFoundViewResult("MyNotFound");
             }
 
-            var airplaine = await _repository.GetByIdAsync(id.Value);
+            var airplane = await _repository.GetByIdAsync(id.Value);
 
-            if (airplaine == null)
+            if (airplane == null)
             {
                 
                 return new NotFoundViewResult("MyNotFound");
             }
 
-            var view = _converterHelper.ToAirplaineViewModel(airplaine);
+            var view = _converterHelper.ToAirplaneViewModel(airplane);
 
             return View(view);
         }
@@ -133,12 +133,12 @@ namespace Airline.Web.Controllers
 
 
 
-        // POST: Airplaines/Edit/5
+        // POST: Airplanes/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(AirplaineViewModel airplaineViewModel)
+        public async Task<IActionResult> Edit(AirplaneViewModel airplaneViewModel)
         {
             if (ModelState.IsValid)
             {
@@ -146,13 +146,13 @@ namespace Airline.Web.Controllers
                 {
                     var path = string.Empty;
 
-                    if (airplaineViewModel.ImageFile != null && airplaineViewModel.ImageFile.Length > 0)
+                    if (airplaneViewModel.ImageFile != null && airplaneViewModel.ImageFile.Length > 0)
                     {
-                        path = await _imageHelper.UpLoadImageAsync(airplaineViewModel.ImageFile, "Airplaines");
+                        path = await _imageHelper.UpLoadImageAsync(airplaneViewModel.ImageFile, "Airplaines");
 
                     }
 
-                    var airplaine = _converterHelper.ToAirplaine(airplaineViewModel, path, false);
+                    var airplaine = _converterHelper.ToAirplane(airplaneViewModel, path, false);
                     // TODO: change for logged user
                     airplaine.User = await _userHelper.GetUserByEmailAsync(User.Identity.Name);
                     await _repository.UpDateAsync(airplaine); // Método Update já grava as alterações
@@ -160,7 +160,7 @@ namespace Airline.Web.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!await _repository.ExistsAsync(airplaineViewModel.Id))
+                    if (!await _repository.ExistsAsync(airplaneViewModel.Id))
                     {
                         return new NotFoundViewResult("MyNotFound");
                     }
@@ -171,13 +171,13 @@ namespace Airline.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(airplaineViewModel);
+            return View(airplaneViewModel);
         }
 
 
 
 
-        // GET: Airplaines/Delete/5
+        // GET: Airplanes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -186,21 +186,21 @@ namespace Airline.Web.Controllers
                return new NotFoundViewResult("MyNotFound");
             }
 
-            var airplaine = await _repository.GetByIdAsync(id.Value);
+            var airplane = await _repository.GetByIdAsync(id.Value);
 
-            if (airplaine == null)
+            if (airplane == null)
             {
                
                 return new NotFoundViewResult("MyNotFound");
             }
             
 
-            return View(airplaine);
+            return View(airplane);
         }
 
 
 
-        // POST: Airplaines/Delete/5
+        // POST: Airplanes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -211,9 +211,9 @@ namespace Airline.Web.Controllers
 
             }
 
-            var airplaine = await _repository.GetByIdAsync(id);
+            var airplane = await _repository.GetByIdAsync(id);
 
-            if (airplaine == null)
+            if (airplane == null)
             {
                 return NotFound();
 
@@ -221,7 +221,7 @@ namespace Airline.Web.Controllers
 
             try
             {
-                await _repository.DeleteAsync(airplaine); // Método já grava as alterações realizadas
+                await _repository.DeleteAsync(airplane); // Método já grava as alterações realizadas
 
                 return RedirectToAction(nameof(Index));
 

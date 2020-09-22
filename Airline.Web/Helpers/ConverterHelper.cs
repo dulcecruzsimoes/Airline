@@ -9,31 +9,31 @@ namespace Airline.Web.Helpers
 {
     public class ConverterHelper : IConverterHelper
     {
-        public Airplaine ToAirplaine(AirplaineViewModel airplaineViewModel, string path, bool isNew)
+        public Airplane ToAirplane(AirplaneViewModel airplaneViewModel, string path, bool isNew)
         {
-            return new Airplaine
+            return new Airplane
             {
-                Id = isNew ? 0 : airplaineViewModel.Id, // Se o aviãofor for novo ainda não estiver na base de dados não lhe posso dar nenhum id
-                Brand = airplaineViewModel.Brand,
-                Model = airplaineViewModel.Model,
+                Id = isNew ? 0 : airplaneViewModel.Id, // Se o aviãofor for novo ainda não estiver na base de dados não lhe posso dar nenhum id
+                Brand = airplaneViewModel.Brand,
+                Model = airplaneViewModel.Model,
                 ImageUrl = path,
-                EconomySeats = airplaineViewModel.EconomySeats,
-                BusinessSeats = airplaineViewModel.BusinessSeats,
-                User = airplaineViewModel.User
+                EconomySeats = airplaneViewModel.EconomySeats,
+                BusinessSeats = airplaneViewModel.BusinessSeats,
+                User = airplaneViewModel.User
             };
         }
 
-        public AirplaineViewModel ToAirplaineViewModel(Airplaine airplaine)
+        public AirplaneViewModel ToAirplaneViewModel(Airplane airplane)
         {
-            return new AirplaineViewModel
+            return new AirplaneViewModel
             {
-                Id = airplaine.Id,
-                Brand = airplaine.Brand,
-                Model = airplaine.Model,
-                BusinessSeats = airplaine.BusinessSeats,
-                EconomySeats = airplaine.EconomySeats,
-                User = airplaine.User,
-                ImageUrl = airplaine.ImageUrl
+                Id = airplane.Id,
+                Brand = airplane.Brand,
+                Model = airplane.Model,
+                BusinessSeats = airplane.BusinessSeats,
+                EconomySeats = airplane.EconomySeats,
+                User = airplane.User,
+                ImageUrl = airplane.ImageUrl
             };
         }
     }

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿z<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -70,71 +70,70 @@
                         <h1 class="mb-0 site-logo"><span class="text-primary">FlyAway.</span></h1>
                     </div>
 
-                    <div class="col-12 col-md-10 d-none d-xl-block" >
+                    <div class="col-12 col-md-10 d-none d-xl-block">
                         <nav class="site-navigation position-relative text-right" role="navigation">
 
                             <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
-                                <li ><a asp-area="" asp-controller="Home" asp-action="Index" class="nav-link">Home</a></li>
+                                <li><a asp-area="" asp-controller="Home" asp-action="Index" class="nav-link">Home</a></li>
 
-                                <li ><a asp-area="" asp-controller="Home" asp-action="About" class="nav-link">About</a></li>
+                                <li><a asp-area="" asp-controller="Home" asp-action="About" class="nav-link">About</a></li>
 
-                                <li ><a asp-area="" asp-controller="Home" asp-action="Contact" class="nav-link">Contact</a></li>
+                                <li><a asp-area="" asp-controller="Home" asp-action="Contact" class="nav-link">Contact</a></li>
 
                                 @if (this.User.Identity.IsAuthenticated)
                                 {
-                                    
-                                    <li><a asp-area="" asp-controller="" asp-action="" class="nav-link">My flights</a></li>
-                                
-                                
-                                
+                                        <li><a asp-area="" asp-controller="" asp-action="" class="nav-link">My flights</a></li>
                                 }
 
-                                    @if (this.User.Identity.IsAuthenticated && (this.User.IsInRole("Employee") || this.User.IsInRole("Admin")))
-                                    {
-                                        <li class="has-children">
-                                            <a href="#about-section" class="nav-link">Backoffice</a>
-                                            <ul class="dropdown">
-                                                <li><a asp-area="" asp-controller="Airplaines" asp-action="Index" class="nav-link">Airplaines</a></li>
-                                                <li><a asp-area="" asp-controller="Destinations" asp-action="Index" class="nav-link">Destinations</a></li>
-                                                <li><a asp-area="" asp-controller="Flights" asp-action="Index" class="nav-link">Flights</a></li>
-                                                <li><a asp-area="" asp-controller="" asp-action="" class="nav-link">Clients</a></li>
-                                                <li><a asp-area="" asp-controller="Countries" asp-action="Index" class="nav-link">Countries</a></li>
-                                            </ul>
-                                        </li>
-                                    }
+                                @if (this.User.Identity.IsAuthenticated && (this.User.IsInRole("Employee") || this.User.IsInRole("Admin")))
+                                {
+                                    <li class="has-children">
+                                        <a href="#about-section" class="nav-link">Backoffice</a>
+                                        <ul class="dropdown">
+                                            <li><a asp-area="" asp-controller="Airplanes" asp-action="Index" class="nav-link">Airplanes</a></li>
+                                            <li><a asp-area="" asp-controller="Destinations" asp-action="Index" class="nav-link">Destinations</a></li>
+                                            <li><a asp-area="" asp-controller="Flights" asp-action="Index" class="nav-link">Flights</a></li>
+                                            <li><a asp-area="" asp-controller="" asp-action="" class="nav-link">Clients</a></li>
+                                            <li><a asp-area="" asp-controller="Countries" asp-action="Index" class="nav-link">Countries</a></li>
+                                        </ul>
+                                    </li>
+                                }
 
-                                    @if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Admin"))
-                                    {
-                                        <li class="has-children">
-                                            <a href="#about-section" class="nav-link">Admin</a>
-                                            <ul class="dropdown">
-                                                <li><a asp-area="" asp-controller="Roles" asp-action="Index" class="nav-link">Roles</a></li>
-                                                <li><a asp-area="" asp-controller="Departments" asp-action="Index" class="nav-link">Departments</a></li>
+                                @if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Admin"))
+                                {
+                                    <li class="has-children">
+                                        <a href="#about-section" class="nav-link">Admin</a>
+                                        <ul class="dropdown">
+                                            <li><a asp-area="" asp-controller="Roles" asp-action="Index" class="nav-link">Roles</a></li>
+                                            <li><a asp-area="" asp-controller="Departments" asp-action="Index" class="nav-link">Departments</a></li>
 
-                                                <li class="has-children">
-                                                    <a href="#">Employees</a>
-                                                    <ul class="dropdown">
-                                                        <li><a asp-area="" asp-controller="Employees" asp-action="IndexActive" class="nav-link">Active Employees</a></li>
-                                                        <li><a asp-area="" asp-controller="Employees" asp-action="IndexInactive" class="nav-link">Inactive Employees</a></li>                                                       
-                                                    </ul>                                               
-                                            </ul>
-                                        </li>
-                                    }
+                                            <li class="has-children">
+                                                <a href="#">Employees</a>
+                                                <ul class="dropdown">
+                                                    <li><a asp-area="" asp-controller="Employees" asp-action="IndexActive" class="nav-link">Active Employees</a></li>
+                                                    <li><a asp-area="" asp-controller="Employees" asp-action="IndexInactive" class="nav-link">Inactive Employees</a></li>
+                                                </ul>
+                                        </ul>
+                                    </li>
+                                }
 
 
-                                    @if (this.User.Identity.IsAuthenticated)
-                                    {
-                                        <li><a asp-area="" asp-controller="Account" asp-action="ChangeUser" class="nav-link">@this.User.Identity.Name</a></li>
-                                        <li><a asp-area="" asp-controller="Account" asp-action="Logout" class="nav-link">Logout</a></li>
-                                    }
-                                    else
-                                    {
-                                        <li><a asp-area="" asp-controller="Account" asp-action="Login">Login</a></li>
-                                    }
+                                @if (this.User.Identity.IsAuthenticated)
+                                {
+                                    <li>
+                                        <a asp-area="" asp-controller="Account" asp-action="ChangeUser" class="nav-link"> @this.User.Identity.Name</a>                                         
+                                    </li>
 
-                                </ul>
-                        </nav>
-                    </div>
+                                    <li><a asp-area="" asp-controller="Account" asp-action="Logout" class="nav-link">Logout</a></li>
+                                }
+                                else
+                                {
+                                    <li><a asp-area="" asp-controller="Account" asp-action="Login">Login</a></li>
+                                }
+
+                            </ul>
+                                </nav>
+                            </div>
 
 
                     <div class="col-6 d-inline-block d-xl-none ml-md-0 py-3" style="position: relative; top: 3px;"><a href="#" class="site-menu-toggle js-menu-toggle float-right"><span class="icon-menu h3"></span></a></div>
@@ -151,7 +150,7 @@
 
 
 
-        <partial name="_CookieConsentPartial" />
+        @*<partial name="_CookieConsentPartial" />*@
 
 
         @RenderBody()
@@ -189,8 +188,10 @@
 
 
         <!-- Syncfusion Essential JS 2 Scripts -->
-        <script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js"></script>
+        @* Syncfusion Essential JS 2 Scripts *@
 
+        <script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js"></script>
+        <ejs-scripts></ejs-scripts>
 
 
         <!-- Scripts do Templat-->

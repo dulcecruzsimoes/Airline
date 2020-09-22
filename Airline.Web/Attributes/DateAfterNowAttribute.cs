@@ -7,31 +7,20 @@ using System.Threading.Tasks;
 
 namespace Airline.Web.Attributes
 {
-    public class DateLessThanAttribute : ValidationAttribute, IClientModelValidator
+    public class DateAfterNowAttribute : ValidationAttribute, IClientModelValidator
     {
-        private readonly string _nomePropriedade;
-
-
-        public DateLessThanAttribute(string nomePropriedade)
+        public DateAfterNowAttribute()
         {
-            _nomePropriedade = nomePropriedade;
+
         }
-
-
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-
-            var property = validationContext.ObjectType.GetProperty(_nomePropriedade); // Obter a propriedade através do nome
-
-
-            var beginDAte = (DateTime)property.GetValue(validationContext.ObjectInstance); // Obter o valor que está na propriedade que foi passada
-
 
             // Valor que está para validação
             var currentValue = (DateTime)value;
 
 
-            if (currentValue < beginDAte)
+            if (currentValue < DateTime.Now)
                 return new ValidationResult(GetErrorMessage());
 
             return ValidationResult.Success;
@@ -44,8 +33,9 @@ namespace Airline.Web.Attributes
                 throw new ArgumentNullException(nameof(context));
             }
 
+
             MergeAttribute(context.Attributes, "data-val", "true");
-            MergeAttribute(context.Attributes, "data-val-DateLessThan", GetErrorMessage());
+            MergeAttribute(context.Attributes, "data-val-DateAfterNow", GetErrorMessage());
         }
 
 
@@ -62,7 +52,7 @@ namespace Airline.Web.Attributes
 
         protected string GetErrorMessage()
         {
-            return $"The end date should be after the beginning date!";
+            return $"Please, select a date bigger than now!";
         }
     }
 }

@@ -2,7 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class Airplaine : IEntity
+    public class Airplane : IEntity
     {
         // No .net core não é necessário definir como key
         public int Id { get; set; }

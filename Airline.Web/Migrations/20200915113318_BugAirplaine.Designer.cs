@@ -4,14 +4,16 @@ using Airline.Web.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Airline.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20200915113318_BugAirplaine")]
+    partial class BugAirplaine
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -166,7 +168,7 @@ namespace Airline.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AirplaneId");
+                    b.Property<int?>("AirplaneId");
 
                     b.Property<DateTime>("Arrival");
 
@@ -471,8 +473,7 @@ namespace Airline.Web.Migrations
                 {
                     b.HasOne("Airline.Web.Data.Entities.Airplane", "Airplane")
                         .WithMany()
-                        .HasForeignKey("AirplaneId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("AirplaneId");
 
                     b.HasOne("Airline.Web.Data.Entities.Destination", "From")
                         .WithMany()

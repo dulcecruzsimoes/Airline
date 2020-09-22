@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Airline.Web.Models
 {
-    public class AirplaineViewModel : Airplaine
+    public class AirplaneViewModel : Airplane
     {
         [Display(Name ="Image")]
         public IFormFile ImageFile { get; set; }

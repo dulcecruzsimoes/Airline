@@ -65,12 +65,12 @@ namespace Airline.Web.Data
             }
 
             // Adicionar os estados
-            if (!_context.States.Any())
+            if (!_context.Status.Any())
             {
 
-                _context.States.Add(new State { StateName = "Active"});
-                _context.States.Add(new State { StateName = "Canceled" });
-                _context.States.Add(new State { StateName = "Concluded" });
+                _context.Status.Add(new Status { StatusName = "Active"});
+                _context.Status.Add(new Status { StatusName = "Canceled" });
+                _context.Status.Add(new Status { StatusName = "Concluded" });
 
                 await _context.SaveChangesAsync();
             }
@@ -131,9 +131,9 @@ namespace Airline.Web.Data
                     await _context.SaveChangesAsync(); // Insere os destinos na base de dados
                 }
 
-                if (!_context.Airplaines.Any())
+                if (!_context.Airplanes.Any())
                 {
-                    AddAirplaine(user);
+                    AddAirplane(user);
                     await _context.SaveChangesAsync(); // Insere os aviões na base de dados
                 }
 
@@ -250,9 +250,9 @@ namespace Airline.Web.Data
 
         }
 
-        private void AddAirplaine(User user) // Verifica se a tabela de aviões tem algum avião, caso não tenha são inseridos aviões
+        private void AddAirplane(User user) // Verifica se a tabela de aviões tem algum avião, caso não tenha são inseridos aviões
         {
-            _context.Airplaines.Add(new Airplaine
+            _context.Airplanes.Add(new Airplane
             {
                 Brand = "Douglas Aircraft Company",
                 Model = "DC-6",
@@ -262,22 +262,22 @@ namespace Airline.Web.Data
 
             });
 
-            _context.Airplaines.Add(new Airplaine
+            _context.Airplanes.Add(new Airplane
             {
                 Brand = "Airbus",
                 Model = "Airbus A300",
-                EconomySeats = 200,
+                EconomySeats = 10,
                 BusinessSeats = 70,
                 User = user,
                
             });
 
 
-            _context.Airplaines.Add(new Airplaine
+            _context.Airplanes.Add(new Airplane
             {
                 Brand = "Boeing",
                 Model = "Boeing 707",
-                EconomySeats = 150,
+                EconomySeats = 50,
                 BusinessSeats = 50,
                 User = user,
             });

@@ -89,7 +89,7 @@ namespace Airline.Web
             // Quando é compilado precisa de ter lá o interface (precisa de compilar alguma coisa), e vê quais as classes que implementam o interface
             services.AddScoped<IDestinationRepository,DestinationRepository>();
 
-            services.AddScoped<IAirplaineRepository, AirplaineRepository>();
+            services.AddScoped<IAirplaneRepository, AirplaneRepository>();
 
             services.AddScoped<ICountryRepository, CountryRepository>();
 
@@ -124,7 +124,8 @@ namespace Airline.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-           
+            
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

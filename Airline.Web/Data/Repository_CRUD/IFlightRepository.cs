@@ -9,12 +9,24 @@ namespace Airline.Web.Data.Repository_CRUD
 {
     public interface IFlightRepository: IGenericRepository<Flight>
     {
-        IEnumerable<SelectListItem> GetComboStates();
+        IEnumerable<SelectListItem> GetComboStatus();
 
-        IEnumerable<Flight> GetFlightsByState(int stateId);
+        IEnumerable<Flight> GetFlightsByStatus(int statusId);
 
         IEnumerable<SelectListItem> GetComboDestinations();
 
-        IEnumerable<SelectListItem> GetComboAirplaines();
+        IEnumerable<SelectListItem> GetComboAirplanes();
+
+        IEnumerable<SelectListItem> GetComboTickets(int id);
+
+        bool AirplaneIsAvailable(int id, DateTime departure, DateTime arrival);
+
+        List<Flight> GetAllWithObjects();
+
+        Task<Flight> GetFlightWithObjectsAsync(int id);
+
+        void UpdateFlightStatus(DateTime date);
+
+        List<Ticket> GetTickets(int flightId);
     }
 }

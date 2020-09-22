@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Airline.Web.Data.Repository_CRUD
 {
-    public interface IAirplaineRepository : IGenericRepository<Airplaine>
-
+    public interface IAirplaneRepository : IGenericRepository<Airplane>
     {
+
+        Task<Airplane> GetAirplaneWithUserAsync(int id);
     }
 }

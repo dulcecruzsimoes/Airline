@@ -5,11 +5,20 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Airline.Web.Models;
+using Airline.Web.Data.Repository_CRUD;
 
 namespace Airline.Web.Controllers
 {
     public class HomeController : Controller
     {
+
+        public HomeController(IFlightRepository flightRepository)
+        {
+            // Actualizar o estado dos voos
+            // Chamar todos os voos activos e aqueles cuja data de chegada seja menor que a data actual passá-los para Concluded
+            flightRepository.UpdateFlightStatus(DateTime.Now);
+
+        }
         public IActionResult Index()
         {
             return View();

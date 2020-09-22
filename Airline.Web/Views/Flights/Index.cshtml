@@ -22,16 +22,6 @@
 
         <br />
        
-
-            <div class="form-group">
-                <label class="control-label">Flight State</label>
-                <select asp-for="StateId" asp-items="Model.States" class="form-control"></select>
-                <span asp-validation-for="StateId" class="text-danger"></span>
-            </div>
-
-        
-
-
         <table id="example" class="display" style="width:100%">
             <thead>
                 <tr>
@@ -39,9 +29,7 @@
                     <th>To</th>
                     <th>Departure</th>
                     <th>Arrival</th>
-                    <th>Airplaine brand</th>
-                    <th>Economic seats</th>
-                    <th>Business seats </th>
+                    <th>State</th>                    
                     <th></th>
                 </tr>
             </thead>
@@ -49,19 +37,17 @@
                 @foreach (var item in Model.Flights)
                 {
                 <tr>
-                    <td id="From">@Html.DisplayFor(modelItem => item.From.City.Name)</td>
-                    <td id="To">@Html.DisplayFor(modelItem => item.To.City.Name)</td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Departure)
-                    </td>
+                    <td>@Html.DisplayFor(modelItem => item.From.City.Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.To.City.Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Departure)</td>
                     <td>@Html.DisplayFor(modelItem => item.Arrival)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Airplaine.Brand)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Airplaine.BusinessSeats)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Airplaine.EconomySeats)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Status.StatusName)</td>
+                    
                     <td>
                         <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a>
                         <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a>
                         <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                        <a asp-action="Tickets" asp-route-id="@item.Id" class="btn btn-success">Tickets</a>
                     </td>
                 </tr>
                 }
@@ -72,9 +58,7 @@
                     <th>To</th>
                     <th>Departure</th>
                     <th>Arrival</th>
-                    <th>Airplaine brand</th>
-                    <th>Economic seats</th>
-                    <th>Business seats </th>
+                    <th>State</th>
                     <th></th>
                 </tr>
             </tfoot>
@@ -96,33 +80,6 @@
             $('#example').DataTable();
         });
 
-    </script>
-
-    <script type="text/javascript">
-       $(document).ready(function () {
-           $("#StateId").change(function () {
-               if ($("#StateId").val() != 0) {
-                    
-                    $.ajax({
-                        type: 'POST',
-                        url: '@Url.Action("GetFlightState")',
-                        dataType: 'json',
-                        data: { stateId: $("#StateId").val() },
-                        success: function (model) {
-                            debugger;                           
-                            $.each(Flights, function (i, flight) {
-                                $("#From").val("From");
-                                $("#To").val("To");
-                            });
-                        },
-                        error: function (ex) {
-                            alert('Failed to retrieve flights.' + ex);
-                        }
-                    });
-                    return false;
-                }
-            })
-        });
     </script>
 
 

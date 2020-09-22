@@ -1,0 +1,94 @@
+﻿@model Airline.Web.Models.CreateFlightViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+
+@if (!string.IsNullOrEmpty(ViewBag.message))
+{
+    <div class="site-section" id="next">
+        <div class="container">
+
+            <h2>@ViewBag.message</h2>
+
+            <br />
+
+            <div class="form-group">
+                <a class="btn btn-success" asp-action="Index">Back to List</a>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="site-section" id="next">
+        <div class="container">
+
+            <h2>Edit Flight</h2>
+            <div class="row">
+                <div class="col-md-4 offset-md-4">
+                    <form method="post">
+                        <div asp-validation-summary="ModelOnly"></div>
+
+                        <div class="form-group">
+                            <label asp-for="StatusId" class="control-label"></label>
+                            <select asp-for="StatusId" asp-items="Model.Status" class="form-control"></select>
+                            <span asp-validation-for="StatusId" class="text-danger"></span>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label asp-for="From" class="control-label"></label>
+                            <select asp-for="From" asp-items="Model.Destinations" class="form-control"></select>
+                            <span asp-validation-for="From" class="text-danger"></span>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <label asp-for="To" class="control-label"></label>
+                            <select asp-for="To" asp-items="Model.Destinations" class="form-control"></select>
+                            <span asp-validation-for="To" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="AirplaneId" class="control-label"></label>
+                            <select asp-for="AirplaneId" asp-items="Model.Airplanes" class="form-control"></select>
+                            <span asp-validation-for="AirplaneId" class="text-danger"></span>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <label asp-for="Departure" class="control-label"></label>
+                            <ejs-datetimepicker id="Departure" placeholder="Select a date and time" ejs-for="@Model.Departure" min="@ViewBag.minDate" format="@ViewBag.format"></ejs-datetimepicker>
+                            <span asp-validation-for="Departure" class="text-danger"></span>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label asp-for="Arrival" class="control-label"></label>
+                            <ejs-datetimepicker id="Arrival" placeholder="Select a date and time" ejs-for="@Model.Arrival" min="@ViewBag.minDate" format="@ViewBag.format"></ejs-datetimepicker>
+                            <span asp-validation-for="Arrival" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="submit" value="Save" class="btn btn-info" />
+                            <a class="btn btn-success" asp-action="Index">Back to List</a>
+                        </div>
+                    </form>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+}
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}

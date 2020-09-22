@@ -11,10 +11,10 @@ namespace Airline.Web.Helpers
     public interface IConverterHelper
     {
 
-        Airplaine ToAirplaine(AirplaineViewModel airplaineViewModel, string path, bool isNew);
+        Airplane ToAirplane(AirplaneViewModel airplaneViewModel, string path, bool isNew);
 
 
-        AirplaineViewModel ToAirplaineViewModel(Airplaine airplaine);
+        AirplaneViewModel ToAirplaneViewModel(Airplane airplane);
 
     }
 }

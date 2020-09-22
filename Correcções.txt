@@ -1,7 +1,0 @@
-Correcções a realizar:
-
---> Verificar se deixa apagar um role que já esteja atribuído a um user (coloquei algo no countries para apresentar o erro de apagar primeiro as cidades)
-
---> Não deixar apagar departamentos que tenham empregados
-
---> Seria necessário ter uma lista na classe departamento???

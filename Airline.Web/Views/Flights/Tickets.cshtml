@@ -1,0 +1,122 @@
+﻿@model List<Airline.Web.Data.Entities.Ticket>
+
+@{
+    ViewData["Title"] = "Tickets";
+}
+
+
+@section Style{
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+
+
+}
+
+@if (@ViewBag.Message != null)
+{
+    <div class="site-section" id="next">
+        <div class="container">
+
+            <h2>@ViewBag.Message</h2>
+
+            <br />
+
+            <div class="form-group">
+                <a class="btn btn-success" asp-action="Index">Back to List</a>
+            </div>
+        </div>
+    </div>
+
+
+}
+
+else
+{
+
+
+
+<div class="site-section" id="next" style="width:100%">
+    <div class="container" style="width:100%">
+        <h2>Tickets List</h2>
+        <br />
+
+
+        <p>
+            <a asp-action="CreateTicket" asp-route-id="@ViewBag.flightId" class="btn btn-primary">New Ticket</a>
+        </p>
+
+
+
+
+        <br />
+
+        <table id="example" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>From</th>
+                    <th>Departure</th>
+                    <th>Arrival</th>
+                    <th>Class</th>
+                    <th>Seat</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.User.FullName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Flight.From.City.Name)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Flight.To.City.Name)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Flight.Departure)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Flight.Arrival)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Class)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Seat)</td>
+
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                            <a asp-action="Tickets" asp-route-id="@item.Id" class="btn btn-success">Tickets</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>User</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>From</th>
+                    <th>Departure</th>
+                    <th>Arrival</th>
+                    <th>Class</th>
+                    <th>Seat</th>
+                    <th></th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+
+}
+
+@section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+
+    </script>
+
+
+}

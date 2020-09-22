@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Airline.Web.Data
 {
-    public class State : IEntity
+    public class Status : IEntity
     {
         public int Id { get; set; }
 
 
         [Required(ErrorMessage ="The field {0} is required")]
-        public string StateName { get; set; }
+        public string StatusName { get; set; }
     }
 }

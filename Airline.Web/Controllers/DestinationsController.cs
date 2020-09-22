@@ -88,17 +88,21 @@ namespace Airline.Web.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
-            var model = new DestinationViewModel
-            {
-              
-                Countries = _countryRepository.GetComboCountries(),
-                Cities = _countryRepository.GetComboCities(0)
-            };
+            var model = new DestinationViewModel();
+
+            GetCombos(model);
 
             return View(model);
         }
 
 
+
+        public void GetCombos(DestinationViewModel model)
+        {
+            model.Cities = _countryRepository.GetComboCities(0);
+            model.Countries = _countryRepository.GetComboCountries();
+           
+        }
 
         // POST: Destinations/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -136,12 +140,14 @@ namespace Airline.Web.Controllers
                     if (ex.InnerException.Message.Contains("duplicate"))
                     {
                         ModelState.AddModelError(string.Empty, "Already exists a destination with that IATA");
+                        GetCombos(model);
                         return View(model);
                     }
 
                     else
                     {
                         ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                        GetCombos(model);
                         return View(model);
                     }
                 }               
@@ -237,12 +243,14 @@ namespace Airline.Web.Controllers
                     {
                         if (ex.InnerException.Message.Contains("duplicate"))
                         {
+                            GetCombos(model);
                             ModelState.AddModelError(string.Empty, "Already exists a destination with that IATA");
                             return View(model);
                         }
 
                         else
                         {
+                            GetCombos(model);
                             ModelState.AddModelError(string.Empty, ex.InnerException.Message);
                             return View(model);
                         }
@@ -263,9 +271,9 @@ namespace Airline.Web.Controllers
                     {
                         return View(model);
                     }
-                }
-                return RedirectToAction(nameof(Index));
+                }              
             }
+            GetCombos(model);
             return View(model);
         }
 

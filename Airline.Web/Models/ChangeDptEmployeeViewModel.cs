@@ -44,7 +44,7 @@ namespace Airline.Web.Models
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
         public object BeginOldDepartment { get; set; } = DateTime.Parse("3000-01-01");
 
-        [Attributes.DateLessThan("BeginOldDepartment")]
+        [Attributes.DateAfterThan("BeginOldDepartment", "EndOldDepartment")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
         [Required(ErrorMessage ="The field {0} is required")]

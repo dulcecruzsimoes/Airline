@@ -41,8 +41,17 @@ namespace Airline.Web.Controllers
                 return NotFound();
             }
 
-            var countryId = await _countryRepository.DeleteCityAsync(city);
-            return this.RedirectToAction($"Details/{countryId}");
+            try
+            {
+                var countryId = await _countryRepository.DeleteCityAsync(city);
+                return this.RedirectToAction($"Details/{countryId}");
+            }
+            catch (Exception)
+            {
+                ViewBag.Message = "City can't be deleted, is linked to a field in use";
+                return View() ;
+            }
+            
         }
 
 

@@ -1,4 +1,4 @@
-﻿@model Airline.Web.Data.Entities.Destination
+﻿@model Airline.Web.Data.Entities.Flight
 
 @{
     ViewData["Title"] = "Delete";
@@ -9,37 +9,35 @@
 
     <div class="site-section" id="next">
         <div class="container">
-            <h2>Destination Delete</h2>
+            <h2>Flight Delete</h2>
             <br />
             <br />
             <div class="row">
                 <div class="col-md-4 offset-md-4">
 
                     <div class="form-group">
-                        <label class="control-label">@Html.DisplayNameFor(model => model.IATA)</label>
-                        <label class="form-control"> @Html.DisplayFor(model => model.IATA) </label>
+                        <label class="control-label">@Html.DisplayNameFor(model => model.From)</label>
+                        <label class="form-control"> @Html.DisplayFor(model => model.From.City.Name) </label>
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label"> @Html.DisplayNameFor(model => model.Airport) </label>
-                        <label class="form-control"> @Html.DisplayFor(model => model.Airport) </label>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label class="control-label"> Country </label>
-                        <label class="form-control"> @Html.DisplayFor(model => model.Country.Name) </label>
+                        <label class="control-label"> @Html.DisplayNameFor(model => model.To) </label>
+                        <label class="form-control"> @Html.DisplayFor(model => model.To.City.Name) </label>
                     </div>
 
 
                     <div class="form-group">
-                        <label class="control-label"> City </label>
-                        <label class="form-control"> @Html.DisplayFor(model => model.City.Name) </label>
+                        <label class="control-label"> @Html.DisplayNameFor(model => model.Departure)  </label>
+                        <label class="form-control"> @Html.DisplayFor(model => model.Departure) </label>
                     </div>
+
+                    <div class="form-group">
+                        <label class="control-label"> @Html.DisplayNameFor(model => model.Arrival)  </label>
+                        <label class="form-control"> @Html.DisplayFor(model => model.Arrival) </label>
+                    </div>
+
 
                     <form asp-action="Delete">
-                        <input type="hidden" asp-for="Id" />
-
                         <input type="submit" value="Delete" class="btn btn-danger" />
                         <a class="btn btn-success" asp-action="Index">Back to List</a>
                     </form>

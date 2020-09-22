@@ -8,10 +8,6 @@ namespace Airline.Web.Data.Entities
 {
     public class Flight : IEntity
     {
-        private int _economic;
-
-        private int _business;
-
         // Não é preciso dizer que é chave primária
         public int Id { get; set; }
 
@@ -23,45 +19,29 @@ namespace Airline.Web.Data.Entities
         public Destination To { get; set; }
 
         [Required(ErrorMessage = "The field {0} is required")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime Departure { get; set; }
 
         [Required(ErrorMessage = "The field {0} is required")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime Arrival { get; set; }
 
         [Required(ErrorMessage = "The field {0} is required")]
-        public Airplaine Airplaine { get; set; }
+        public Airplane Airplane { get; set; }
 
         [Required(ErrorMessage = "The field {0} is required")]
-        public State State { get; set; }
+        public Status Status { get; set; }
 
         [Required(ErrorMessage = "The field {0} is required")]
         public int Economic  // Lugares da classe económica
         {
-            get 
-            {
-                return _economic;
-            }
-
-            set 
-            {
-                _economic = Airplaine.EconomySeats;
-            
-            
-            } 
+            get; set;
         }
 
         [Required(ErrorMessage = "The field {0} is required")]
         public int Business // Lugares da classe executiva
         {
-            get
-            {
-                return _business;
-            }
-
-            set
-            {
-                _business = Airplaine.BusinessSeats;
-            }
+            get; set;
         }
 
         // Criar uma tabela de detalhe para apresentar a lista de bilhetes
