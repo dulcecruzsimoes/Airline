@@ -59,5 +59,13 @@ namespace Airline.Web.Models
         [Required]
         [Compare("Password")]
         public string Confirm { get; set; }
+
+        [Required]
+        [Display(Name = "Tax Number")]
+        public string TaxNumber { get; set; }
+
+        [Required]
+        [Display(Name = "Social Security Number")]
+        public string SocialSecurityNumber { get; set; }
     }
 }

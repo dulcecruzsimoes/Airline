@@ -178,7 +178,7 @@ namespace Airline.Web.Migrations
 
                     b.Property<int>("FromId");
 
-                    b.Property<int>("StateId");
+                    b.Property<int>("StatusId");
 
                     b.Property<int>("ToId");
 
@@ -188,7 +188,7 @@ namespace Airline.Web.Migrations
 
                     b.HasIndex("FromId");
 
-                    b.HasIndex("StateId");
+                    b.HasIndex("StatusId");
 
                     b.HasIndex("ToId");
 
@@ -201,7 +201,8 @@ namespace Airline.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Class");
+                    b.Property<string>("Class")
+                        .IsRequired();
 
                     b.Property<int>("FlightId");
 
@@ -296,21 +297,21 @@ namespace Airline.Web.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("Airline.Web.Data.State", b =>
+            modelBuilder.Entity("Airline.Web.Data.Status", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("StateName")
+                    b.Property<string>("StatusName")
                         .IsRequired();
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StateName")
+                    b.HasIndex("StatusName")
                         .IsUnique();
 
-                    b.ToTable("States");
+                    b.ToTable("Status");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -479,9 +480,9 @@ namespace Airline.Web.Migrations
                         .HasForeignKey("FromId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("Airline.Web.Data.State", "State")
+                    b.HasOne("Airline.Web.Data.Status", "Status")
                         .WithMany()
-                        .HasForeignKey("StateId")
+                        .HasForeignKey("StatusId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Airline.Web.Data.Entities.Destination", "To")

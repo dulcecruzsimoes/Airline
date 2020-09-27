@@ -1,0 +1,83 @@
+﻿@model Airline.Web.Models.TicketModelCreate
+
+@{
+    ViewData["Title"] = "Ticket";
+}
+
+<div class="site-section" id="next">
+    <div class="container">
+        <h2>Ticket</h2>
+        <br />
+        <form asp-action="ConfirmTicket">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div style="width:80%; margin:auto; height:370px; border-radius:15px;background-color:#fff; ">
+                <div style="border-top-left-radius:15px; border-top-right-radius:15px;background-color:#fff; height:75px;border-bottom:thin solid black;">
+                    <img src="~/images/airplane.jpg" style="border-top-left-radius:15px; float:left;" />
+                    <h2 style="float:right; margin-right:15px; margin-top:15px;">Boarding Pass</h2>
+                </div>
+
+                <div style="clear:both; margin-top:15px; float:left; padding-left:10px">
+
+                    <div>
+                        <label>Passenger Name</label>
+                        <br />
+                        <input disabled asp-for="FullName" type="text" style="font-size:xx-large; border:none" />
+
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <label style="width:200px">From</label>
+                        <label style="width:200px">To</label>
+                        <label style="width:150px"> Date</label>
+                        <label style="width:150px">Time</label>
+                        <br />
+                        <input disabled asp-for="From" type="text" style="width:200px; float:left; border:none" />
+                        <input disabled asp-for="To" type="text" style="width:200px; float:left; border:none" />
+                        <input disabled asp-for="Date" type="text" style="width:150px; float:left; border:none" />
+                        <input disabled asp-for="Time" type="text" style="width:150px; float:left; border:none" />
+                    </div>
+
+                    <br />
+                    <div class="form-group">
+                        <label style="width:200px">Flight</label>
+                        <label style="width:200px">Class</label>
+                        <label style="width:200px">Seat</label>
+                        <br />
+                        <input disabled type="text" asp-for="FlightId" style="width:200px; float:left; border:none" />
+                        <input disabled type="text" asp-for="ClassName" style="width:200px; float:left; border:none" />
+                        <input disabled type="text" asp-for="Seat" style="width:200px; float:left; border:none" />
+                    </div>
+
+                </div>
+
+                <div id="aside" style="float:right">
+                    <img src="~/images/barcode.png" style="margin-top: 20px; margin-right:10px" />
+                </div>
+
+                <div style="clear:both; border-bottom-left-radius:15px; border-bottom-right-radius:15px;background-color:#fff; height:21px;border-top:thin solid black;">
+
+                </div>
+            </div>
+
+            <br/>
+            <div class="form-group" style="width: 80%; margin:auto">
+                <input asp-for="UserEmail" hidden="hidden" />
+                <input asp-for="Class" hidden="hidden" />
+                <input asp-for="Seat" hidden="hidden" />
+                <input asp-for="FlightId" hidden="hidden" />
+                <input type="submit" value="Confirm" class="btn btn-success" style="float:right" />
+                <a class="btn btn-danger" style="float:right" asp-action="Index">Cancel</a>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+
+@section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}

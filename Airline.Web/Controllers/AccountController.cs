@@ -1,4 +1,5 @@
 ﻿using Airline.Web.Data.Entities;
+using Airline.Web.Data.Repository_CRUD;
 using Airline.Web.Helpers;
 using Airline.Web.Models;
 using Microsoft.AspNetCore.Identity;
@@ -21,12 +22,14 @@ namespace Airline.Web.Controllers
         private readonly IUserHelper _userHelper;
         private readonly IConfiguration _configuration;
         private readonly IMailHelper _mailHelper;
+        private readonly ICountryRepository _countryRepository;
 
-        public AccountController(IUserHelper userHelper, IConfiguration configuration, IMailHelper mailHelper)
+        public AccountController(IUserHelper userHelper, IConfiguration configuration, IMailHelper mailHelper, ICountryRepository countryRepository)
         {
             _userHelper = userHelper;
             _configuration = configuration;
             _mailHelper = mailHelper;
+            _countryRepository = countryRepository;
         }
 
         public IActionResult Login()
@@ -74,10 +77,32 @@ namespace Airline.Web.Controllers
             return this.View(model);
         }
 
+
+        public void GetCombos(RegisterNewUserViewModel model)
+        {
+            model.Cities = _countryRepository.GetComboCities(0);
+            model.Countries = _countryRepository.GetComboCountries();
+
+        }
+
+        public async Task<JsonResult> GetCitiesAsync(int? countryId)
+        {
+            if (countryId == 0)
+            {
+                Country country1 = new Country() { Id = 0, };
+                return this.Json(country1);
+            }
+
+            var country = await _countryRepository.GetCountryWithCitiesAsync(countryId.Value);
+            return this.Json(country.Cities.OrderBy(c => c.Name));
+
+        }
+
         public IActionResult Register()
         {
-
-            return View();
+            RegisterNewUserViewModel model = new RegisterNewUserViewModel();
+            GetCombos(model);
+            return View(model);
         }
 
         [HttpPost]
@@ -90,13 +115,19 @@ namespace Airline.Web.Controllers
 
                 if (user == null)
                 {
-                   
+                    City city = await _countryRepository.GetCityAsync(model.CityId);
+
                     user = new User
                     {
                         FirstName = model.FirstName,
                         LastName = model.LastName,
                         Email = model.Username,
-                        UserName = model.Username,                      
+                        PhoneNumber = model.PhoneNumber,
+                        UserName = model.Username,
+                        SocialSecurityNumber = model.SocialSecurityNumber,
+                        TaxNumber = model.TaxNumber,
+                        Address = model.Address,
+                        City = city
                     };
 
 
@@ -166,59 +197,97 @@ namespace Airline.Web.Controllers
         }
 
 
-        public async Task<IActionResult> ChangeUser() 
-        {
-            // Agarrar no user que está logado
-            var user = await _userHelper.GetUserByEmailAsync(User.Identity.Name);
 
+
+        public async Task<IActionResult> ChangeUser()
+        {
+            var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
             var model = new ChangeUserViewModel();
 
-            //Garantir que existe um user logado
             if (user != null)
             {
-                //O mail nunca muda porque é único, nunca vou deixar mudar o mail
                 model.FirstName = user.FirstName;
                 model.LastName = user.LastName;
-            }
+                model.Address = user.Address;
+                model.PhoneNumber = user.PhoneNumber;
+                model.TaxNumber = user.TaxNumber;
+                model.Username = user.UserName;
+                model.SocialSecurityNumber = user.SocialSecurityNumber;
 
-            return View(model);
-        }
 
-        [HttpPost]
-        public async Task<IActionResult> ChangeUser(ChangeUserViewModel model) 
-        {
-            if (ModelState.IsValid)
-            {
-                // Nunca me fio no que vem da View, fazer sempre o check com a base de dados.
-                var user = await _userHelper.GetUserByEmailAsync(User.Identity.Name);
-                if (user != null)
+                var city = await _countryRepository.GetCityAsync(user.CityId);
+                if (city != null)
                 {
-                    user.FirstName = model.FirstName;
-                    user.LastName = model.LastName;
-                    var response = await _userHelper.UpdateUserAsync(user);
-
-                    if (response.Succeeded)
+                    var country =  _countryRepository.GetCountryAsync(city);
+                    if (country != null)
                     {
-                        ViewBag.UserMessage = "User update!";
-
-                    }
-
-                    else
-                    {
-                        ModelState.AddModelError(string.Empty, response.Errors.FirstOrDefault().Description);
+                        model.CountryId = country.Id;
+                        model.Cities = _countryRepository.GetComboCities(country.Id);
+                        model.Countries = _countryRepository.GetComboCountries();
+                        model.CityId = user.CityId;
                     }
                 }
-
             }
 
-            else
-            {
-                ModelState.AddModelError(string.Empty,"User not found!");
-            }
-
-            return View(model);
+            model.Cities = _countryRepository.GetComboCities(model.CountryId);
+            model.Countries = _countryRepository.GetComboCountries();
+            return this.View(model);
         }
 
+
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeUser(ChangeUserViewModel model)
+        {
+            if (this.ModelState.IsValid)
+            {
+                var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
+                if (user != null)
+                {
+                    var city = await _countryRepository.GetCityAsync(model.CityId);
+
+                    user.FirstName = model.FirstName;
+                    user.LastName = model.LastName;
+                    user.Address = model.Address;
+                    user.PhoneNumber = model.PhoneNumber;
+                    user.TaxNumber = model.TaxNumber;
+                    user.SocialSecurityNumber = model.SocialSecurityNumber;
+                    user.CityId = model.CityId;
+                    user.City = city;
+                    user.UserName = model.Username;
+
+                    var result = await _userHelper.UpdateUserAsync(user);
+
+                    if (result.Succeeded)
+                    {
+                        ViewBag.Message = "User updated!";
+                        model.Cities = _countryRepository.GetComboCities(model.CountryId);
+                        model.Countries = _countryRepository.GetComboCountries();
+                        return this.View(model);
+                    }
+                    else
+                    {
+
+                        this.ModelState.AddModelError(string.Empty, result.Errors.FirstOrDefault().Description);
+                        model.Cities = _countryRepository.GetComboCities(model.CountryId);
+                        model.Countries = _countryRepository.GetComboCountries();
+                        return this.View(model);
+
+                    }
+                }
+                else
+                {
+                    this.ModelState.AddModelError(string.Empty, "User no found.");
+                    model.Cities = _countryRepository.GetComboCities(model.CountryId);
+                    model.Countries = _countryRepository.GetComboCountries();
+                    return this.View(model);
+                }
+            }
+
+            model.Cities = _countryRepository.GetComboCities(model.CountryId);
+            model.Countries = _countryRepository.GetComboCountries();
+            return this.View(model);
+        }
 
         public async Task<IActionResult> ChangePasswordEmployee(string userId, string token)
         {
@@ -261,13 +330,15 @@ namespace Airline.Web.Controllers
             if (this.ModelState.IsValid)
             {
                 var user = await _userHelper.GetUserByEmailAsync(User.Identity.Name);
+
                 if (user != null)
                 {
                     var result = await _userHelper.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
 
                     if (result.Succeeded)
                     {
-                        return RedirectToAction("ChangeUser");
+                        ViewBag.Message ="Password updated";
+                        return View();
                     }
                     else
                     {

@@ -14,5 +14,7 @@ namespace Airline.Web.Data
         List<Destination> GetAllWithUsersAndCountryAndCity();
 
         Task<Destination> GetDestinationWithUserCityAndCoutryAsync(int id);
+
+        Task<Destination> GetDestinationByIATAAsync(string iata);
     }
 }

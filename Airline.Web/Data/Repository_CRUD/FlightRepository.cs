@@ -19,6 +19,16 @@ namespace Airline.Web.Data.Repository_CRUD
             // Colocar no construtor uma acção que me faça a actualização dos voos e que mude os estados para concluded
         }
 
+        public List<Flight> GetFlightsFromToAndDeparture(string from, string to, DateTime date) 
+        {
+
+            return  _context.Flights.Where(x => x.From.City.Name == from && x.To.City.Name == to && x.Departure >= date && x.Status.Id == 1).ToList();
+        
+        
+        }
+
+
+
         public async void UpdateFlightStatus(DateTime date) 
         {
 
@@ -224,13 +234,13 @@ namespace Airline.Web.Data.Repository_CRUD
                 Value = "0"
             });
 
-            list.Insert(0, new SelectListItem
+            list.Insert(1, new SelectListItem
             {
                 Text = "Economic",
                 Value = "1"
             });
 
-            list.Insert(0, new SelectListItem
+            list.Insert(2, new SelectListItem
             {
                 Text = "Business",
                 Value = "2"
@@ -258,5 +268,9 @@ namespace Airline.Web.Data.Repository_CRUD
             return list;
         }
 
+        public Flight GetFlight(int id)
+        {
+            return _context.Flights.Where(x => x.Id == id).FirstOrDefault();
+        }
     }
 }

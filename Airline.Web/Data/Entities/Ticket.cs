@@ -21,7 +21,7 @@ namespace Airline.Web.Data.Entities
 
         // Campo de preenchimento obrigatório
         [Required(ErrorMessage = "The field {0} is required")]
-        public Class Class { get; set; }
+        public string Class { get; set; }
 
         // Campo de preenchimento obrigatório, o lugar vai corresponder ao lugar no avião
         [Required(ErrorMessage = "The field {0} is required")]

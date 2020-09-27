@@ -1,0 +1,532 @@
+﻿@model Airline.Web.Models.TicketModelCreate
+
+@section Style{
+
+    <style>
+        body {
+            width: 100%;
+            margin: auto;
+            background-color: #242333;
+        }
+
+        .myContainer {
+            width: 1200px;
+            margin: auto;
+            padding-top: 80px;
+            /* background-color: red;*/
+        }
+
+
+        .booking {
+            width: 900px;
+            height: 250px;
+            margin: auto;
+            padding: initial;
+            background-image: url("../images/xpto.png");
+            background-repeat: no-repeat;
+            background-size: contain;
+            box-shadow: 0 3px 10px rgba(255, 255, 255,0.7);
+            /*background-color: green;*/
+        }
+
+        .seat {
+            background-color: #444451;
+            height: 15px;
+            width: 18px;
+            margin: 3px;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+        }
+
+        .seatShowCase {
+            background-color: #444451;
+            height: 15px;
+            width: 18px;
+            margin: 3px;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+        }
+            .seatShowCase.selected { /*class = "seat selected" */
+                background-color: green;
+            }
+
+            .seatShowCase.occupied { /*class = "seat occupied" */
+                background-color: red;
+            }
+
+
+        .selectclass {
+            height: 35px;
+            width:200px;
+            border-radius: 30px;
+            font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        }
+        
+
+        .business {
+            margin-left: 238px;
+            padding-top: 72px;
+            float: left;
+        }
+
+        .economic {
+            float: left;
+            margin-left: 64px;
+            padding-top: 79px;
+        }
+
+        .empty {
+            height: 12px;
+        }
+
+        .emptyBus {
+            height: 13px;
+        }
+
+        .bus {
+            height: 18px;
+            width: 21px;
+        }
+
+        .econ {
+            height: 14px;
+            width: 17px;
+        }
+
+        .seat.bus:nth-of-type(1) {
+            margin-right: 1vh;
+        }
+
+        .seat.selected { /*class = "seat selected" */
+            background-color: green;
+        }
+
+        .seat.occupied { /*class = "seat occupied" */
+            background-color: red;
+        }
+
+        .seat.notselecteclass {
+            visibility: hidden;
+        }
+
+        .seat:not(.occupied):hover { /* lugares que não estão ocupado vou mudar o cursor do rato e aumentá-lo*/
+            cursor: pointer;
+            transform: scale(1.2);
+        }
+
+
+
+        .showcase .seat:hover {
+            cursor: default;
+            transform: scale(1);
+        }
+
+
+
+        .showcase {
+            background-color: rgba(0,0,0,0.1);
+            width: 400px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            color: #777;
+            list-style-type: none;
+            display: flex;
+            margin-bottom: 10px;
+            margin-top: 5px;
+        }
+
+           
+
+            .showcase li {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 10px;
+            }
+
+                .showcase li small {
+                    margin-left: 2px;
+                }
+
+        .row {
+            display: flex;
+        }
+
+        p.text span { /*  parágrafo da class text*/
+            color: #6feaf6;
+        }
+
+        p.text {
+            margin: 5px 0;
+        }
+    </style>
+
+
+}
+<form asp-action="ShowTicket">
+    <div class="myContainer">
+        <h2>Choose a Seat</h2>
+        <br />
+        <label>Pick a class:</label>
+        <select id="class" asp-for="Class" asp-items="Model.Classes" class="selectclass"></select>
+        <label id="labelInfo" style="color:red; font-size:large; margin-left: 15px"></label>
+
+
+        <!--Legenda-->
+        <ul class="showcase">
+            Caption:
+
+            <li>
+                <div class="seatShowCase" id="showcaseSeat1"></div>
+                <small>Available</small>
+            </li>
+            <li>
+                <div class="seatShowCase selected"></div>
+                <small>Selected</small>
+            </li>
+            <li>
+                <div class="seatShowCase occupied"></div>
+                <small>Occupied</small>
+            </li>
+        </ul>
+
+        <div class="booking">
+
+            <div class="business">
+
+                <div class="row">
+                    @for (int i = 0; i < 2; i++)
+                    {
+                        <div class="seat bus @Model.SeatIsAvailable[i]"></div>
+                    }
+                </div>
+
+                <div class="row">
+                    @for (int i = 2; i < 4; i++)
+                    {
+                        <div class="seat bus @Model.SeatIsAvailable[i]"></div>
+                    }
+                </div>
+
+                <div class="emptyBus"></div>
+
+                <div class="row">
+                    @for (int i = 4; i < 6; i++)
+                    {
+                        <div class="seat bus @Model.SeatIsAvailable[i]"></div>
+                    }
+                </div>
+
+                <div class="row">
+                    @for (int i = 6; i < 8; i++)
+                    {
+                        <div class="seat bus @Model.SeatIsAvailable[i]"></div>
+                    }
+                </div>
+
+
+
+
+            </div>
+
+            <div class="economic">
+
+                <div class="row">
+                    @for (int i = 8; i < 20; i++)
+                    {
+                        <div class="seat econ @Model.SeatIsAvailable[i]" ></div>
+                    }
+                </div>
+                <div class="row">
+                    @for (int i = 20; i < 32; i++)
+                    {
+                        <div class="seat econ @Model.SeatIsAvailable[i]"></div>
+                    }
+                </div>
+
+
+                <div class="empty"></div>
+
+
+                <div class="row">
+                    @for (int i = 32; i < 44; i++)
+                    {
+                        <div class="seat econ @Model.SeatIsAvailable[i]"></div>
+                    }
+                </div>
+                <div class="row">
+                    @for (int i = 44; i < 56; i++)
+                    {
+                        <div class="seat econ @Model.SeatIsAvailable[i]"></div>
+                    }
+                </div>
+
+            </div>
+        </div>
+
+        <p class="text"> You have selected the seat <span id="seatNumber">0</span> of the class <span id="classType">0</span></p>
+
+        <div class="form-group" style=" float:right">
+            <input id="banco" type="hidden" asp-for="Seat" />
+            <input id="classe" type="hidden" asp-for="Class" />
+            <input type="hidden" asp-for="UserEmail" />
+            <input type="hidden" asp-for="FlightId" />
+            <input id="submeter" type="submit" value="Confirm" class="btn btn-success" disabled/>
+            <a class="btn btn-info" asp-action="Index">Cancel</a>
+        </div>
+
+        <div style="clear:both"></div>
+
+    </div>
+
+</form>
+
+
+    @*Fazer o java script para isto*@
+
+    @section Scripts {
+
+
+        <script>
+
+            $(document).ready(function () {
+console.log("entrei no script");
+
+// Agarrar o botão submit
+const submit = document.querySelector('#submeter');
+            console.log(submit);
+
+/* agarrar no myContainer e colocá-lo numa variável*/
+const container = document.querySelector('.booking');
+
+const seatNumber = document.getElementById('seatNumber'); /*Obtenho o span onde vou colocar o número do lugar*/
+//console.log(seatNumber);
+
+const classType = document.getElementById('classType'); /*Obtenho o span onde vou colocar a classe escolhida*/
+let classValuePrint = classType.innerText;
+
+const labelInfo = document.getElementById('labelInfo'); // Obtenho a label que dá erro se não houver classe escolhida
+
+
+const classSelect = document.getElementById('class'); /*Obtem o elemento select*/
+let classValue = classSelect.value;  /*Obtem qual o index seleccionado*/
+
+const executiveSeats = document.querySelectorAll('.bus');
+const economicSeats = document.querySelectorAll('.econ');
+const allSeats = document.querySelectorAll('.seat');
+let selectedSeat = document.querySelectorAll('.seat.selected');
+
+
+var isNewSelection = Boolean(true);
+
+var firstSeatSelection = Boolean(true);
+
+// Evento de mudança da combobox
+classSelect.addEventListener('change', e => {
+    console.log("Estou aqui");
+    selectedSeat = document.querySelectorAll('.seat.selected');
+    console.log(selectedSeat);
+
+    submit.setAttribute("disabled", ""); // Sempre que mudo de classe o botão fica desactivado
+
+    // Tenho que retirar fazer uma alteração de classe neste selectedSeat, ou seja, remover a selected 
+    if (selectedSeat !== null && selectedSeat.length > 0) {
+        for (var i = 0; i < selectedSeat.length; i++) {
+            selectedSeat[i].classList.remove('selected');
+        }
+    }   
+    
+    // Limpar a label de info
+    labelInfo.innerText = '';
+
+    if (isNewSelection) {
+
+        isNewSelection = false;
+        classValue = e.target.selectedIndex;
+
+        if (classValue == 1) { /*Escolhi a class económica*/
+
+            //// Desabilitar a possibilidade de escolha de uma nova classe
+            //classSelect.setAttribute('disabled', 'disabled');
+
+            classType.innerText = 'Economic';
+
+            /* vou colocar todos os lugares executivos invisiveis*/
+            if (executiveSeats !== null && executiveSeats.length > 0) {
+
+                for (var i = 0; i < executiveSeats.length; i++) {
+
+                    console.log("Entrei no for");
+                    console.log(executiveSeats[i]);
+                    executiveSeats[i].classList.toggle('notselecteclass');
+                }
+            }
+
+        }
+
+        else if (classValue == 2) {
+            classType.innerText = 'Business';
+
+            /* vou colocar todos os lugares executivos invisiveis*/
+            if (economicSeats !== null && economicSeats.length > 0) {
+
+                for (var i = 0; i < economicSeats.length; i++) {
+
+                    economicSeats[i].classList.toggle('notselecteclass');
+                }
+            }
+        }
+
+    }
+
+    else {
+        // Limpar os spans
+        classType.innerText = '';
+        seatNumber.innerText = '';
+
+
+
+        // Colocar visiveis todos os lugares
+        for (var i = 0; i < economicSeats.length; i++) {
+
+            economicSeats[i].classList.remove('notselecteclass');
+        }
+
+        for (var i = 0; i < executiveSeats.length; i++) {
+
+            executiveSeats[i].classList.remove('notselecteclass');
+        }
+
+        classValue = e.target.selectedIndex;
+
+        if (classValue == 1) { /*Escolhi a class económica*/
+
+
+            classType.innerText = 'Economic';
+
+            /* vou colocar todos os lugares executivos invisiveis*/
+            if (executiveSeats !== null && executiveSeats.length > 0) {
+
+
+                for (var i = 0; i < executiveSeats.length; i++) {
+
+                    executiveSeats[i].classList.toggle('notselecteclass');
+                }
+            }
+
+        }
+
+        else if (classValue == 2) {
+            classType.innerText = 'Business';
+
+            /* vou colocar todos os lugares executivos invisiveis*/
+            if (economicSeats !== null && economicSeats.length > 0) {
+
+                for (var i = 0; i < economicSeats.length; i++) {
+                   
+                    economicSeats[i].classList.toggle('notselecteclass');
+                }
+            }
+        }
+    }                  
+});
+
+
+/*Adicionar o primeiro evento: ao clicar num ligar passar a cor para o azul - Para isso vou agarrar no container que tem todos os botões e vou
+ver se o evento foi colocado num seat*/
+container.addEventListener('click', e => { /*(e)=> é o mesmo que escrever function */
+
+    // Se a classe não estiver escolhida, apresentar a label e fazer return
+    if (classValue == 0) {
+        labelInfo.innerText = "Please, select a class!";
+        return;
+    }
+
+    if (firstSeatSelection) {
+
+        firstSeatSelection = false;
+
+        if (e.target.classList.contains('seat') && /*classList vai ao element ver se na lista de classes contém a classe seat*/
+            !e.target.classList.contains('occupied')) { /*Teve que se retirar os que estavam ocupados*/
+
+            /*Agora o que queremos fazer é colocar o banco seleccionado com a cor verde de seleccionado*/
+            e.target.classList.toggle('selected'); //O seat passou para o array de escolhidos (só vai ter um elemento)
+           
+            console.log("Antes de activar o botão");
+            submit.removeAttribute("disabled"); // Botão activado
+
+            // Obter o número do lugar escolhido: Pegar na lista de lugares de lugares e iterá-la
+            for (var i = 0; i < allSeats.length; i++) {
+
+                if (e.target === allSeats[i]) {
+                   
+                    // Guardar o valor de i;(i+1 é o número do lugar)
+                    const number = i + 1;
+                    seatNumber.innerText = number;
+                }
+            }                         
+        }
+    }
+    else {
+
+        console.log("Não é a primeira vez que selecciono...");
+        selectedSeat = document.querySelectorAll('.seat.selected'); // Actualizar
+        // Pegar no elemento que está na lista dos seleccionados e remover a class 'selected'
+        console.log(selectedSeat);
+
+        if (selectedSeat !== null && selectedSeat.length > 0) {                           
+
+            for (var i = 0; i < selectedSeat.length; i++) {
+                console.log("Removi o anterior");
+                selectedSeat[i].classList.remove('selected');
+            }
+        }
+
+
+        if (e.target.classList.contains('seat') && /*classList vai ao element ver se na lista de classes contém a classe seat*/
+            !e.target.classList.contains('occupied')) { /*Teve que se retirar os que estavam ocupados*/
+
+            /*Agora o que queremos fazer é colocar o banco seleccionado com a cor verde de seleccionado*/
+            e.target.classList.toggle('selected'); //O seat passou para o array de escolhidos (só vai ter um elemento)
+
+            //Actualizar a lista de seleccionados (NAO SEI SE SERIA NECESSÀRIO FAZER ISTO CONFIRMAR)
+            selectedSeat = document.querySelectorAll('.seat.selected');
+
+
+            // Obter o número do lugar escolhido: Pegar na lista de lugares de lugares e iterá-la
+            for (var i = 0; i < allSeats.length; i++) {
+
+                if (e.target === allSeats[i]) {
+                    
+                    // Guardar o valor de i;(i+1 é o número do lugar)
+                    const number = i + 1;
+                    seatNumber.innerText = number;
+                }
+            }     
+        }
+
+    }
+    
+    
+});
+
+
+submit.addEventListener('click', e => {
+    
+    console.log("Entrei no submit");
+    const classe = document.querySelector('#classe');
+    const banco = document.querySelector('#banco');
+
+    classe.value = classType.innerText;                        
+    banco.value = seatNumber.innerText;
+
+});
+
+            });
+
+        </script>
+
+
+
+
+    }

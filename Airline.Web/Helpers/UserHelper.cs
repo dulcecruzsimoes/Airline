@@ -136,13 +136,16 @@ namespace Airline.Web.Helpers
         public async Task<string> GeneratePasswordResetTokenAsync(User user)
         {
             
+            
             return await _userManager.GeneratePasswordResetTokenAsync(user);
         }
+
 
 
         // Oboter user através do email
         public async Task<User> GetUserByEmailAsync(string email)
         {
+            
             return await _userManager.FindByEmailAsync(email);
         }
 
@@ -203,6 +206,17 @@ namespace Airline.Web.Helpers
         }
 
 
+
+        public List<User> GetAllUsers() 
+        {
+            List<User> Users = new List<User>();
+
+            Users = _userManager.Users.ToList();
+
+
+            return Users;
+        
+        }
 
     }
 }

@@ -1,0 +1,151 @@
+﻿@model Airline.Web.Models.ShowListFlightsModel
+
+@{
+    ViewData["Title"] = "Flights";
+}
+
+
+@section Style{
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+    <style>
+
+        label, input {
+            color: #fff;
+        }
+
+        legend {
+            color: #fff;
+        }
+
+
+
+        th, td {
+            color: white;
+            background-color: #242333;
+        }
+    </style>
+
+}
+
+@if (@ViewBag.Message != null)
+{
+    <div class="site-section" id="next">
+        <div class="container">
+
+            <h2>@ViewBag.Message</h2>
+
+            <br />
+
+            <div class="form-group">
+                <a class="btn btn-success" asp-action="Index">Back to List</a>
+            </div>
+        </div>
+    </div>
+
+
+}
+
+else
+{
+    <div class="site-section" id="next" style="width:100%">
+        <div class="container" style="width:100%">
+            <h2>Flights List</h2>
+
+            <form asp-action="Seats">
+              
+                <br />
+                <table id="example" title="One-way flight">
+                    <thead>
+
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Flights)
+                        {
+                            <tr>
+                                <td>
+                                    <input type="radio" asp-for="flightId" value="@item.Id" id="@item.Id" style="background-color:#242333;" />
+
+                                </td>
+                                <td>
+                                    <p>@Html.DisplayFor(modelItem => item.Departure)</p>
+                                    <p style="font-size:small">@Html.DisplayFor(modelItem => item.From.City.Name)</p>
+                                </td>
+                                <td>-------------<img src="~/images/airplane2.jpg" />----------</td>
+                                <td>
+                                    <p>@Html.DisplayFor(modelItem => item.Arrival)</p>
+                                    <p style="font-size:small">@Html.DisplayFor(modelItem => item.To.City.Name)</p>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+
+                    </tfoot>
+                </table>
+
+                <table id="example2" title="Return flight">
+                    <thead>
+                        <tr>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.FlightsReturn)
+                        {
+                            <tr>
+                                <td>
+                                    <input type="radio" asp-for="flightIdReturn" value="@item.Id" id="@item.Id" style="background-color:#242333;" />
+
+                                </td>
+                                <td>
+                                    <p>@Html.DisplayFor(modelItem => item.Departure)</p>
+                                    <p style="font-size:small">@Html.DisplayFor(modelItem => item.From.City.Name)</p>
+                                </td>
+                                <td>-------------<img src="~/images/airplane2.jpg" />----------</td>
+                                <td>
+                                    <p>@Html.DisplayFor(modelItem => item.Arrival)</p>
+                                    <p style="font-size:small">@Html.DisplayFor(modelItem => item.To.City.Name)</p>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <div class="form-group">
+                    <input type="hidden" asp-for="isRoundTrip" />
+                    <input type="submit" value="Confirm" class="btn btn-success" />
+                    <a class="btn btn-info" asp-action="Index">Home</a>
+                </div>
+
+            </form>
+
+
+        </div>
+    </div>
+
+
+}
+
+@section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#example').DataTable();
+
+
+            $('#example2').DataTable();
+
+        });
+
+    </script>
+
+
+}

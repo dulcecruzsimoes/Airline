@@ -256,8 +256,8 @@ namespace Airline.Web.Data
             {
                 Brand = "Douglas Aircraft Company",
                 Model = "DC-6",
-                EconomySeats = 25,
-                BusinessSeats = 25,
+                EconomySeats = 56,
+                BusinessSeats = 8,
                 User = user,
 
             });
@@ -266,8 +266,8 @@ namespace Airline.Web.Data
             {
                 Brand = "Airbus",
                 Model = "Airbus A300",
-                EconomySeats = 10,
-                BusinessSeats = 70,
+                EconomySeats = 56,
+                BusinessSeats = 8,
                 User = user,
                
             });
@@ -277,8 +277,8 @@ namespace Airline.Web.Data
             {
                 Brand = "Boeing",
                 Model = "Boeing 707",
-                EconomySeats = 50,
-                BusinessSeats = 50,
+                EconomySeats = 56,
+                BusinessSeats = 8,
                 User = user,
             });
         }

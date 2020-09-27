@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Airline.Web.Data
+namespace Airline.Web.Helpers
 {
-    public enum Class
+    public class TemplateMailHelper
     {
-        Economic,
-        Business,
     }
 }

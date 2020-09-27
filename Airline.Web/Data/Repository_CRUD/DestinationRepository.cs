@@ -43,5 +43,18 @@ namespace Airline.Web.Data
             return destination;
         
         }
+
+        public async Task<Destination> GetDestinationByIATAAsync (string iata) 
+        {
+            var destination = await _context.Destinations
+                                .Include(d => d.Country)
+                                .Include(d => d.City)
+                                .Where(x => x.IATA == iata)
+                                .FirstOrDefaultAsync();
+
+            return destination;
+
+
+        }
     }
 }

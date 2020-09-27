@@ -10,11 +10,21 @@
 
     <style>
 
-        #target .control-wrapper {
-            margin: 0px;
-        }   
+        label, input {
+            color: #fff;
+        }
 
-    </style> 
+        legend {
+            color: #fff;
+        }
+
+
+
+        th, td {
+            color: white;
+            background-color: #242333;
+        }
+    </style>
 
 }
 
@@ -91,7 +101,7 @@ else
                     <input type="hidden" asp-for="UserId" />
                     <input type="hidden" asp-for="OldDepartmentDetailId" />
                     <input type="hidden" asp-for="NewDepartmentId" />
-                    <button id="submit" >Confirm</button>
+                    <button id="submit">Confirm</button>
                     <input id="ghost" type="submit" value="Confirm to post" asp-action="ChangeDepartmentPost" class="btn btn-info" />
 
                     <a class="btn btn-success" asp-action="IndexActive">Back to List</a>
@@ -125,7 +135,7 @@ else
 
                 var department = $("#NewDepartmentId").val();
 
-               // console.log(department);
+                // console.log(department);
 
                 if (department > 0) { // Se tiver sido escolhido um departamento
 
@@ -172,7 +182,7 @@ else
 
             $("#submit").click(function () { // Submeter a informação - Fazer as validações necessárias
 
-    
+
 
                 alert('entrei no botão do submit');
                 if ($("#NewDepartmentId").val() > 0) { // Se tiver sido escolhido um departamento
@@ -192,7 +202,7 @@ else
 
                     if (date == null) {
 
-                            alert("Intorduza uma data de inicio para o novo departamento!");
+                        alert("Intorduza uma data de inicio para o novo departamento!");
 
                     }
 
@@ -202,13 +212,13 @@ else
                         console.log('antes do click');
 
                         $("#ghost").click();
-                       
+
 
                     }
 
                 }
 
-               
+
             });
 
         });

@@ -23,13 +23,13 @@
 
         [Display(Name = "Economy Seats")]
         [Required(ErrorMessage = "The field {0} is required")]
-        [Range(0, 100, ErrorMessage = "The number of seats should be between {1} and {2}")]
+        [Range(56, 56, ErrorMessage = "The number of seats should be 56")]
         public int EconomySeats { get; set; }
 
 
         [Display(Name = "Business Seats")]
         [Required(ErrorMessage = "The field {0} is required")]
-        [Range(0, 100, ErrorMessage = "The number of seats should be between {1} and {2}")]
+        [Range(8, 8, ErrorMessage = "The number of seats should be 8")]
         public int BusinessSeats { get; set; }
 
         [Display(Name = "Image")]

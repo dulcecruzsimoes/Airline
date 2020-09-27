@@ -1,163 +1,197 @@
-﻿@{
+﻿@model Airline.Web.Models.SearchFlightModel
+
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 
+@section Style{
 
-@section Head {
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
 
-    <!--header-->    
-
-    <div class="site-blocks-cover overlay" style="background-image: url(../template/images/hero.jpg);">
-
-        <div class="container">
-            <div class="row align-items-center justify-content-center">
-
-
-                <div class="col-md-10 mt-lg-5 text-center">
-                    <div class="single-text owl-carousel">
-
-                        <div class="slide">
-                            <h1 class="text-uppercase" data-aos="fade-up">
-                                Back to the world
-                            </h1>
-                            <p class="mb-5 desc" data-aos="fade-up" data-aos-delay="100">
-                                Give your home a break and get out
-                            </p>
-                        </div>
-
-                        <div class="slide">
-                            <h1 class="text-uppercase" data-aos="fade-up">Safety First</h1>
-                            <p class="mb-5 desc" data-aos="fade-up" data-aos-delay="100">Let us to take you away</p>
-                            <div data-aos="fade-up" data-aos-delay="100">
-                            </div>
-                        </div>
-
-                        <div class="slide">
-                            <h1 class="text-uppercase" data-aos="fade-up">We care</h1>
-                            <p class="mb-5 desc" data-aos="fade-up" data-aos-delay="100">
-                                It's a new dawn, it's a new day, it's a new life
-                            </p>
-                        </div>
-
-
-
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-
-        <a href="#next" class="mouse smoothscroll">
-            <span class="mouse-icon">
-                <span class="mouse-wheel"></span>
-            </span>
-        </a>
-    </div>
 }
+
+    @section Head {
+
+
+        <!--header-->
+
+        <div class="site-blocks-cover overlay" style="background-image: url(../template/images/hero.jpg);">
+
+            <div class="container">
+                <div class="row align-items-center justify-content-center">
+
+
+                    <div class="col-md-10 mt-lg-5 text-center">
+                        <div class="single-text owl-carousel">
+
+                            <div class="slide">
+                                <h1 class="text-uppercase" data-aos="fade-up">
+                                    Back to the world
+                                </h1>
+                                <p class="mb-5 desc" data-aos="fade-up" data-aos-delay="100">
+                                    Give your home a break and get out
+                                </p>
+                            </div>
+
+                            <div class="slide">
+                                <h1 class="text-uppercase" data-aos="fade-up">Safety First</h1>
+                                <p class="mb-5 desc" data-aos="fade-up" data-aos-delay="100">Let us to take you away</p>
+                                <div data-aos="fade-up" data-aos-delay="100">
+                                </div>
+                            </div>
+
+                            <div class="slide">
+                                <h1 class="text-uppercase" data-aos="fade-up">We care</h1>
+                                <p class="mb-5 desc" data-aos="fade-up" data-aos-delay="100">
+                                    It's a new dawn, it's a new day, it's a new life
+                                </p>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <a href="#next" class="mouse smoothscroll">
+                <span class="mouse-icon">
+                    <span class="mouse-wheel"></span>
+                </span>
+            </a>
+        </div>
+    }
+
+
+
 
 
 <!--  ============ Pesquisa de voos==================  -->
 
 
 <div class="site-section" id="next">
-    <div class="container" style="margin-left: 20%;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 offset-md-4" style="background-color:#364261;border-radius:15px; min-width:80%; margin: auto">
 
+                <form asp-action="ViewFlights">
 
-        <div class="section-center">
-            <div >
-                <div class="row">
-                    <div class="booking-form">
-                        <form>
-                            <div class="form-group">
-                                <div class="form-checkbox">
-                                    <label for="roundtrip">
-                                        <input type="radio" id="roundtrip" name="flight-type">
-                                        <span></span>Roundtrip
-                                    </label>
-                                    <label for="one-way">
-                                        <input type="radio" id="one-way" name="flight-type">
-                                        <span></span>One way
-                                    </label>
-                                    <label for="multi-city">
-                                        <input type="radio" id="multi-city" name="flight-type">
-                                        <span></span>Multi-City
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <span class="form-label">Flying from</span>
-                                        <input class="form-control" type="text" placeholder="City or airport">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <span class="form-label">Flyning to</span>
-                                        <input class="form-control" type="text" placeholder="City or airport">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <span class="form-label">Departing</span>
-                                        <input class="form-control" type="date" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <span class="form-label">Returning</span>
-                                        <input class="form-control" type="date" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <span class="form-label">Adults (18+)</span>
-                                        <select class="form-control">
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                        </select>
-                                        <span class="select-arrow"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <span class="form-label">Children (0-17)</span>
-                                        <select class="form-control">
-                                            <option>0</option>
-                                            <option>1</option>
-                                            <option>2</option>
-                                        </select>
-                                        <span class="select-arrow"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <span class="form-label">Travel class</span>
-                                        <select class="form-control">
-                                            <option>Economy class</option>
-                                            <option>Business class</option>
-                                            <option>First class</option>
-                                        </select>
-                                        <span class="select-arrow"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-btn">
-                                        <button class="submit-btn">Show flights</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+                    <h2>Search Flight</h2>
+                    <br />
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                   
+
+                    
+                <div class="form-group">
+                    <div class="form-checkbox">
+
+                        <label for="roundtrip">
+                            <input id="radio1" type="radio" asp-for="Trip" value=1 style="background-color:#242333;" />
+                            <span></span>Roundtrip
+                        </label>
+
+                        <label for="one-way">
+                            <input type="radio" asp-for="Trip" value=2 id="radio2" style="background-color:#242333;" />
+                            <span></span>One way
+
+                        </label>
+                        <span asp-validation-for="Trip" class="text-danger"></span>
                     </div>
+                    
+                    @*<span asp-validation-for="" class="text-danger"></span>*@
                 </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <span class="form-label">Flying from</span>
+                                <input asp-for="From" class="form-control" id="from" placeholder="City" />
+                                <span asp-validation-for="From" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <span class="form-label">Flyning to</span>
+                                <input asp-for="To" class="form-control" id="to" placeholder="City" />
+                                <span asp-validation-for="To" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <span class="form-label">Departing</span>
+                                <input asp-for="Departure" class="form-control" required type="date" value="@DateTime.Now" />
+                                <span asp-validation-for="Departure" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div id="return" class="col-md-3">
+                            <div class="form-group">
+                                <span class="form-label">Returning</span>
+                                <input id="returnDate" asp-for="Return" class="form-control" type="date" />
+                                <span asp-validation-for="Return" class="text-danger"></span>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="float:right">
+                        <input id="submit" type="submit" value="Show flights" class="btn btn-primary" />
+                    </div>
+
+
+                </form>
             </div>
         </div>
+
     </div>
 </div>
+
+
+@section Scripts{
+
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            $("#from").autocomplete({
+
+                source: 'api/flightapi/search'
+            })
+
+
+            $("#to").autocomplete({
+
+                source: 'api/flightapi/search'
+            })
+
+            $("#radio1").change(function () {
+              
+                $('#return').show();
+                $("#returnDate").prop('required', true);
+
+            });
+
+            $("#radio2").change(function () {
+         
+                $('#return').hide();
+                $("#returnDate").prop('required', false);
+
+            });
+
+        
+
+        })
+
+
+    </script>
+}

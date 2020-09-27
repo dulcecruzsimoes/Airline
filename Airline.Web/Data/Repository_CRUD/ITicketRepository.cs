@@ -8,5 +8,6 @@ namespace Airline.Web.Data.Repository_CRUD
 {
     public interface ITicketRepository : IGenericRepository<Ticket>
     {
+        List<Ticket> FlightTickets(int flightId);
     }
 }

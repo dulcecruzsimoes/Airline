@@ -7,7 +7,23 @@
 @section Style{
 
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+    <style>
 
+        label, input {
+            color: #fff;
+        }
+
+        legend {
+            color: #fff;
+        }
+
+
+
+        th, td {
+            color: white;
+            background-color: #242333;
+        }
+    </style>
 
 }
 
@@ -37,7 +53,7 @@
             <div class="form-group">
                 <label asp-for="BeginNewDepartment"> </label>
                 <div class="col-md-9">
-                    <input  type="date" class="form-control" id="dateTo">
+                    <input type="date" class="form-control" id="dateTo">
                 </div>
             </div>
             <br />
@@ -70,12 +86,12 @@
 
             $("#dateTo").change(function () {
 
-               
+
                 moment.locale();
 
                 if (moment($("#dateTo").val()).isAfter($("#dateFrom").val())) {
 
-                   alert ("Entrei no if");
+                    alert("Entrei no if");
                 }
 
                 console.log("Fora do if");
@@ -87,7 +103,7 @@
 
 
                 //console.log(typeof inputDate);
-                
+
 
 
 

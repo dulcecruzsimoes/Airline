@@ -10,6 +10,27 @@
 
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
 
+    <style>
+
+        label, input {
+            color: #fff;
+        }
+
+        legend {
+            color: #fff;
+        }
+
+        .control-wrapper {
+            color: #fff;
+        }
+
+        th, td {
+            color: white;
+            background-color: #242333;
+        }
+    </style>
+
+
 }
 
 
@@ -24,7 +45,10 @@
 
         <br />
 
-        <table id="example" class="display" style="width:100%">
+
+
+
+        <table id="example">
             <thead>
                 <tr>
                     <th>@Html.DisplayNameFor(model => model.Country)</th>

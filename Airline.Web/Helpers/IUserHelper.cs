@@ -83,5 +83,9 @@ namespace Airline.Web.Helpers
 
         // Método para obter o role a partir do nome
         Task<IdentityRole> GetRoleByNameAsync(string name);
+
+        List<User> GetAllUsers();
+
+   
     }
 }

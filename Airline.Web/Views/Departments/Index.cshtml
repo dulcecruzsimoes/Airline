@@ -7,6 +7,16 @@
 @section Style{
 
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+    <style>
+
+        label, input {
+            color: #fff;
+        }
+
+        legend {
+            color: #fff;
+        }
+    </style>
 
 }
 
@@ -21,25 +31,26 @@
 
         <br />
 
-        <table id="example" class="display" style="width:100%">
+        <table id="example">
             <thead>
                 <tr>
-                    <th> @Html.DisplayNameFor(model => model.Name)<th>
+                    <th> @Html.DisplayNameFor(model => model.Name)
+                    <th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
                 {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                        <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a>
-                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    </td>
-                </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                            <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
                 }
             </tbody>
             <tfoot>

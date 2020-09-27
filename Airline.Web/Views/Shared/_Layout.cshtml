@@ -61,7 +61,7 @@
 
 
         <!--header-->
-        <header class="site-navbar" style="border-bottom: thin groove rgba(255, 255, 255, 0.7);position: fixed;background-color: #fff">
+        <header class="site-navbar" style="border-bottom: thin groove rgba(255, 255, 255, 0.7);position: fixed;background-color: #fff; box-shadow: 0 3px 10px rgba(255, 255, 255,0.7)">
 
             <div class="container" style="min-width:100%;">
                 <div class="row align-items-center">
@@ -120,8 +120,13 @@
 
                                 @if (this.User.Identity.IsAuthenticated)
                                 {
-                                    <li>
-                                        <a asp-area="" asp-controller="Account" asp-action="ChangeUser" class="nav-link"> @this.User.Identity.Name</a>                                         
+                                    <li class="has-children">
+                                        <a href="#about-section" class="nav-link"> @this.User.Identity.Name</a>
+                                        
+                                        <ul class="dropdown">
+                                            <li><a asp-area="" asp-controller="Account" asp-action="ChangeUser" class="nav-link">Client Account</a></li>
+                                            <li><a asp-area="" asp-controller="Account" asp-action="ChangePassword" class="nav-link">Change Password</a></li>
+                                        </ul>
                                     </li>
 
                                     <li><a asp-area="" asp-controller="Account" asp-action="Logout" class="nav-link">Logout</a></li>
@@ -150,7 +155,7 @@
 
 
 
-        @*<partial name="_CookieConsentPartial" />*@
+        <partial name="_CookieConsentPartial" />
 
 
         @RenderBody()

@@ -9,6 +9,25 @@
 
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
 
+    <style>
+
+        label, input {
+            color: #fff;
+        }
+
+        legend {
+            color: #fff;
+        }
+
+        .control-wrapper {
+            color: #fff;
+        }
+
+        th, td {
+            color: #fff;
+            background-color: #242333;
+        }
+    </style>
 
 }
 
@@ -21,35 +40,36 @@
         </p>
 
         <br />
-       
-        <table id="example" class="display" style="width:100%">
+
+
+        <table id="example">
             <thead>
                 <tr>
                     <th>From</th>
                     <th>To</th>
                     <th>Departure</th>
                     <th>Arrival</th>
-                    <th>State</th>                    
+                    <th>State</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model.Flights)
                 {
-                <tr>
-                    <td>@Html.DisplayFor(modelItem => item.From.City.Name)</td>
-                    <td>@Html.DisplayFor(modelItem => item.To.City.Name)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Departure)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Arrival)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Status.StatusName)</td>
-                    
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a>
-                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a>
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
-                        <a asp-action="Tickets" asp-route-id="@item.Id" class="btn btn-success">Tickets</a>
-                    </td>
-                </tr>
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.From.City.Name)</td>
+                        <td>@Html.DisplayFor(modelItem => item.To.City.Name)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Departure)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Arrival)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Status.StatusName)</td>
+
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                            <a asp-action="Tickets" asp-route-id="@item.Id" class="btn btn-success">Tickets</a>
+                        </td>
+                    </tr>
                 }
             </tbody>
             <tfoot>

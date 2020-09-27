@@ -19,6 +19,8 @@ namespace Airline.Web.Data.Repository_CRUD
 
         IEnumerable<SelectListItem> GetComboTickets(int id);
 
+        IEnumerable<SelectListItem> GetComboClasses();
+
         bool AirplaneIsAvailable(int id, DateTime departure, DateTime arrival);
 
         List<Flight> GetAllWithObjects();
@@ -28,5 +30,9 @@ namespace Airline.Web.Data.Repository_CRUD
         void UpdateFlightStatus(DateTime date);
 
         List<Ticket> GetTickets(int flightId);
+
+        Flight GetFlight(int id);
+
+        List<Flight> GetFlightsFromToAndDeparture(string from, string to, DateTime date);
     }
 }
