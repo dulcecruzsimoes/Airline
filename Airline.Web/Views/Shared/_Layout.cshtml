@@ -82,7 +82,7 @@
 
                                 @if (this.User.Identity.IsAuthenticated)
                                 {
-                                        <li><a asp-area="" asp-controller="" asp-action="" class="nav-link">My flights</a></li>
+                                        <li><a asp-area="" asp-controller="Account" asp-action="MyFlights" class="nav-link">My flights</a></li>
                                 }
 
                                 @if (this.User.Identity.IsAuthenticated && (this.User.IsInRole("Employee") || this.User.IsInRole("Admin")))

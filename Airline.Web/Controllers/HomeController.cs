@@ -169,26 +169,9 @@ namespace Airline.Web.Controllers
                     if (flightReturn == null)
                     {
                         return NotFound();
-                    }
-
-                    // Criar a lista com as classes para passar para a view
-                    string[] TicketsClassArrayReturn = new string[64];
-
-                    List<int> TicketsClassListReturn = new List<int>(); // 8 Executiva + 56 Económica = 64 lugares
-
-                    // Obter a lista de bilhetes existentes para o voo de regresso
-                    var ticketsListReturn = _ticketRepository.FlightTickets(flightReturn.Id);
-
-
-                    foreach (var item in ticketsListReturn)
-                    {
-                        int index = (item.Seat) - 1;
-
-                        TicketsClassArrayReturn[index] = "occupied";
-                    }
+                    }                  
 
                     chooseSeatFlight.FlightIdReturn = flightReturn.Id;
-                    chooseSeatFlight.SeatIsAvailableReturn = TicketsClassArrayReturn.ToList();
                 }
 
                 //======================Fim Flight Return===================================
@@ -228,9 +211,9 @@ namespace Airline.Web.Controllers
             model.FlightId = data.FlightId;
             model.FlightIdReturn = data.FlightIdReturn;
             model.SeatIsAvailable = data.SeatIsAvailable;
-            model.SeatIsAvailableReturn = data.SeatIsAvailableReturn;
             model.isRoundTrip = data.isRoundTrip;
 
+      
             return View(model);
 
         }
@@ -238,7 +221,93 @@ namespace Airline.Web.Controllers
         [HttpPost]
         public IActionResult Booking(ChooseSeatFlightModel model)
         {
+            if (model == null)
+            {
+                return NotFound();
+            }
 
+            ChooseSeatFlightModel newModel = new ChooseSeatFlightModel();
+
+            newModel.FlightId = model.FlightId;
+            newModel.FlightIdReturn = model.FlightIdReturn;
+            newModel.isRoundTrip = model.isRoundTrip;
+            newModel.Seat = model.Seat;
+            newModel.Class = model.Class;
+            newModel.Classes = _flightRepository.GetComboClasses();
+
+            if (model.isRoundTrip == 1) // Is RoundTrip
+            {
+                var flightReturn = _flightRepository.GetFlight(model.FlightIdReturn);
+
+                if (flightReturn == null)
+                {
+                    return NotFound();
+                }
+
+                // Criar a lista com as classes para passar para a view
+                string[] TicketsClassArrayReturn = new string[64];
+
+                List<int> TicketsClassListReturn = new List<int>(); // 8 Executiva + 56 Económica = 64 lugares
+
+                // Obter a lista de bilhetes existentes para o voo de regresso
+                var ticketsListReturn = _ticketRepository.FlightTickets(flightReturn.Id);
+
+
+                foreach (var item in ticketsListReturn)
+                {
+                    int index = (item.Seat) - 1;
+
+                    TicketsClassArrayReturn[index] = "occupied";
+                }
+
+                newModel.FlightIdReturn = flightReturn.Id;
+                newModel.SeatIsAvailableReturn = TicketsClassArrayReturn.ToList();             
+            }
+
+
+
+            // Redireccionar para o booking (levar o modelo)
+            TempData.Put("BookingRetun", newModel);
+
+            if (model.isRoundTrip == 1)
+            {
+                return RedirectToAction("BookingReturn", "Home");
+            }
+
+            return RedirectToAction("TicketNew", "Home");
+        }
+
+
+       
+        public IActionResult BookingReturn()
+        {
+            // Agarrar o modelo
+            var data = TempData.Get<ChooseSeatFlightModel>("BookingRetun");
+
+            if (data == null)
+            {
+                return NotFound();
+            }
+
+            ChooseSeatFlightModel model = new ChooseSeatFlightModel();
+
+            //========= Bilhete de Ida============
+            model.Classes = data.Classes;
+            model.FlightId = data.FlightId;
+            model.FlightIdReturn = data.FlightIdReturn;
+            model.Class = data.Class;
+            model.Seat = data.Seat;
+            model.SeatReturn = data.SeatReturn;
+            model.SeatIsAvailable = data.SeatIsAvailable;
+            model.SeatIsAvailableReturn = data.SeatIsAvailableReturn;
+            model.isRoundTrip = data.isRoundTrip;
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult BookingReturn(ChooseSeatFlightModel model)
+        {
             if (model == null)
             {
                 return NotFound();
@@ -247,65 +316,16 @@ namespace Airline.Web.Controllers
             // Redireccionar para o booking (levar o modelo)
             TempData.Put("BookingRetun", model);
 
-            if (model.isRoundTrip == 1)
-            {
-                return RedirectToAction("Booking", "Home");
-            }
-
             return RedirectToAction("TicketNew", "Home");
         }
 
-
-        [HttpPost]
-        public IActionResult BookingReturn(ChooseSeatFlightModel model)
-        {
-
-            // Verificar a existência do voo de regresso
-            var flight = _flightRepository.GetFlight(model.FlightIdReturn);
-
-
-
-            if (flight == null)
-            {
-                return this.RedirectToAction("Index");
-            }
-
-            var list = _flightRepository.GetComboClasses(); // Obter as classes
-
-            // Obter a lista de bilhetes existentes para o voo de regresso
-            var ticketsList = _ticketRepository.FlightTickets(model.FlightIdReturn);
-
-
-            // Criar a lista com as classes para passar para a view
-            string[] TicketsClassArray = new string[64];
-
-            List<int> TicketsClassList = new List<int>(); // 8 Executiva + 56 Económica = 64 lugares
-
-
-
-            foreach (var item in ticketsList)
-            {
-                int index = (item.Seat) - 1;
-
-                TicketsClassArray[index] = "occupied";
-
-            }
-
-            model.FlightIdReturn = flight.Id;
-            model.Classes = list;
-            model.SeatIsAvailableReturn = TicketsClassArray.ToList();
-
-            return View(model);
-        }
-
-
-
-        [Authorize]
+        [Authorize] // POde ser camado do booking ou do boobking return
         public async Task<IActionResult> TicketNew()
         {
             // Agarrar o modelo
 
             var data = TempData.Get<ChooseSeatFlightModel>("BookingRetun");
+
 
             if (data == null)
             {
@@ -349,19 +369,19 @@ namespace Airline.Web.Controllers
                 Flight flightReturn = await _flightRepository.GetFlightWithObjectsAsync(data.FlightIdReturn);
                 //======== Bilhete de Volta ========//
                 model.FlightIdReturn = flightReturn.Id;
-                model.From = To.City.Name;
-                model.To = From.City.Name;
+                model.FromReturn = To.City.Name;
+                model.ToReturn = From.City.Name;
                 model.DateReturn = flightReturn.Departure.ToShortDateString();
                 model.TimeReturn = flightReturn.Departure.ToShortTimeString();
                 model.SeatReturn = data.SeatReturn.ToString();
                 if (data.ClassReturn == 1)
                 {
-                    model.ClassName = "Economic";
+                    model.ClassNameReturn = "Economic";
                 }
 
-                else if (data.Class == 2)
+                else if (data.ClassReturn == 2)
                 {
-                    model.ClassName = "Business";
+                    model.ClassNameReturn = "Business";
                 }
 
             }
@@ -386,28 +406,71 @@ namespace Airline.Web.Controllers
             ticket.Flight = flight;
             ticket.Class = model.ClassName;
 
-            try
+            if (model.FlightIdReturn != 0)
             {
-                await _ticketRepository.CreateAsync(ticket);// Ao usar o create grava logo
+                // ===================== Bilhete de Regresso ===========================//
+                Ticket ticketReturn = new Ticket();
+                Flight flightReturn = _flightRepository.GetFlight(model.FlightIdReturn);
+                ticket.Seat = Convert.ToInt32(model.SeatReturn);
+                ticketReturn.User = user;
+                ticketReturn.Flight = flightReturn;
+                ticketReturn.Class = model.ClassNameReturn;
 
-                _mailHelper.SendMail(user.Email, "Ticket", $"<h1>Ticket Confirmation</h1>" +
-                    $"Your ticket information, " +
-                    $"Flight: {ticket.Flight.Id}, " +
-                    $"Class: {ticket.Class}, " +
-                    $"Date: {ticket.Seat}, " +
-                    $"Thanks for flying with us!");
+                try
+                {
+                    await _ticketRepository.CreateAsync(ticket);// Grava Bilhete de Ida
 
-                ViewBag.Message = "Your ticket information was sent to email!";
-                return View();
+                    await _ticketRepository.CreateAsync(ticketReturn);// Grava Bilhete de Regresso
+
+                    _mailHelper.SendMail(user.Email, "Ticket", $"<h1>Ticket Confirmation</h1>" +
+                        $"Your ticket information, " +
+                        $"Flight: {ticket.Flight.Id}, " +
+                        $"Class: {ticket.Class}, " +
+                        $"Date: {ticket.Seat}, " +
+                        $"Thanks for flying with us!");
+
+
+                    _mailHelper.SendMail(user.Email, "Return Ticket", $"<h1>Ticket Confirmation</h1>" +
+                       $"Your ticket information, " +
+                       $"Flight: {ticketReturn.Flight.Id}, " +
+                       $"Class: {ticketReturn.Class}, " +
+                       $"Date: {ticketReturn.Seat}, " +
+                       $"Thanks for flying with us!");
+
+                    ViewBag.Message = "Your tickets information was sent to your email!";
+                    return View();
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                    return View(model);
+                }
             }
-            catch (Exception ex)
+
+            else
             {
-                ModelState.AddModelError(string.Empty, ex.InnerException.Message);
-                return View(model);
-            }       
+                try
+                {
+                    await _ticketRepository.CreateAsync(ticket);// Ao usar o create grava logo
 
+                    _mailHelper.SendMail(user.Email, "Ticket", $"<h1>Ticket Confirmation</h1>" +
+                        $"Your ticket information, " +
+                        $"Flight: {ticket.Flight.Id}, " +
+                        $"Class: {ticket.Class}, " +
+                        $"Date: {ticket.Seat}, " +
+                        $"Thanks for flying with us!");
+
+                    ViewBag.Message = "Your ticket information was sent to your email!";
+                    return View();
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                    return View(model);
+                }
+
+            }
         }
-
             
     
 

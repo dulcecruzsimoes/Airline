@@ -289,14 +289,17 @@ else
         <p class="text"> You have selected the seat <span id="seatNumber">0</span> of the class <span id="classType">0</span></p>
 
      
-            <div class="form-group" style=" float:right">
-                <input id="banco" type="hidden" asp-for="Seat" />
-                <input id="classe" type="hidden" asp-for="Class" />
-                <input type="hidden" asp-for="isRoundTrip" />
-                <input type="hidden" asp-for="FlightId" />
-                <input id="submeter" type="submit" value="Confirm" class="btn btn-success" disabled />
-                <a class="btn btn-info" asp-action="Index">Cancel</a>
-            </div>
+        <div class="form-group" style=" float:right">
+            <input id="banco" type="hidden" asp-for="Seat" />
+            <input id="classe" type="hidden" asp-for="Class" />
+            <input type="hidden" asp-for="isRoundTrip" />
+            <input type="hidden" asp-for="FlightId" />
+            <input type="hidden" asp-for="FlightIdReturn" />
+            
+
+            <input id="submeter" type="submit" value="Confirm" class="btn btn-success" disabled />
+            <a class="btn btn-info" asp-action="Index">Cancel</a>
+        </div>
 
             <div style="clear:both"></div>
     </div>
@@ -499,6 +502,7 @@ else
 
                                 if (selectedSeat !== null && selectedSeat.length > 0) {
 
+                                    
                                     for (var i = 0; i < selectedSeat.length; i++) {
                                         console.log("Removi o anterior");
                                         selectedSeat[i].classList.remove('selected');
@@ -511,6 +515,8 @@ else
 
                                     /*Agora o que queremos fazer é colocar o banco seleccionado com a cor verde de seleccionado*/
                                     e.target.classList.toggle('selected'); //O seat passou para o array de escolhidos (só vai ter um elemento)
+
+                                    submit.removeAttribute("disabled"); // Botão activado
 
                                     //Actualizar a lista de seleccionados (NAO SEI SE SERIA NECESSÀRIO FAZER ISTO CONFIRMAR)
                                     selectedSeat = document.querySelectorAll('.seat.selected');

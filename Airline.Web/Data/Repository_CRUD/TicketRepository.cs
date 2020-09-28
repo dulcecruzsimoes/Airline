@@ -23,5 +23,17 @@ namespace Airline.Web.Data.Repository_CRUD
                 .Where(x=>x.Flight.Id == flightId)               
                 .ToList();
         }
+
+        public List<Ticket> FlightTicketsByUser(string email)
+        {
+            return _context.Tickets
+                .Include(c => c.Flight)
+                .ThenInclude(c => c.From)
+                .Include(c=> c.Flight)
+                .ThenInclude(c => c.To)
+                .Include (c => c.User)
+                .Where(x => x.User.Email == email)
+                .ToList();
+        }
     }
 }

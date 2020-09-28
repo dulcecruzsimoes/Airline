@@ -1,0 +1,108 @@
+﻿@model List<Airline.Web.Data.Entities.Ticket>
+
+    @{
+        ViewData["Title"] = "MyFlights";
+    }
+
+
+    @section Style{
+
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+
+        <style>
+
+            label, input {
+                color: #fff;
+            }
+
+            legend {
+                color: #fff;
+            }
+
+            .control-wrapper {
+                color: #fff;
+            }
+
+            th, td {
+                color: #fff;
+                background-color: #242333;
+            }
+
+            input {
+                color: black;
+            }
+
+            #example_info {
+                color: Azure;
+            }
+        </style>
+
+    }
+
+    <div class="site-section" id="next" style="width:100%">
+        <div class="container" style="width:100%">
+            <h2>My Flights List</h2>
+            <br />
+            <table id="example">
+                <thead>
+                    <tr>
+                        <th>Ticket</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Departure</th>
+                        <th>Seat</th>
+                        <th>Class</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Flight.From.City.Name)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Flight.To.City.Name)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Flight.Departure)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Seat)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Class)</td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Ticket</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Departure</th>
+                        <th>Seat</th>
+                        <th>Class</th>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <br/>
+            <div class="form-group" style="float:right">
+                <a class="btn btn-success" asp-controller="Home" asp-action="Index">Back Home</a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    @section Scripts {
+
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+        <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#example').DataTable();
+            });
+
+        </script>
+
+
+    }

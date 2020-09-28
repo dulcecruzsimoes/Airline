@@ -17,11 +17,21 @@
             color: #fff;
         }
 
-
+        .control-wrapper {
+            color: #fff;
+        }
 
         th, td {
-            color: white;
+            color: #fff;
             background-color: #242333;
+        }
+
+        input {
+            color: black;
+        }
+
+        #example_info {
+            color: Azure;
         }
     </style>
 }
@@ -38,7 +48,7 @@
 
         <br />
 
-        <table id="example" class="display" style="width:100%">
+        <table id="example">
             <thead>
                 <tr>
                     <th>@Html.DisplayNameFor(model => model.Name)</th>
@@ -61,9 +71,8 @@
             <tfoot>
                 <tr>
                     <th>@Html.DisplayNameFor(model => model.Name)</th>
+                    <th></th>
 
-
-                    <td></td>
                 </tr>
             </tfoot>
         </table>

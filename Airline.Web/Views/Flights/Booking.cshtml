@@ -489,6 +489,8 @@ container.addEventListener('click', e => { /*(e)=> é o mesmo que escrever funct
             /*Agora o que queremos fazer é colocar o banco seleccionado com a cor verde de seleccionado*/
             e.target.classList.toggle('selected'); //O seat passou para o array de escolhidos (só vai ter um elemento)
 
+            submit.removeAttribute("disabled"); // Botão activado
+
             //Actualizar a lista de seleccionados (NAO SEI SE SERIA NECESSÀRIO FAZER ISTO CONFIRMAR)
             selectedSeat = document.querySelectorAll('.seat.selected');
 

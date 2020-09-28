@@ -1,7 +1,9 @@
-﻿using Airline.Web.Data.Entities;
+﻿using Airline.Web.Data;
+using Airline.Web.Data.Entities;
 using Airline.Web.Data.Repository_CRUD;
 using Airline.Web.Helpers;
 using Airline.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -15,6 +17,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Airline.Web.Controllers
 {
     public class AccountController : Controller
@@ -23,13 +26,19 @@ namespace Airline.Web.Controllers
         private readonly IConfiguration _configuration;
         private readonly IMailHelper _mailHelper;
         private readonly ICountryRepository _countryRepository;
+        private readonly ITicketRepository _ticketRepository;
+        private readonly IFlightRepository _flightRepository;
+        private readonly IDestinationRepository _destinationRepository;
 
-        public AccountController(IUserHelper userHelper, IConfiguration configuration, IMailHelper mailHelper, ICountryRepository countryRepository)
+        public AccountController(IUserHelper userHelper, IConfiguration configuration, IMailHelper mailHelper, ICountryRepository countryRepository, ITicketRepository ticketRepository, IFlightRepository flightRepository, IDestinationRepository destinationRepository)
         {
             _userHelper = userHelper;
             _configuration = configuration;
             _mailHelper = mailHelper;
             _countryRepository = countryRepository;
+            _ticketRepository = ticketRepository;
+            _flightRepository = flightRepository;
+            _destinationRepository = destinationRepository;
         }
 
         public IActionResult Login(string returnUrl)
@@ -73,29 +82,6 @@ namespace Airline.Web.Controllers
 
 
             return RedirectToAction("Index", "Home");
-
-
-
-
-            //if (ModelState.IsValid)
-            //{
-            //    var result = await _userHelper.LoginAsync(model);
-            //    if (result.Succeeded)
-            //    {
-            //        if (this.Request.Query.Keys.Contains("ReturnUrl"))
-            //        {
-            //            //Direção de retorno
-            //            return this.Redirect(this.Request.Query["ReturnUrl"].First());
-            //        }
-
-            //        return this.RedirectToAction("Index", "Home");
-            //    }
-
-            //}
-
-            //this.ModelState.AddModelError(string.Empty, "Failed to login.");
-            //return this.View(model);
-
         }
 
 
@@ -177,7 +163,7 @@ namespace Airline.Web.Controllers
                        $"To allow the user, " +
                        $"plase click in this link:</br></br><a href = \"{tokenLink}\">Confirm Email</a>");
 
-                    this.ViewBag.Message = "The instructions to allow your user has been sent to email.";
+                    this.ViewBag.Message = "Go to your email to activate your account";
 
 
                     return this.View(model);
@@ -496,6 +482,27 @@ namespace Airline.Web.Controllers
         public IActionResult Success()
         {
             return View();
+        }
+
+        [Authorize]
+        public async Task<IActionResult> MyFlights()
+        {
+            string email = this.User.Identity.Name;
+
+            List<Ticket> MyList = new List<Ticket>();
+
+            MyList = _ticketRepository.FlightTicketsByUser(email);
+
+            foreach (var item in MyList)
+            {
+                Destination cityFrom = await _destinationRepository.GetDestinationWithUserCityAndCoutryAsync(item.Flight.From.Id);
+                Destination cityTo = await _destinationRepository.GetDestinationWithUserCityAndCoutryAsync(item.Flight.To.Id);
+                item.Flight.From.City.Name = cityFrom.City.Name;
+                item.Flight.To.City.Name = cityTo.City.Name;
+            }
+           
+            
+            return View(MyList);
         }
     }
 }
