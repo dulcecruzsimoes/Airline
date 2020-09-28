@@ -12,6 +12,10 @@
 
 }
 
+@if (Model == null)
+{
+
+
     @section Head {
 
 
@@ -67,43 +71,40 @@
     }
 
 
-
-
-
-<!--  ============ Pesquisa de voos==================  -->
-
+}
 
 <div class="site-section" id="next">
     <div class="container">
         <div class="row">
             <div class="col-md-4 offset-md-4" style="background-color:#364261;border-radius:15px; min-width:80%; margin: auto">
 
-                <form asp-action="ViewFlights">
-
+                <form method="post">
+                    <br/>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <h2>Search Flight</h2>
                     <br />
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                   
 
-                    
-                <div class="form-group">
-                    <div class="form-checkbox">
 
-                        <label for="roundtrip">
-                            <input id="radio1" type="radio" asp-for="Trip" value=1 style="background-color:#242333;" />
-                            <span></span>Roundtrip
-                        </label>
 
-                        <label for="one-way">
-                            <input type="radio" asp-for="Trip" value=2 id="radio2" style="background-color:#242333;" />
-                            <span></span>One way
 
-                        </label>
-                        <span asp-validation-for="Trip" class="text-danger"></span>
+                    <div class="form-group">
+                        <div class="form-checkbox">
+
+                            <label for="roundtrip">
+                                <input id="radio1" type="radio" asp-for="Trip" value=1 style="background-color:#242333;" />
+                                <span></span>Roundtrip
+                            </label>
+
+                            <label for="one-way">
+                                <input type="radio" asp-for="Trip" value=2 id="radio2" style="background-color:#242333;" />
+                                <span></span>One way
+
+                            </label>
+                            <span asp-validation-for="Trip" class="text-danger"></span>
+                        </div>
+
+                        @*<span asp-validation-for="" class="text-danger"></span>*@
                     </div>
-                    
-                    @*<span asp-validation-for="" class="text-danger"></span>*@
-                </div>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -175,20 +176,20 @@
             })
 
             $("#radio1").change(function () {
-              
+
                 $('#return').show();
                 $("#returnDate").prop('required', true);
 
             });
 
             $("#radio2").change(function () {
-         
+
                 $('#return').hide();
                 $("#returnDate").prop('required', false);
 
             });
 
-        
+
 
         })
 

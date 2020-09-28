@@ -19,10 +19,14 @@ namespace Airline.Web.Data.Repository_CRUD
             // Colocar no construtor uma acção que me faça a actualização dos voos e que mude os estados para concluded
         }
 
-        public List<Flight> GetFlightsFromToAndDeparture(string from, string to, DateTime date) 
+        public List<Flight> GetFlightsFromToAndDeparture(string from, string to, DateTime? date) 
         {
 
-            return  _context.Flights.Where(x => x.From.City.Name == from && x.To.City.Name == to && x.Departure >= date && x.Status.Id == 1).ToList();
+            return  _context.Flights
+                    .Include(d => d.Airplane)
+                    .Include(d => d.From)
+                    .Include(d => d.To)
+                    .Where(x => x.From.City.Name == from && x.To.City.Name == to && x.Departure >= date && x.Status.Id == 1).ToList();
         
         
         }

@@ -61,7 +61,7 @@ namespace Airline.Web
             // Encaminhamento para o Controlador Account e executar a Action: "NotAuthorized" quando houver uma tentativa para aceder sem autorização (role sem permissões para determinada área)
             services.ConfigureApplicationCookie(options =>
             {
-                options.LoginPath = "/Account/NotAuthorized";
+                options.LoginPath = "/Account/Login";
                 options.AccessDeniedPath = "/Account/NotAuthorized";
             });
 

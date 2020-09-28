@@ -56,5 +56,18 @@ namespace Airline.Web.Data
 
 
         }
+
+        public async Task<Destination> GetDestinationByNameAsync(string cityName)
+        {
+            var destination = await _context.Destinations
+                                .Include(d => d.Country)
+                                .Include(d => d.City)
+                                .Where(x => x.City.Name == cityName)
+                                .FirstOrDefaultAsync();
+
+            return destination;
+
+
+        }
     }
 }

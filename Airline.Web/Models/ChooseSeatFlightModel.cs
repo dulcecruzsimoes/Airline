@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Airline.Web.Data.Entities;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -29,8 +30,11 @@ namespace Airline.Web.Models
 
         public int SeatReturn { get; set; }
 
-        public bool isRoundTrip { get; set; }
+        public int isRoundTrip { get; set; }
 
-      
+        public string Username { get; set; }
+
+        public string Password { get; set; }
+
     }
 }

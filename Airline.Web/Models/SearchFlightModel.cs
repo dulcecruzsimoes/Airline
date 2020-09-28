@@ -9,31 +9,29 @@ namespace Airline.Web.Models
 {
     public class SearchFlightModel
     {
-       [Required (ErrorMessage = "The field {0} is required")]
+        [Required (ErrorMessage = "The field {0} is required")]
         public string From { get; set; }
 
         [Required(ErrorMessage = "The field {0} is required")]
         [Attributes.IsDifferentString("From", "To")]
         public string To { get; set; }
-             
 
+        [Display(Name = "Trip")]
         [Range(1, 2, ErrorMessage = "Please, choose one trip type")]
         public int Trip { get; set; }
 
 
         [Display(Name = "Departure")]
-        [Attributes.DateAfterNow()]
+        [Attributes.DateAfterNow()] // Não se vendem bilhetes para o próprio dia
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
         public DateTime Departure { get; set; }
 
 
         [Display(Name = "Return")]
-        [Attributes.DateAfterNow()]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
-        //Data de chegada deve ser depois data de partida
-        [Attributes.DateAfterThan("Departure", "Return")]
-        public DateTime Return { get; set; }
-
+        [Attributes.RequieredIfRoundTrip("Trip", "Return")] // Caso tenha sido escolhido roundtrip, esta data não pode ser nula
+        //[Attributes.DateAfterThan("Departure", "Return")] //Data de chegada deve ser depois data de partida
+        public Nullable<DateTime> Return { get; set; }
    
     }
 }

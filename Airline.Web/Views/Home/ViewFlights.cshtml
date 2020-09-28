@@ -5,29 +5,6 @@
 }
 
 
-@section Style{
-
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
-    <style>
-
-        label, input {
-            color: #fff;
-        }
-
-        legend {
-            color: #fff;
-        }
-
-
-
-        th, td {
-            color: white;
-            background-color: #242333;
-        }
-    </style>
-
-}
-
 @if (@ViewBag.Message != null)
 {
     <div class="site-section" id="next">
@@ -48,18 +25,23 @@
 
 else
 {
-    <div class="site-section" id="next" style="width:100%">
-        <div class="container" style="width:100%">
-            <h2>Flights List</h2>
+       
+    <div class="site-section" id="next" style="width:100%;">
+        <div class="container" style="width:60%">
+            <form method="post">
 
-            <form asp-action="Seats">
-              
                 <br />
-                <table id="example" title="One-way flight">
+
+                <table class="table" style="color:#fff; width:100%;">
                     <thead>
+                        <tr>
+                            Flights One-Way
+                        </tr>
 
                     </thead>
+
                     <tbody>
+
                         @foreach (var item in Model.Flights)
                         {
                             <tr>
@@ -79,43 +61,51 @@ else
                             </tr>
                         }
                     </tbody>
-                    <tfoot>
-
-                    </tfoot>
                 </table>
 
-                <table id="example2" title="Return flight">
+                <br />
+
+                @if (Model.FlightsReturn== null || Model.FlightsReturn.Count == 0)
+                {
+                  
+                }
+                else
+                {
+                
+                <table class="table" style="color:#fff; width:100%;">
                     <thead>
                         <tr>
+
+                            Return Flights
+
                         </tr>
+
                     </thead>
                     <tbody>
+
                         @foreach (var item in Model.FlightsReturn)
                         {
                             <tr>
-                                <td>
+                                <td style="width:5%">
                                     <input type="radio" asp-for="flightIdReturn" value="@item.Id" id="@item.Id" style="background-color:#242333;" />
 
                                 </td>
-                                <td>
+                                <td style="width:25%">
                                     <p>@Html.DisplayFor(modelItem => item.Departure)</p>
                                     <p style="font-size:small">@Html.DisplayFor(modelItem => item.From.City.Name)</p>
                                 </td>
-                                <td>-------------<img src="~/images/airplane2.jpg" />----------</td>
-                                <td>
+                                <td style="width:30%">-------------<img src="~/images/airplane2.jpg" />----------</td>
+                                <td style="width:25%">
                                     <p>@Html.DisplayFor(modelItem => item.Arrival)</p>
                                     <p style="font-size:small">@Html.DisplayFor(modelItem => item.To.City.Name)</p>
                                 </td>
                             </tr>
                         }
                     </tbody>
-                    <tfoot>
-                        <tr>
-                        </tr>
-                    </tfoot>
                 </table>
-
-                <div class="form-group">
+                }
+                <br />
+                <div class="form-group" style="float: right">
                     <input type="hidden" asp-for="isRoundTrip" />
                     <input type="submit" value="Confirm" class="btn btn-success" />
                     <a class="btn btn-info" asp-action="Index">Home</a>
@@ -127,25 +117,12 @@ else
         </div>
     </div>
 
-
+    
 }
 
 @section Scripts {
 
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-
-
-    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#example').DataTable();
-
-
-            $('#example2').DataTable();
-
-        });
-
-    </script>
 
 
 }

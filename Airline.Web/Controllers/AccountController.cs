@@ -32,18 +32,18 @@ namespace Airline.Web.Controllers
             _countryRepository = countryRepository;
         }
 
-        public IActionResult Login()
+        public IActionResult Login(string returnUrl)
         {
-            // Vai ver se está autenticado
+
+            ViewBag.ReturnUrl = returnUrl;
+
             if (this.User.Identity.IsAuthenticated)
             {
-                //Redireccionamento para o index do controlador Home
                 return this.RedirectToAction("Index", "Home");
             }
 
+            return this.View();
 
-            // Se não estiver autenticado vou apresentar a view para fazer o login
-            return View();
         }
 
         public async Task<IActionResult> LogOut()
@@ -55,26 +55,47 @@ namespace Airline.Web.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl)
         {
-            if (ModelState.IsValid)
+
+            ViewBag.ReturnUrl = returnUrl;
+
+
+            if (!ModelState.IsValid)
             {
-                var result = await _userHelper.LoginAsync(model);
-                if (result.Succeeded)
-                {
-                    if (this.Request.Query.Keys.Contains("ReturnUrl"))
-                    {
-                        //Direção de retorno
-                        return this.Redirect(this.Request.Query["ReturnUrl"].First());
-                    }
-
-                    return this.RedirectToAction("Index", "Home");
-                }
-
+                return View(model);
             }
 
-            this.ModelState.AddModelError(string.Empty, "Failed to login.");
-            return this.View(model);
+            var result = await _userHelper.LoginAsync(model);
+
+            if (Url.IsLocalUrl(ViewBag.ReturnUrl))
+                return Redirect(ViewBag.ReturnUrl);
+
+
+            return RedirectToAction("Index", "Home");
+
+
+
+
+            //if (ModelState.IsValid)
+            //{
+            //    var result = await _userHelper.LoginAsync(model);
+            //    if (result.Succeeded)
+            //    {
+            //        if (this.Request.Query.Keys.Contains("ReturnUrl"))
+            //        {
+            //            //Direção de retorno
+            //            return this.Redirect(this.Request.Query["ReturnUrl"].First());
+            //        }
+
+            //        return this.RedirectToAction("Index", "Home");
+            //    }
+
+            //}
+
+            //this.ModelState.AddModelError(string.Empty, "Failed to login.");
+            //return this.View(model);
+
         }
 
 

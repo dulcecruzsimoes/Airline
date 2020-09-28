@@ -33,6 +33,6 @@ namespace Airline.Web.Data.Repository_CRUD
 
         Flight GetFlight(int id);
 
-        List<Flight> GetFlightsFromToAndDeparture(string from, string to, DateTime date);
+        List<Flight> GetFlightsFromToAndDeparture(string from, string to, DateTime? date);
     }
 }
