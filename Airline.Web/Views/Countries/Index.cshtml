@@ -62,51 +62,9 @@
 
 
 
-<div id="deleteDialog" class="modal fade" style="top:6vh">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Delete</h4>
-                <button type="button" class="close" data-dismiss="modal">x</button>
-
-            </div>
-            <div class="modal-body">
-                <p>Do you want to delete the country?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" id="btnYesDelete">Delete</button>
-                <button type="button" class="btn btn-success" id="btnNoDelete">No</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-    <script type="text/javascript">
-        $(document).ready(function () {
-
-            var id = 0;
-
-            $('a[id*=btnDelete]').click(function () {
-                debugger;
-                id = $(this).parent()[0].id;
-                $("#deleteDialog").modal('show');
-                return false;
-            });
-
-            $("#btnNoDelete").click(function () {
-                $("#deleteDialog").modal('hide');
-                return false;
-            });
-
-            $("#btnYesDelete").click(function () {
-                window.location.href = '/Countries/Delete/' + id;
-            });
-
-        });
-    </script>
 }
 
    

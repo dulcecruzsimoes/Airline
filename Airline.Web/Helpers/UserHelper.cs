@@ -64,7 +64,7 @@ namespace Airline.Web.Helpers
 
             var usersList = await _userManager.GetUsersInRoleAsync(roleName);
 
-            if (usersList== null)
+            if (usersList.Count == 0)
             {
                 return true;
             }
