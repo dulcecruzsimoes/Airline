@@ -1,4 +1,4 @@
-﻿z<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -29,12 +29,28 @@
     <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/material.css" />
 
 </environment>
-    <environment exclude="Development">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-    </environment>
+<environment exclude="Development">
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <link rel="stylesheet" href="~/template/fonts/icomoon/style.css">
+    <link rel="stylesheet" href="~/template//css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/template//css/jquery-ui.css">
+    <link rel="stylesheet" href="~/template//css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/template//css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="~/template//css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="~/template//css/jquery.fancybox.min.css">
+    <link rel="stylesheet" href="~/template//css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="~/template//fonts/flaticon/font/flaticon.css">
+    <link rel="stylesheet" href="~/template//css/style.css">
+
+    <!-- Syncfusion Essential JS 2 Styles -->
+    <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/material.css" />
+    <!--
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+          asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+          asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+    <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" /> -->
+</environment>
 </head>
 <body>
 
@@ -93,7 +109,7 @@
                                             <li><a asp-area="" asp-controller="Airplanes" asp-action="Index" class="nav-link">Airplanes</a></li>
                                             <li><a asp-area="" asp-controller="Destinations" asp-action="Index" class="nav-link">Destinations</a></li>
                                             <li><a asp-area="" asp-controller="Flights" asp-action="Index" class="nav-link">Flights</a></li>
-                                            <li><a asp-area="" asp-controller="" asp-action="" class="nav-link">Clients</a></li>
+                                            <li><a asp-area="" asp-controller="Clients" asp-action="Index" class="nav-link">Clients</a></li>
                                             <li><a asp-area="" asp-controller="Countries" asp-action="Index" class="nav-link">Countries</a></li>
                                         </ul>
                                     </li>
@@ -106,13 +122,8 @@
                                         <ul class="dropdown">
                                             <li><a asp-area="" asp-controller="Roles" asp-action="Index" class="nav-link">Roles</a></li>
                                             <li><a asp-area="" asp-controller="Departments" asp-action="Index" class="nav-link">Departments</a></li>
-
-                                            <li class="has-children">
-                                                <a href="#">Employees</a>
-                                                <ul class="dropdown">
-                                                    <li><a asp-area="" asp-controller="Employees" asp-action="IndexActive" class="nav-link">Active Employees</a></li>
-                                                    <li><a asp-area="" asp-controller="Employees" asp-action="IndexInactive" class="nav-link">Inactive Employees</a></li>
-                                                </ul>
+                                            <li><a asp-area="" asp-controller="Employees" asp-action="Index" class="nav-link">Employees</a></li>
+                                           
                                         </ul>
                                     </li>
                                 }
@@ -223,21 +234,59 @@
 
 
     </environment>
-        <environment exclude="Development">
-            <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
-                    asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                    asp-fallback-test="window.jQuery"
-                    crossorigin="anonymous"
-                    integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
-            </script>
-            <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
-                    asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                    asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                    crossorigin="anonymous"
-                    integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd">
-            </script>
-            <script src="~/js/site.min.js" asp-append-version="true"></script>
-        </environment>
+    <environment exclude="Development">
+
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+
+        <!--Livraria para amnipulação das datas: client-side-->
+        <script src="~/lib/moment.js/moment.min.js" asp-append-version="true"></script>
+
+
+
+        <!-- Syncfusion Essential JS 2 Scripts -->
+        @* Syncfusion Essential JS 2 Scripts *@
+
+        <script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js"></script>
+        <ejs-scripts></ejs-scripts>
+
+
+        <!-- Scripts do Templat-->
+        <script src="~/template/js/aos.js"></script>
+        <script src="~/template/js/bootstrap.min.js"></script>
+        <script src="~/template/js/bootstrap-datepicker.min.js"></script>
+        <script src="~/template/js/isotope.pkgd.min.min.js"></script>
+        <script src="~/template/js/jquery.countdown.min.js"></script>
+        <script src="~/template/js/jquery.easing.1.3.js"></script>
+        <script src="~/template/js/jquery.fancybox.min.js"></script>
+        <script src="~/template/js/jquery.magnific-popup.min.js"></script>
+        <script src="~/template/js/jquery.stellar.min.js"></script>
+        <script src="~/template/js/jquery.sticky.js"></script>
+        <script src="~/template/js/jquery-3.3.1.min.js"></script>
+        <script src="~/template/js/jquery-migrate-3.0.1.min.js"></script>
+        <script src="~/template/js/jquery-ui.js"></script>
+        <script src="~/template/js/main.js"></script>
+        <script src="~/template/js/mediaelement-and-player.min.js"></script>
+        <script src="~/template/js/owl.carousel.min.js"></script>
+        <script src="~/template/js/popper.min.js"></script>
+        <script src="~/template/js/slick.min.js"></script>
+        <script src="~/template/js/typed.js"></script>
+
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
+        </script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd">
+        </script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
 
 
         @RenderSection("Scripts", required: false)

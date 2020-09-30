@@ -1,12 +1,15 @@
-﻿@model IEnumerable<Airline.Web.Models.EmployeeViewModel>
+﻿@model IList<Airline.Web.Data.Entities.User>
 
 @{
-    ViewData["Title"] = "Inactive Employees";
+    ViewData["Title"] = "Index";
 }
+
+
 
 @section Style{
 
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+
     <style>
 
 
@@ -27,6 +30,14 @@
             background-color: #242333;
         }
 
+        thead tr th {
+            color: #6feaf6;
+        }
+
+        tfoot tr th {
+            color: #6feaf6;
+        }
+
         input {
             color: black;
         }
@@ -35,12 +46,15 @@
             color: Azure;
         }
     </style>
+
+
 }
+
+
 
 <div class="site-section" id="next" style="width:100%">
     <div class="container" style="width:100%">
-        <h2>Inactive Employees List</h2>
-
+        <h2>Clients List</h2>
 
         <br />
 
@@ -50,21 +64,24 @@
                     <th>Name</th>
                     <th>EMail</th>
                     <th>Phone Number</th>
-                    <th>Department</th>
-                    <th> </th>
+                    <th>Tax Number</th>
+                    <th>IsActive</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>@Html.DisplayFor(modelItem => item.FullName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
                         <td>@Html.DisplayFor(modelItem => item.Email)</td>
                         <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Department)</td>
+                        <td>@Html.DisplayFor(modelItem => item.TaxNumber)</td>
+                        <td>@Html.DisplayFor(modelItem => item.isActive)</td>
                         <td>
-                            @*<a asp-action="Edit" asp-route-id="@item.UserId" class="btn btn-warning">Edit</a>*@
-                            <a asp-action="DetailsInactive" asp-route-id="@item.UserId" class="btn btn-info">Details</a>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
                         </td>
                     </tr>
                 }
@@ -74,14 +91,14 @@
                     <th>Name</th>
                     <th>EMail</th>
                     <th>Phone Number</th>
-                    <th>Department</th>
+                    <th>Tax Number</th>
+                    <th>IsActive</th>
                     <th></th>
                 </tr>
             </tfoot>
         </table>
     </div>
 </div>
-
 
 @section Scripts{
     <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
@@ -92,3 +109,5 @@
 
     </script>
 }
+
+

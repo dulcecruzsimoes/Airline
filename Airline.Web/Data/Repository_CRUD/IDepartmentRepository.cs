@@ -11,7 +11,7 @@ namespace Airline.Web.Data.Repository_CRUD
     public interface IDepartmentRepository : IGenericRepository<Department>
     {
         // Todos os departamentos onde determinado empregado com detalhes (user) já trabalhou
-        Task<IQueryable<DepartmentDetail>> GetDepartmentAsync(string idUser);
+        Task<DepartmentDetail> GetDepartmentDetailAsync(string idUser);
 
 
         //Todos os empregados actuais de determinado departamento

@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
 
     <style>
+
+
         label, input {
             color: #fff;
         }
@@ -27,6 +29,14 @@
             background-color: #242333;
         }
 
+        thead tr th {
+            color: #6feaf6;
+        }
+
+        tfoot tr th {
+            color: #6feaf6;
+        }
+
         input {
             color: black;
         }
@@ -34,7 +44,6 @@
         #example_info {
             color: Azure;
         }
-
     </style>
 
 }
@@ -51,8 +60,8 @@
 
         <br />
 
-        <table id="example" >
-            <thead >
+        <table id="example">
+            <thead>
                 <tr>
                     <th>@Html.DisplayNameFor(model => model.Brand)</th>
                     <th>@Html.DisplayNameFor(model => model.Model)</th>
@@ -119,5 +128,5 @@
         });
     </script>
 
-    
+
 }

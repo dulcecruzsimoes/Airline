@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
     <style>
 
+
         label, input {
             color: #fff;
         }
@@ -26,6 +27,14 @@
             background-color: #242333;
         }
 
+        thead tr th {
+            color: #6feaf6;
+        }
+
+        tfoot tr th {
+            color: #6feaf6;
+        }
+
         input {
             color: black;
         }
@@ -34,60 +43,59 @@
             color: Azure;
         }
     </style>
+
 }
 
+    <div class="site-section" id="next" style="width:100%">
+        <div class="container" style="width:100%">
+            <h2>Roles List</h2>
 
+            <p>
+                <a asp-action="Create" class="btn btn-primary">Create New</a>
+            </p>
 
-<div class="site-section" id="next" style="width:100%">
-    <div class="container" style="width:100%">
-        <h2>Roles List</h2>
+            <br />
 
-        <p>
-            <a asp-action="Create" class="btn btn-primary">Create New</a>
-        </p>
-
-        <br />
-
-        <table id="example">
-            <thead>
-                <tr>
-                    <th>@Html.DisplayNameFor(model => model.Name)</th>
-
-                    <th> </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
+            <table id="example">
+                <thead>
                     <tr>
-                        <td> @Html.DisplayFor(modelItem => item.Name)</td>
-                        <td>
-                            <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a>
-                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                        </td>
+                        <th>@Html.DisplayNameFor(model => model.Name)</th>
+
+                        <th> </th>
                     </tr>
-                }
-            </tbody>
-            <tfoot>
-                <tr>
-                    <th>@Html.DisplayNameFor(model => model.Name)</th>
-                    <th></th>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td> @Html.DisplayFor(modelItem => item.Name)</td>
+                            <td>
+                                <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Name)</th>
+                        <th></th>
 
-                </tr>
-            </tfoot>
-        </table>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
     </div>
-</div>
 
 
-@section Scripts{
-    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript">
+    @section Scripts{
+        <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript">
         $(document).ready(function () {
             $('#example').DataTable();
         });
 
-    </script>
-}
+        </script>
+    }
 
 

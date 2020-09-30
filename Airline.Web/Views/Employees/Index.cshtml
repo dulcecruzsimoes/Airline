@@ -27,22 +27,30 @@
             background-color: #242333;
         }
 
+        thead tr th {
+            color: #6feaf6;
+        }
+
+        tfoot tr th {
+            color: #6feaf6;
+        }
+
         input {
             color: black;
         }
 
         #example_info {
-            color: Azure;
+            color: lightgray;
         }
     </style>
 }
 
 <div class="site-section" id="next" style="width:100%">
     <div class="container" style="width:100%">
-        <h2>Active Employees List</h2>
+        <h2>Employees List</h2>
 
         <p>
-            <a asp-action="Create" class="btn btn-primary">Create New</a>
+            <a asp-action="Create" class="btn btn-primary">Add Employee</a>
         </p>
 
         <br />
@@ -54,23 +62,25 @@
                     <th>EMail</th>
                     <th>Phone Number</th>
                     <th>Department</th>
+                    <th>IsActive</th>
                     <th> </th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr>
-                        <td>@Html.DisplayFor(modelItem => item.FullName)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Email)</td>
-                        <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Department)</td>
-                        <td>
-                            @*<a asp-action="Edit" asp-route-id="@item.UserId" class="btn btn-warning">Edit</a>*@
-                            <a asp-action="Details" asp-route-id="@item.UserId" class="btn btn-info">Details</a>
-                            <a asp-action="ChangeDepartment" asp-route-id="@item.UserId" class="btn btn-danger">Change Dpt</a>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                    <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Department)</td>
+                    <td>@Html.DisplayFor(modelItem => item.isActive)</td>
+                    <td>
+                        @*<a asp-action="Edit" asp-route-id="@item.UserId" class="btn btn-warning">Edit</a>*@
+                        <a asp-action="Details" asp-route-id="@item.UserId" class="btn btn-info">Details</a>
+                        <a asp-action="Edit" asp-route-id="@item.UserId" class="btn btn-danger">Edit</a>                        
+                    </td>
+                </tr>
                 }
             </tbody>
             <tfoot>

@@ -12,49 +12,50 @@
         <br />
         <div class="row">
           
-                <form asp-action="Edit" class="col-md-4 offset-md-4" style="min-width: 100%;min-height:100%; margin-left:0px " enctype="multipart/form-data">
-                    <div class="form-group" style="width: 20%; height:100%; float:left; margin-right:4%">
+            <form asp-action="Edit" class="col-md-4 offset-md-4" style="min-width: 100%;min-height:100%; margin-left:0px " enctype="multipart/form-data">
+                <div class="form-group" style="width: 20%; height:80%; float:left; margin-right:4%">
 
-                        <img src="@Url.Content(Model.ImageUrl)" alt="Image" style="min-width: 100%; max-width:100%; min-height:100%; max-height:100%;" />
-                    </div>
+                    <img src="@Url.Content(Model.ImageUrl)" alt="Image" style="min-width: 100%; max-width:100%; min-height:100%; max-height:100%;" />
+                </div>
 
-                    <div class="form-group" style="width: 36%; float: left; margin-right:4%;">
-                        <label asp-for="Brand" class="control-label"></label>
-                        <input asp-for="Brand" class="form-control" />
-                        <span asp-validation-for="Brand" class="text-danger"></span>
-                    </div>
+                <div class="form-group" style="width: 36%; float: left; margin-right:4%;">
+                    <label asp-for="Brand" class="control-label"></label>
+                    <input asp-for="Brand" class="form-control" />
+                    <span asp-validation-for="Brand" class="text-danger"></span>
+                </div>
 
-                    <div class="form-group" style="float:left; width: 36%; float:left">
-                        <label asp-for="Model" class="control-label"></label>
-                        <input asp-for="Model" class="form-control" />
-                        <span asp-validation-for="Model" class="text-danger"></span>
-                    </div>
-
-
-                    <div class="form-group" style="float:left; width: 36%; float:left; margin-right:4%;">
-                        <label asp-for="EconomySeats" class="control-label"></label>
-                        <input asp-for="EconomySeats" class="form-control" />
-                        <span asp-validation-for="EconomySeats" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group" style="float:left; width: 36%; float:left">
-                        <label asp-for="BusinessSeats" class="control-label"></label>
-                        <input asp-for="BusinessSeats" class="form-control" />
-                        <span asp-validation-for="BusinessSeats" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group" style="float:left; width: 36%; float:left; margin-right:4%;">
-                        <label asp-for="ImageFile" class="control-label"></label>
-                        <input asp-for="ImageFile" class="form-control" type="file" /> <!--Deixa de ser uma caixa de texto e passa a ser uma caixa de upload-->
-                        <span asp-validation-for="ImageFile" class="text-danger"></span>
-                    </div>
+                <div class="form-group" style="float:left; width: 36%; float:left">
+                    <label asp-for="Model" class="control-label"></label>
+                    <input asp-for="Model" class="form-control" />
+                    <span asp-validation-for="Model" class="text-danger"></span>
+                </div>
 
 
-                    <div class="form-group" style="clear: both;">
+                <div class="form-group" style="float:left; width: 36%; float:left; margin-right:4%;">
+                    <label asp-for="EconomySeats" class="control-label"></label>
+                    <input asp-for="EconomySeats" class="form-control" />
+                    <span asp-validation-for="EconomySeats" class="text-danger"></span>
+                </div>
+
+                <div class="form-group" style="float:left; width: 36%; float:left">
+                    <label asp-for="BusinessSeats" class="control-label"></label>
+                    <input asp-for="BusinessSeats" class="form-control" />
+                    <span asp-validation-for="BusinessSeats" class="text-danger"></span>
+                </div>
+
+                <div class="form-group" style="float:left; width: 36%; float:left; margin-right:4%;">
+                    <label asp-for="ImageFile" class="control-label"></label>
+                    <input asp-for="ImageFile" class="form-control" type="file" /> <!--Deixa de ser uma caixa de texto e passa a ser uma caixa de upload-->
+                    <span asp-validation-for="ImageFile" class="text-danger"></span>
+                </div>
+
+                <div style="clear:both"></div>
+
+                    <div class="form-group">
                         <input type="submit" value="Save" class="btn btn-info" />
                         <a class="btn btn-success" asp-action="Index">Back to List</a>
                     </div>
-                    </form>
+            </form>
             
             </div>
 

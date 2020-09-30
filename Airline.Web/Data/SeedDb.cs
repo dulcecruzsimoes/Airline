@@ -98,7 +98,8 @@ namespace Airline.Web.Data
                     SocialSecurityNumber = "123456789",
                     Address = "Rua Maravilha 31 2ºD",
                     CityId = _context.Countries.FirstOrDefault().Cities.FirstOrDefault().Id,
-                    City = _context.Countries.FirstOrDefault().Cities.FirstOrDefault()
+                    City = _context.Countries.FirstOrDefault().Cities.FirstOrDefault(),
+                    isActive = true,
 
                 };
 
@@ -152,7 +153,8 @@ namespace Airline.Web.Data
                     SocialSecurityNumber = "555555",
                     Address = "Rua Maravilha 31 2ºD",
                     CityId = _context.Countries.FirstOrDefault().Cities.FirstOrDefault().Id,
-                    City = _context.Countries.FirstOrDefault().Cities.FirstOrDefault()
+                    City = _context.Countries.FirstOrDefault().Cities.FirstOrDefault(),
+                    isActive = true,
                 };                   
 
                 var result2 = await _userHelper.AddUserAsync(user2, "123456");                   
@@ -206,7 +208,8 @@ namespace Airline.Web.Data
                     SocialSecurityNumber = "4569842",
                     Address = "Rua Maravilha 31 2ºD",
                     CityId = _context.Countries.FirstOrDefault().Cities.FirstOrDefault().Id,
-                    City = _context.Countries.FirstOrDefault().Cities.FirstOrDefault()
+                    City = _context.Countries.FirstOrDefault().Cities.FirstOrDefault(),
+                    isActive = true,
                 };
 
                 var result = await _userHelper.AddUserAsync(user3, "123456");

@@ -15,7 +15,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Airline.Web.Controllers
 {
-    
+    [Authorize(Roles = "Admin")]
     public class EmployeesController : Controller
     {
 
@@ -35,123 +35,98 @@ namespace Airline.Web.Controllers
         }
 
 
-        [Authorize(Roles = "Admin")]
         // Lista de Todos os empregados Activos
-        public async Task<IActionResult> IndexActive()
+        public async Task<IActionResult> Index()
         {
             try
             {
-                var listActiveEmployees = await GetSpecificListEmployee(true);
+                // Seleccionar todos os registos da tabela de detalhes
+                var userEmployees = await _userHelper.GetUsersInRoleAsync("Employee");
 
-                return View(listActiveEmployees);
+                List<EmployeeViewModel> employeeList = new List<EmployeeViewModel>();
+                // Para cada utilizador Inserir o departamento
+                foreach (var item in userEmployees)
+                {
+                    var departmentDetails = await _departmentRepository.GetDepartmentDetailAsync(item.Id);
+
+                    Department department = await _departmentRepository.GetByIdAsync(departmentDetails.Department.Id);
+
+                
+                    EmployeeViewModel employeeModel = new EmployeeViewModel()
+                    {
+                        FirstName = item.FullName,
+                        UserId = item.Id,
+                        Email = item.Email,
+                        Department = department.Name,
+                        isActive = item.isActive,
+                        PhoneNumber = item.PhoneNumber
+                    };
+
+                    employeeList.Add(employeeModel);
+
+                }
+
+                return View(employeeList);
 
             }
             catch (Exception)
             {
 
                return NotFound();
-            }
-            
-           
-        }
-
-        
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> IndexInactive()
-        {
-
-            var listInactiveEmployees = await  GetSpecificListEmployee(false);
-
-
-            return View(listInactiveEmployees);
-        
+            }         
         }
 
 
-        private async Task<List<EmployeeViewModel>> GetSpecificListEmployee (bool validation) 
+        // Lista de Todos os empregados Activos
+        public async Task<IActionResult> Details(string id) // User ID
         {
-
-            // Seleccionar todos os registos da tabela de detalhes
-            var GlobalDetailsList = _context.DepartmentDetails
-            .Include(x => x.User)
-            .Include(x => x.Department);
-
-            // Selecionar os utilizadores
-            var distinctUsers = GlobalDetailsList.Select(x => x.User).Distinct().ToList();
-
-
-            List<EmployeeViewModel> employeeViewModelsList = new List<EmployeeViewModel>();
-
-
-            // Pegar em cada utilizador distinto e criar um novo employee view model para colocar na lista
-            foreach (var user in distinctUsers)
+            try
             {
-                City city = await  _countryRepository.GetCityAsync(user.CityId);
+                // Obter o user
 
-                Country country =  _countryRepository.GetCountryAsync(city);
+                User user = await _userHelper.GetUserByIdAsync(id);
 
-                EmployeeViewModel model = new EmployeeViewModel()
+                if (user == null)
                 {
-                    UserId = user.Id,
-                    Email = user.Email,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    TaxNumber = user.TaxNumber,
-                    SocialSecurityNumber = user.SocialSecurityNumber,
-                    PhoneNumber = user.PhoneNumber,
-                    Address = user.Address,
-                    CityId = user.CityId,
-                    CountryId = country.Id,
-                    Countries = _countryRepository.GetComboCountries(),
-                    Cities = _countryRepository.GetComboCities(country.Id),
-                };
-
-                // Pegar no user e correr a lista de detalhes para preencher a lista de detalhes de cada employee view model
-                List<DepartmentDetail> departmentDetailsUser = new List<DepartmentDetail>();
-
-                foreach (var detail in GlobalDetailsList)
-                {
-                    if (detail.User.UserName == model.Email)
-                    {
-                        departmentDetailsUser.Add(detail);
-
-                        if (detail.CloseDate == null)
-                        {
-                            model.isActive = true;
-                            model.Department = detail.Department.Name;
-                        }
-                        else
-                        {
-                            model.isActive = false;
-                        }
-                    }
+                    return NotFound();
                 }
 
-                model.DepartmentDetailsList = departmentDetailsUser;
+                // Obter o detalhe do departamento
+                var departmentDetails = await _departmentRepository.GetDepartmentDetailAsync(user.Id);
 
-                employeeViewModelsList.Add(model);
+                // Obter o departamento
+                Department department = await _departmentRepository.GetByIdAsync(departmentDetails.Department.Id);
+
+                City city = await _countryRepository.GetCityAsync(user.CityId);
+
+                    EmployeeViewModel employeeModel = new EmployeeViewModel()
+                    {
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        Email = user.Email,                       
+                        Address = user.Address,
+                        PhoneNumber = user.PhoneNumber,
+                        TaxNumber = user.TaxNumber,
+                        SocialSecurityNumber = user.SocialSecurityNumber,
+                        CityId = user.CityId,
+                        City = city.Name,
+                        isActive = user.isActive,
+                        Department = department.Name,
+                        StartDate = departmentDetails.StartDate,
+                        CloseDate = departmentDetails.CloseDate,
+                    };         
+
+                return View(employeeModel);
+
             }
-
-            List<EmployeeViewModel> employeeList = new List<EmployeeViewModel>();
-
-            // Obter a lista de employee Activos:
-            if (validation == true)
+            catch (Exception)
             {
-                employeeList = employeeViewModelsList.Where( x => x.isActive == true).ToList();
 
+                return NotFound();
             }
-
-            else
-            {
-                employeeList = employeeViewModelsList.Where(x => x.isActive == false).ToList();
-
-            }
-
-            return employeeList;
         }
 
 
-        [Authorize(Roles = "Admin")]
         // Criar um novo empregado
         public IActionResult Create()
         {
@@ -166,7 +141,7 @@ namespace Airline.Web.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "Admin")]
+       
         // Post do Create
         [HttpPost]
         public async Task<IActionResult> Create(RegisterNewEmployeeViewModel model)
@@ -190,6 +165,7 @@ namespace Airline.Web.Controllers
                     SocialSecurityNumber = model.SocialSecurityNumber,
                     CityId = model.CityId,
                     City = city,
+                    isActive = true,
                     
                 };
 
@@ -200,12 +176,12 @@ namespace Airline.Web.Controllers
                 }
                 catch (Exception)
                 {
-
+                    model.Departments = GetDepartments();
+                    model.Countries = _countryRepository.GetComboCountries();
+                    model.Cities = _countryRepository.GetComboCities(model.CityId);
                     this.ModelState.AddModelError(string.Empty, "The user couldn't be created. Please, confirm data");
                     return this.View(model);
                 }
-
-
 
                 try
                 {
@@ -214,6 +190,9 @@ namespace Airline.Web.Controllers
                 }
                 catch (Exception)
                 {
+                    model.Departments = GetDepartments();
+                    model.Countries = _countryRepository.GetComboCountries();
+                    model.Cities = _countryRepository.GetComboCities(model.CityId);
                     this.ModelState.AddModelError(string.Empty, "Error adding the employee to the role! Please contact the technical support!");
 
                     return this.View(model);
@@ -229,13 +208,13 @@ namespace Airline.Web.Controllers
                 }
                 catch (Exception)
                 {
-
+                    model.Departments = GetDepartments();
+                    model.Countries = _countryRepository.GetComboCountries();
+                    model.Cities = _countryRepository.GetComboCities(model.CityId);
                     this.ModelState.AddModelError(string.Empty, "Error on the email confirmation! Please, contact the technical suppoprt! ");
 
                     return this.View(model);
                 }
-
-
 
                 try
                 {
@@ -254,7 +233,9 @@ namespace Airline.Web.Controllers
                 }
                 catch (Exception)
                 {
-
+                    model.Departments = GetDepartments();
+                    model.Countries = _countryRepository.GetComboCountries();
+                    model.Cities = _countryRepository.GetComboCities(model.CityId);
                     this.ModelState.AddModelError(string.Empty, "Error! The department details wasn't updated. Please contact support! ");
 
                     return this.View(model);
@@ -278,36 +259,29 @@ namespace Airline.Web.Controllers
                     $"Welcome onboard! Please, reset your password, click in this link:</br></br>" +
                     $"<a href = \"{link}\">Reset Password</a>");
 
-                    ViewBag.Message = "Operation done with success!";
+                    ViewBag.Message = "The employee was created with sucess! Was sent an email to the employee for the password reset!";
                     return View();
 
                 }
                 catch (Exception)
                 {
-
+                    model.Departments = GetDepartments();
+                    model.Countries = _countryRepository.GetComboCountries();
+                    model.Cities = _countryRepository.GetComboCities(model.CityId);
                     this.ModelState.AddModelError(string.Empty, "Error on seeding the email to the employee! Please contact support!");
 
-                    return RedirectToAction(nameof(IndexActive)); 
-                }
-               
-
+                    return RedirectToAction(nameof(Index)); 
+                }              
             }
             
             this.ModelState.AddModelError(string.Empty, "The user already exists");
-
-
             return View(model);
         }
-
-
 
         public IActionResult ResetPassword(string token) //Token gerado na action Create (Post)
         {
             return View();
         }
-
-
-
 
 
         [HttpPost]
@@ -337,68 +311,60 @@ namespace Airline.Web.Controllers
 
             return View();
         }
-
-
-
-        [Authorize(Roles = "Admin")]
-        // Editar o funcionário === Ainda não está feito
+       
         public async Task<IActionResult> Edit(string id)
         {
-            if (id == null)
+            try
             {
+                // Obter o user
+                User user = await _userHelper.GetUserByIdAsync(id);
+
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                // Obter o detalhe do departamento
+                var departmentDetails = await _departmentRepository.GetDepartmentDetailAsync(user.Id);
+
+                // Obter o departamento
+                Department department = await _departmentRepository.GetByIdAsync(departmentDetails.Department.Id);
+
+                City city = await _countryRepository.GetCityAsync(user.CityId);
+
+                Country country =  _countryRepository.GetCountryAsync(city);
+
+                EmployeeViewModel employeeModel = new EmployeeViewModel()
+                {
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    Address = user.Address,
+                    PhoneNumber = user.PhoneNumber,
+                    TaxNumber = user.TaxNumber,
+                    SocialSecurityNumber = user.SocialSecurityNumber,
+                    CityId = user.CityId,
+                    City = city.Name,
+                    isActive = user.isActive,
+                    Department = department.Name,
+                    StartDate = departmentDetails.StartDate,
+                    CloseDate = departmentDetails.CloseDate,
+                    Departments = GetDepartments(),
+                    CountryId = country.Id,
+                    Countries = _countryRepository.GetComboCountries(),
+                    Cities = _countryRepository.GetComboCities(city.Id)
+                };
+
+                return View(employeeModel);
+            }
+            catch (Exception)
+            {
+
                 return NotFound();
             }
-
-            // Obter o user
-            var user = await _userHelper.GetUserByIdAsync(id);
-
-            user.City = await _countryRepository.GetCityAsync(user.CityId);
-
-            
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            // Obter o id do departamento a partir da tabela de detalhes
-            var departamentName = _context.DepartmentDetails
-                                .Include(x => x.Department)
-                                .Where(x => x.User.Id == id)
-                                .ToList()
-                                .FirstOrDefault();
-
-
-            if (string.IsNullOrEmpty(departamentName.Department.Name))
-            {
-                return NotFound();
-            }
-
-
-            var country = _countryRepository.GetCountryAsync(user.City);
-
-            // modelo a passar para a view
-            EmployeeViewModel model = new EmployeeViewModel()
-            {
-                Email = user.Email,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Address = user.Address,
-                PhoneNumber = user.PhoneNumber,
-                TaxNumber = user.TaxNumber,
-                SocialSecurityNumber = user.SocialSecurityNumber,
-                Department = departamentName.Department.Name,
-                CountryId = country.Id,
-                CityId = user.CityId,
-                Countries = _countryRepository.GetComboCountries(),
-                Cities = _countryRepository.GetComboCities(country.Id),
-                DepartmentId = departamentName.Department.Id,               
-
-            };
-
-            return View(model);
         }
 
-          [Authorize(Roles = "Admin")]
+     
           [HttpPost]
           [ValidateAntiForgeryToken]
           public async Task<IActionResult> Edit(EmployeeViewModel employeeViewModel)
@@ -413,23 +379,38 @@ namespace Airline.Web.Controllers
                 {
                     user.FirstName = employeeViewModel.FirstName;
                     user.LastName = employeeViewModel.LastName;
+                    user.Email = employeeViewModel.Email;
                     user.Address = employeeViewModel.Address;
                     user.PhoneNumber = employeeViewModel.PhoneNumber;
                     user.TaxNumber = employeeViewModel.TaxNumber;
                     user.SocialSecurityNumber = employeeViewModel.SocialSecurityNumber;
                     user.CityId = employeeViewModel.CityId;
-                    
+                    user.isActive = employeeViewModel.isActive;
 
-                    var response = await _userHelper.UpdateUserAsync(user);
+                    // Obter o detalhe do departamento
+                    var departmentDetails = await _departmentRepository.GetDepartmentDetailAsync(user.Id);
 
-                    if (response.Succeeded)
+                    if (departmentDetails == null)
                     {
-                        ViewBag.Message = "Employee Updated!";
-                        return View(employeeViewModel);
+                        return NotFound();
                     }
 
-                    //              
-                    
+                    departmentDetails.StartDate = employeeViewModel.StartDate;
+                    departmentDetails.CloseDate = employeeViewModel.CloseDate;
+
+                    var response = await _userHelper.UpdateUserAsync(user); // Actualizar o User
+
+                    var response2 = await _departmentRepository.UpdateDepartmentDetailsAsync(departmentDetails); // Actualizar o User
+
+                    // Actualizar os detalhes
+
+                    if (response.Succeeded && response2 == true)
+                    {
+                        ViewBag.Message = "Employee Updated!";
+                        return View();
+                    }
+
+
                     ModelState.AddModelError(string.Empty, response.Errors.FirstOrDefault().Description);
                     return View(employeeViewModel);
                     
@@ -442,206 +423,11 @@ namespace Airline.Web.Controllers
                     return View(employeeViewModel);
                 }
             }
-
             else
             {
                 return NotFound();
-            }           
-                
+            }          
           }
-
-
-        [Authorize(Roles = "Admin")]
-        // GET: Employee/ChangeDepartment/5
-
-        public async Task<IActionResult> ChangeDepartment(string id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            // Obter o user
-            var user = await _userHelper.GetUserByIdAsync(id);
-          
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            // Obter o id e o nome do departamento a partir da tabela de detalhes
-            var oldDepartmentDetail = _context.DepartmentDetails
-                                .Include(x => x.Department)
-                                .Where(x => x.User.Id == id && x.CloseDate == null)
-                                .ToList()
-                                .FirstOrDefault();
-
-            if (oldDepartmentDetail == null)
-            {
-                return NotFound();
-            }
-
-            // modelo a passar para a view
-            ChangeDptEmployeeViewModel model = new ChangeDptEmployeeViewModel()
-            { 
-                UserId = user.Id,
-                
-                FirstName = user.FirstName,
-                
-                LastName = user.LastName,
-
-                OldDepartment= oldDepartmentDetail.Department.Name,
-
-                Departments = GetDepartments(),
-
-                BeginOldDepartment = oldDepartmentDetail.StartDate,              
-
-                OldDepartmentDetailId = oldDepartmentDetail.Id,      
-
-            };
-
-
-            return View(model);
-        }
-
-
-        [Authorize(Roles = "Admin")]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-
-        public async Task<IActionResult> ChangeDepartment3(ChangeDptEmployeeViewModel model)
-        {
-
-
-            if (ModelState.IsValid)
-            {
-                // Nunca me fio no que vem da View, fazer sempre o check com a base de dados.
-                var user = await _userHelper.GetUserByIdAsync(model.UserId);
-
-                if (user != null)
-                {
-                    // Verificar se o Id do detalhe do departamento antigo passou e obtê-lo  
-
-                    var oldDepartmentDetail = _context.DepartmentDetails
-                                  .Include(x => x.Department)
-                                  .Where(x => x.User.Id == model.UserId && x.CloseDate == null)
-                                  .ToList()
-                                  .FirstOrDefault();
-
-                    if (oldDepartmentDetail == null)
-                    {
-                        ModelState.AddModelError(string.Empty, "Historical not found!");
-
-                        return View(model);
-                    }
-
-                    // Actualizar a entrada de detalhes para inserir a data de fecho do empregado no departamento                    
-                    oldDepartmentDetail.CloseDate = model.EndOldDepartment;
-
-                    var response = await _departmentRepository.UpdateDepartmentDetailsAsync(oldDepartmentDetail);
-
-
-                    // Se o employee pode ter terminado o contrato sem trocar de função. Assim, não existe novo departamento nem nova data de inicio
-                    if (model.NewDepartmentId == 0)
-                    {
-                        // Employee saiu da empresa. 
-                        // Passar o employee para role = "customer"
-                        var role = await _userHelper.GetRoleByNameAsync("Customer");
-
-                        if (role == null)
-                        {
-                            ViewBag.Message = "Not possible to update the role! Please contact technical support!";
-                            return View(model);
-                        }
-
-                        await _userHelper.AddUserToRoleAsync(user, role.Name);
-
-                        ViewBag.Message = "Update completed!"; 
-                        return View(model);
-                    }
-
-
-                    // Foi escolhido um novo departamento
-                    var newDepartment = await _departmentRepository.GetByIdAsync(model.NewDepartmentId);
-
-                    await _departmentRepository.CreateDepartmentDetailsAsync(new DepartmentDetail
-                    {
-                        Department = newDepartment,
-                        User = user,
-                        StartDate = (DateTime)model.BeginOldDepartment,
-                    });
-
-                    ViewBag.Message = "Update completed!";
-                    return View(model);
-                }
-
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "User not found!");
-
-                    return View(model);
-                }
-            }
-
-            else
-            {
-                return NotFound();
-            }
-        }
-
-      
-            [Authorize(Roles = "Admin")]
-        // GET: Employee/Details/5
-        public async Task<IActionResult> Details(string id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            // Obter o user
-
-            var user = await _userHelper.GetUserByIdAsync(id);
-
-            
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            user.City = await _countryRepository.GetCityAsync(user.CityId);
-
-            // Obter o id do departamento a partir da tabela de detalhes
-            var departamentName = _context.DepartmentDetails
-                                .Include(x=>x.Department)
-                                .Where(x => x.User.Id == id)
-                                .ToList()
-                                .FirstOrDefault();
-
-
-            if (string.IsNullOrEmpty(departamentName.Department.Name))
-            {
-                return NotFound();
-            }
-
-            // modelo a passar para a view
-            EmployeeViewModel model = new EmployeeViewModel()
-            {
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                TaxNumber = user.TaxNumber,
-                SocialSecurityNumber = user.SocialSecurityNumber,
-                Address = user.Address,
-                City = user.City.Name,
-                Department = departamentName.Department.Name
-
-            };               
-
-            return View(model);
-        }
 
 
         public async Task<JsonResult> GetCitiesAsync(int? countryId)
@@ -654,7 +440,6 @@ namespace Airline.Web.Controllers
 
             var country = await _countryRepository.GetCountryWithCitiesAsync(countryId.Value);
             return this.Json(country.Cities.OrderBy(c => c.Name));
-
         }
 
 

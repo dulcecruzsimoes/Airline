@@ -45,7 +45,7 @@ namespace Airline.Web.Helpers
         Task <bool> IsUserInRoleAsync(User user, string roleName);
 
         // Mete o user dentro do role
-        Task AddUserToRoleAsync(User user, string roleName);
+        Task<IdentityResult> AddUserToRoleAsync(User user, string roleName);
 
 
         //Método que gera o email par confirmação com o respectivo Tolken
@@ -86,6 +86,9 @@ namespace Airline.Web.Helpers
 
         List<User> GetAllUsers();
 
-   
+        Task<IList<User>> GetUsersInRoleAsync(string roleName);
+
+
+
     }
 }

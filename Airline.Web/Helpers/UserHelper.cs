@@ -82,11 +82,11 @@ namespace Airline.Web.Helpers
 
 
         // Atribuir ao user um role
-        public async Task AddUserToRoleAsync(User user, string roleName)
+        public async Task<IdentityResult> AddUserToRoleAsync(User user, string roleName)
         {
             var role = await _roleManager.FindByNameAsync(roleName);
 
-            await _userManager.AddToRoleAsync(user, roleName);
+            return await _userManager.AddToRoleAsync(user, roleName);
         }
 
 
@@ -215,6 +215,15 @@ namespace Airline.Web.Helpers
 
 
             return Users;
+        
+        }
+
+        //====================Customer=============
+
+        public async Task<IList<User>> GetUsersInRoleAsync(string role) 
+        {
+           
+            return await _userManager.GetUsersInRoleAsync(role);
         
         }
 

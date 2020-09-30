@@ -14,7 +14,7 @@ using Airline.Web.Models;
 
 namespace Airline.Web.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin,Employee")]
     public class DestinationsController : Controller
     {
         private readonly IDestinationRepository _repository;
@@ -63,7 +63,7 @@ namespace Airline.Web.Controllers
 
 
 
-        [Authorize(Roles = "Admin")]
+
         // GET: Destinations/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -85,7 +85,6 @@ namespace Airline.Web.Controllers
 
 
         // GET: Destinations/Create
-        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             var model = new DestinationViewModel();
@@ -139,15 +138,20 @@ namespace Airline.Web.Controllers
                 {
                     if (ex.InnerException.Message.Contains("duplicate"))
                     {
+                        
+                        model.CityId = 0;
+                        model.CountryId = 0;
+                        model.Cities = _countryRepository.GetComboCities(0);
+                        model.Countries = _countryRepository.GetComboCountries();
                         ModelState.AddModelError(string.Empty, "Already exists a destination with that IATA");
-                        GetCombos(model);
                         return View(model);
                     }
 
                     else
                     {
                         ModelState.AddModelError(string.Empty, ex.InnerException.Message);
-                        GetCombos(model);
+                        model.Cities = _countryRepository.GetComboCities(0);
+                        model.Countries = _countryRepository.GetComboCountries();
                         return View(model);
                     }
                 }               
@@ -158,7 +162,6 @@ namespace Airline.Web.Controllers
 
 
         // GET: Destinations/Edit/5
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -244,12 +247,17 @@ namespace Airline.Web.Controllers
                         if (ex.InnerException.Message.Contains("duplicate"))
                         {
                             GetCombos(model);
+                            model.CountryId = country.Id;
+                            model.CityId = city.Id;
                             ModelState.AddModelError(string.Empty, "Already exists a destination with that IATA");
                             return View(model);
                         }
 
                         else
                         {
+                   
+                            model.CountryId = country.Id;
+                            model.CityId = city.Id;
                             GetCombos(model);
                             ModelState.AddModelError(string.Empty, ex.InnerException.Message);
                             return View(model);
@@ -280,7 +288,6 @@ namespace Airline.Web.Controllers
 
 
         // GET: Destinations/Delete/5
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

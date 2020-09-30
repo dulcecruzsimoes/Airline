@@ -1,16 +1,31 @@
-﻿@model Airline.Web.Models.EmployeeViewModel
-
+﻿@model Airline.Web.Models.ChangeUserViewModel
 @{
-    ViewData["Title"] = "Edit Employee";
+    ViewData["Title"] = "Profile Update";
 }
 
-@if (string.IsNullOrEmpty(ViewBag.Message))
-{
-    <div class="site-section" id="next">
-        <div class="container">
+<div class="site-section" id="next">
+    <div class="container">
 
-            <h2>Edit Employee</h2>
+        <h2>Update User</h2>
+        <br />
+        @if (!string.IsNullOrEmpty(@ViewBag.Message))
+        {
+            <div class="text-success">
+                <p>
+                    @ViewBag.Message
+                </p>
+            </div>
+
             <br />
+            <div class="form-group">
+                <a class="btn btn-success" asp-controller="Home" asp-action="Index">Home</a>
+            </div>
+
+        }
+
+        else
+        {
+
             <div class="row">
                 <div class="col-md-4 offset-md-4" style="min-width: 100%; margin-left:0px ">
                     <form method="post">
@@ -29,9 +44,9 @@
                         </div>
 
                         <div class="form-group" style=" width: 48%; float:left; margin-right:4%">
-                            <label asp-for="Email">Email</label>
-                            <input asp-for="Email" class="form-control" />
-                            <span asp-validation-for="Email" class="text-warning"></span>
+                            <label asp-for="Username">Email</label>
+                            <input asp-for="Username" class="form-control" />
+                            <span asp-validation-for="Username" class="text-warning"></span>
                         </div>
 
                         <div class="form-group" style="width: 48% ;  float:left">
@@ -70,59 +85,29 @@
                             <span asp-validation-for="SocialSecurityNumber" class="text-warning"></span>
                         </div>
 
-                        <div class="form-group" style="width: 48%; float: left;">
-                            <label asp-for="Department" class="control-label"></label>
-                            <input asp-for="Department" class="form-control" disabled />
-
-                        </div>
-
-                        <div class="form-group" style="width: 48%; float: left; margin-right:4%">
-                            <label asp-for="StartDate"></label>
-                            <input asp-for="StartDate" class="form-control" type="date" />
-                            <span asp-validation-for="StartDate" class="text-danger"></span>
-
-                        </div>
-
-                        <div class="form-group" style="width: 48%; float: left;">
-                            <label asp-for="CloseDate"></label>
-                            <input asp-for="CloseDate" class="form-control" type="date" />
-                            <span asp-validation-for="CloseDate" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-group" style="width: 48%; float: left; margin-right:4%; margin-left:2%">
+                        <div class="form-group" style="width: 10%; float: left; margin-left:5%; margin-top:5%">
 
                             <input asp-for="isActive" type="checkbox" class="form-check-input" />
                             <label asp-for="isActive" class="form-check-label">Active?</label>
                         </div>
 
-                        <br />
-                        <div class="form-group" style=" float: right;">
-                            <input type="submit" value="Confirm" class="btn btn-primary" />
+                        <div class="form-group" style="clear:both"></div>
+                  
+                        <div class="form-group" style=" float: right">
+                            <input type="submit" value="Update" class="btn btn-primary" />
                             <a class="btn btn-success" asp-action="Index">Back to List</a>
                         </div>
+
                     </form>
                 </div>
 
 
             </div>
-        </div>
+        }
     </div>
-}
-else
-{
-    <div class="site-section" id="next">
-        <div class="container">
+</div>
 
-            <h2>@ViewBag.Message</h2>
-            <br />
 
-            <div class="form-group" style=" float: left;">
-                <a class="btn btn-success" asp-action="IndexActive">Back to List</a>
-            </div>
-        </div>
-    </div>
-
-}
 
 
 

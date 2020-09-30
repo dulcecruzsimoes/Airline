@@ -1,112 +1,110 @@
-﻿@model Airline.Web.Models.RegisterNewEmployeeViewModel
-
+﻿@model Airline.Web.Models.ChangeUserViewModel
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Profile Update";
 }
 
-@if (string.IsNullOrEmpty(ViewBag.Message))
-{
-    <div class="site-section" id="next">
-        <div class="container">
+<div class="site-section" id="next">
+    <div class="container">
 
-            <h2>New Employee</h2>
+        <h2>Update User</h2>
+        <br />
+        @if (!string.IsNullOrEmpty(@ViewBag.Message))
+        {
+            <div class="text-success">
+                <p>
+                    @ViewBag.Message
+                </p>
+            </div>
+
             <br />
+            <div class="form-group">
+                <a class="btn btn-success" asp-controller="Home" asp-action="Index">Home</a>
+            </div>
+
+        }
+
+        else
+        {
+
             <div class="row">
                 <div class="col-md-4 offset-md-4" style="min-width: 100%; margin-left:0px ">
-                    <form method="post">
+                    <form>
                         <div asp-validation-summary="ModelOnly"></div>
 
                         <div class="form-group" style="width: 48%; float: left; margin-right:4%">
                             <label asp-for="FirstName">First Name</label>
-                            <input asp-for="FirstName" class="form-control" />
-                            <span asp-validation-for="FirstName" class="text-warning"></span>
+                            <input asp-for="FirstName" class="form-control" disabled/>
+                        
                         </div>
 
                         <div class="form-group" style="float:left; width: 48%; float:left">
                             <label asp-for="LastName">Last Name</label>
-                            <input asp-for="LastName" class="form-control" />
-                            <span asp-validation-for="LastName" class="text-warning"></span>
+                            <input asp-for="LastName" class="form-control" disabled />
+                           
                         </div>
 
                         <div class="form-group" style=" width: 48%; float:left; margin-right:4%">
                             <label asp-for="Username">Email</label>
-                            <input asp-for="Username" class="form-control" />
-                            <span asp-validation-for="Username" class="text-warning"></span>
+                            <input asp-for="Username" class="form-control" disabled/>
+                           
                         </div>
 
                         <div class="form-group" style="width: 48% ;  float:left">
                             <label asp-for="CountryId" class="control-label"></label>
-                            <select asp-for="CountryId" asp-items="Model.Countries" class="form-control"></select>
-                            <span asp-validation-for="CountryId" class="text-danger"></span>
+                            <select asp-for="CountryId" asp-items="Model.Countries" class="form-control" disabled></select>
+                
                         </div>
 
                         <div class="form-group" style="width: 48%; float: left;margin-right:4%">
                             <label asp-for="CityId" class="control-label"></label>
-                            <select asp-for="CityId" asp-items="Model.Cities" class="form-control"></select>
-                            <span asp-validation-for="CityId" class="text-danger"></span>
+                            <select asp-for="CityId" asp-items="Model.Cities" class="form-control" disabled></select>
+                        
                         </div>
 
                         <div class="form-group" style="width: 48%; float: left;">
                             <label asp-for="Address">Address</label>
-                            <input asp-for="Address" class="form-control" />
-                            <span asp-validation-for="Address" class="text-warning"></span>
+                            <input asp-for="Address" class="form-control" disabled/>
+                        
                         </div>
 
                         <div class="form-group" style="width: 48%; float: left;margin-right:4%">
                             <label asp-for="PhoneNumber">Phone Number</label>
-                            <input asp-for="PhoneNumber" class="form-control" />
-                            <span asp-validation-for="PhoneNumber" class="text-warning"></span>
+                            <input asp-for="PhoneNumber" class="form-control" disabled />
+                         
                         </div>
 
                         <div class="form-group" style="width: 48%; float: left;">
                             <label asp-for="TaxNumber">Tax Number</label>
-                            <input asp-for="TaxNumber" class="form-control" />
-                            <span asp-validation-for="TaxNumber" class="text-warning"></span>
+                            <input asp-for="TaxNumber" class="form-control" disabled/>
+                           
                         </div>
 
                         <div class="form-group" style="width: 48%; float: left; margin-right:4%">
                             <label asp-for="SocialSecurityNumber">Social Security Number</label>
-                            <input asp-for="SocialSecurityNumber" class="form-control" />
-                            <span asp-validation-for="SocialSecurityNumber" class="text-warning"></span>
+                            <input asp-for="SocialSecurityNumber" class="form-control" disabled/>
+                         
                         </div>
 
-                        <div class="form-group" style="width: 48%; float: left;">
-                            <label asp-for="DepartmentId" class="control-label"></label>
-                            <select asp-for="DepartmentId" asp-items="Model.Departments" class="form-control"></select>
-                            <span asp-validation-for="DepartmentId" class="text-danger"></span>
-                        </div>
                         <br />
-                        <div class="form-group" style=" float: right;">
-                            <input id="submit" type="submit" value="Confirm" class="btn btn-primary" />
-                            <a class="btn btn-success" asp-action="IndexActive">Back to List</a>
+                        <div class="form-group" style=" float: left; margin-top:30px">
+                            <a class="btn btn-success" asp-action="Index">Back to List</a>
                         </div>
+
                     </form>
                 </div>
 
 
             </div>
-        </div>
+        }
     </div>
-}
-else
-{
-    <div class="site-section" id="next">
-        <div class="container">
+</div>
 
-            <h2>@ViewBag.Message</h2>
-            <br />
 
-            <div class="form-group" style=" float: left;">
-                <a class="btn btn-success" asp-action="Index">Back to List</a>
-            </div>
-        </div>
-    </div>
 
-}
+
 
 
 @section Scripts {
-
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script type="text/javascript">
         $(document).ready(function () {
@@ -131,8 +129,7 @@ else
                     }
                 });
                 return false;
-            });
-
+            })
         });
     </script>
 

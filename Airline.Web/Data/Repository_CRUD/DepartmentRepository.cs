@@ -95,8 +95,8 @@ namespace Airline.Web.Data.Repository_CRUD
 
         }
 
-        // Todos os departamentos onde determinado empregado com detalhes (user) já trabalhou
-        public async Task<IQueryable<DepartmentDetail>> GetDepartmentAsync(string idUser)
+        // Obter o departamento Details de determinado empregado
+        public async Task<DepartmentDetail> GetDepartmentDetailAsync(string idUser)
         {
             // Verificar se o user existe
             var user = await _userHelper.GetUserByIdAsync(idUser);
@@ -106,11 +106,10 @@ namespace Airline.Web.Data.Repository_CRUD
                 return null;
             }
 
-            return _context.DepartmentDetails
+            return await _context.DepartmentDetails
                 .Include(dpt => dpt.Department)
-                .Include(dpt => dpt.StartDate)
-                .Include(dpt => dpt.CloseDate)
-                .Where(dpt => dpt.User.Id == idUser);
+                .Include(dpt => dpt.User)  
+                .Where(dpt => dpt.User.Id == idUser).FirstOrDefaultAsync();
         }
 
 
@@ -142,6 +141,7 @@ namespace Airline.Web.Data.Repository_CRUD
              .FirstOrDefaultAsync();
 
         }
+
 
         public async Task<bool> UpdateDepartmentDetailsAsync(DepartmentDetail departmentDetail)
         {

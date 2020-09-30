@@ -56,5 +56,9 @@ namespace Airline.Web.Models
         [Required]
         [Display(Name = "Social Security Number")]
         public string SocialSecurityNumber { get; set; }
+
+       
+   
+        public bool isActive { get; set; }
     }
 }

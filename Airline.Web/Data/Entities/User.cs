@@ -39,5 +39,7 @@ namespace Airline.Web.Data.Entities
 
         [Display(Name = "Full Name")]
         public string FullName { get { return $"{FirstName} {LastName}"; } }
+
+        public bool isActive { get; set; }
     }
 }

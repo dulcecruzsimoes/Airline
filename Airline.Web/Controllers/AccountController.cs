@@ -134,18 +134,21 @@ namespace Airline.Web.Controllers
                         SocialSecurityNumber = model.SocialSecurityNumber,
                         TaxNumber = model.TaxNumber,
                         Address = model.Address,
-                        City = city
+                        City = city,
+                        isActive = true,
                     };
 
 
                     var result = await _userHelper.AddUserAsync(user, model.Password);
-
+                
 
                     if (result != IdentityResult.Success)
                     {
-                        this.ModelState.AddModelError(string.Empty, "The user couldn't be created");
+                        this.ModelState.AddModelError(string.Empty, "The user couldn't be created. Please, contact support!");
                         return this.View(model);
                     }
+
+                    var result2 = await _userHelper.AddUserToRoleAsync(user, "Customer");
 
                     var myToken = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
 
